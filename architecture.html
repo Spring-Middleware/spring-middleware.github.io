@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Architecture | Spring Middleware</title>
+    <meta
+            name="description"
+            content="Understand the architecture of Spring Middleware: registry-driven topology, control plane, data plane, declarative clients, GraphQL federation, and infrastructure standardization."
+    />
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="architecture">
+<div id="site-header"></div>
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Architecture</div>
+            <h1>A platform layer that keeps service architecture explicit and infrastructure behavior consistent.</h1>
+            <p class="lead">
+                Spring Middleware sits between business services and infrastructure. It standardizes communication, discovery, tracing, GraphQL federation, messaging, and infrastructure integration while keeping each service focused on domain logic.
+            </p>
+
+            <div class="hero-grid">
+                <div class="panel">
+                    <span class="mini-label">Platform layering</span>
+                    <div class="architecture-stack">
+                        <div class="stack-row">Application business logic</div>
+                        <div class="stack-arrow">↓</div>
+                        <div class="stack-row">Spring Middleware platform layer</div>
+                        <div class="stack-arrow">↓</div>
+                        <div class="stack-row">Spring Boot / infrastructure / transport</div>
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <span class="mini-label">Design goals</span>
+                    <ul class="key-points">
+                        <li><strong>Centralize cross-cutting concerns</strong> without hiding architecture behind magic.</li>
+                        <li><strong>Keep services autonomous</strong> and business-focused.</li>
+                        <li><strong>Standardize behavior</strong> across communication, errors, tracing, and infrastructure integration.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>Control plane and data plane</h2>
+                <p>
+                    Spring Middleware uses a registry-driven architecture with a clear separation between topology control and runtime service execution.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>Control plane</h3>
+                    <p>
+                        The Registry Service acts as the control plane. It maintains service topology, registered REST metadata, GraphQL schema locations, node endpoints, and health-related cleanup.
+                    </p>
+                    <div class="pill-row">
+                        <span class="pill">Service topology</span>
+                        <span class="pill">API metadata</span>
+                        <span class="pill">Schema locations</span>
+                        <span class="pill">Node health</span>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h3>Data plane</h3>
+                    <p>
+                        Application services expose APIs, call each other through declarative clients, participate in the same tracing and error model, and use infrastructure modules for persistence, caching, and messaging.
+                    </p>
+                    <div class="pill-row">
+                        <span class="pill">Declarative HTTP</span>
+                        <span class="pill">GraphQL federation</span>
+                        <span class="pill">Redis / Mongo / JPA</span>
+                        <span class="pill">Kafka / RabbitMQ</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level topology</h2>
+                <p>
+                    Services register themselves, expose metadata to the control plane, and consume other services through registry-resolved clients.
+                </p>
+            </div>
+
+            <div class="card topology">
+                <div class="topology-shell">
+                    <div class="topology-registry">
+                        <h3>Registry Service</h3>
+                        <p>Tracks clusters, nodes, REST resources, GraphQL schemas, and platform metadata required for runtime resolution.</p>
+                    </div>
+
+                    <div class="topology-services">
+                        <div class="topology-service">
+                            <h3>Service A</h3>
+                            <p>@Register resources, GraphQL schemas, middleware clients, tracing, and infrastructure modules.</p>
+                        </div>
+
+                        <div class="topology-service">
+                            <h3>Service B</h3>
+                            <p>Registers itself in the control plane and consumes remote services through registry-driven resolution.</p>
+                        </div>
+
+                        <div class="topology-service">
+                            <h3>Service C</h3>
+                            <p>Participates in the same topology, error model, tracing propagation, and platform conventions.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="concepts">
+        <div class="container">
+            <div class="section-head">
+                <h2>Core concepts</h2>
+                <p>
+                    The platform is built around a few explicit concepts that define topology, registration, and service communication.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>Cluster and node</h3>
+                    <p>
+                        A <strong>cluster</strong> is the logical service identity, such as <code>product-service</code> or <code>catalog-service</code>. A <strong>node</strong> is a concrete running instance of that cluster, such as a pod, container, or VM.
+                    </p>
+                    <p>
+                        The Registry tracks both the logical service boundary and the concrete node endpoints available at runtime.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Registry</h3>
+                    <p>
+                        The Registry is the control-plane component that stores service topology, REST metadata, GraphQL schema locations, and node health information.
+                    </p>
+                    <p>
+                        It exposes structures such as <code>RegistryEntry</code> and <code>SchemaLocation</code> so the platform can resolve topology and federation metadata explicitly.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Resources and schemas</h3>
+                    <p>
+                        A <strong>resource</strong> is a registered REST endpoint, typically implemented in a Spring <code>@RestController</code> and annotated with <code>@Register</code>. A <strong>schema</strong> is a GraphQL schema registered for later composition and federation.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Declarative clients</h3>
+                    <p>
+                        <code>@MiddlewareClient</code> defines a declarative HTTP contract against another service. The platform resolves service identity to concrete endpoints through the Registry, applies node selection, and propagates context and errors consistently.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bootstrap">
+        <div class="container">
+            <div class="section-head">
+                <h2>Service bootstrapping</h2>
+                <p>
+                    Startup is based on annotation scanning, explicit registration, and periodic reconciliation with the control plane.
+                </p>
+            </div>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div>
+                        <h3>Application startup</h3>
+                        <p>Spring Boot initializes the service and creates the application context.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div>
+                        <h3>Annotation scanning</h3>
+                        <p>Spring Middleware scans for annotations such as <code>@Register</code> and <code>@MiddlewareClient</code>.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">3</div>
+                    <div>
+                        <h3>Metadata registration</h3>
+                        <p>REST resources, GraphQL schema information, and node identity are registered in the Registry.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">4</div>
+                    <div>
+                        <h3>Runtime reconciliation</h3>
+                        <p>A scheduler periodically verifies consistency and restores missing topology or metadata when necessary.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="self-healing">
+        <div class="container">
+            <div class="section-head">
+                <h2>Control plane convergence and self-healing</h2>
+                <p>
+                    The Registry is not treated as a permanently correct source of truth. Services continuously reconcile their presence and metadata so the platform converges back to the real cluster state after failures.
+                </p>
+            </div>
+
+            <div class="callout">
+                <p>
+                    Destroying registry state does not permanently break the system. Restarting nodes reconstructs topology, restores metadata, and recreates node-scoped infrastructure without manual intervention.
+                </p>
+            </div>
+
+            <div class="grid-2" style="margin-top: 18px;">
+                <div class="info-card">
+                    <h3>What services verify</h3>
+                    <ul class="list-clean">
+                        <li>Node endpoint presence in the Registry</li>
+                        <li>REST resource registration</li>
+                        <li>GraphQL schema node registration</li>
+                        <li>Required messaging infrastructure existence</li>
+                    </ul>
+                </div>
+
+                <div class="info-card">
+                    <h3>What the platform restores</h3>
+                    <ul class="list-clean">
+                        <li>Missing REST metadata</li>
+                        <li>Missing GraphQL schema entries</li>
+                        <li>Lost node endpoints</li>
+                        <li>Node-scoped queues and bindings</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 18px;">
+                <div class="info-card">
+                    <h3>Failure handling</h3>
+                    <p>
+                        When nodes disappear, the Registry removes stale endpoints, messaging resources tied to dead nodes are cleaned up, and topology remains free of orphaned state.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Runtime impact</h3>
+                    <p>
+                        Clients fail fast when no nodes are available and resume normal operation automatically when capacity returns. The system converges instead of drifting into a broken state.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="communication">
+        <div class="container">
+            <div class="section-head">
+                <h2>Service communication flow</h2>
+                <p>
+                    Runtime calls are routed through declarative interfaces, registry lookup, node selection, and standardized request/response handling.
+                </p>
+            </div>
+
+            <div class="flow">
+                <div class="flow-step">
+                    <div class="flow-num">1</div>
+                    <div>
+                        <h3>Application code invokes a declarative client</h3>
+                        <p>A method is called on an interface annotated with <code>@MiddlewareClient</code>.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">2</div>
+                    <div>
+                        <h3>Cluster resolution</h3>
+                        <p>The target service identity is resolved from the client metadata.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">3</div>
+                    <div>
+                        <h3>Registry lookup and node selection</h3>
+                        <p>Available nodes are queried from the Registry and a node selection strategy resolves the actual HTTP endpoint.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">4</div>
+                    <div>
+                        <h3>Request execution and propagation</h3>
+                        <p>The request is sent through WebClient with propagated headers such as <code>X-Request-ID</code> and <code>X-Span-ID</code>.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-num">5</div>
+                    <div>
+                        <h3>Typed response and unified failures</h3>
+                        <p>Responses are mapped to the target method signature and remote failures are normalized into a structured error model.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="errors-tracing">
+        <div class="container">
+            <div class="section-head">
+                <h2>Error and tracing model</h2>
+                <p>
+                    Spring Middleware defines a consistent error structure and lightweight cross-service tracing without requiring a full tracing stack.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>Structured errors</h3>
+                    <p>
+                        The platform standardizes failure handling through types such as <code>ServiceException</code>, <code>ErrorDescriptor</code>, <code>ErrorMessage</code>, and <code>RemoteServerException</code>, together with centralized <code>@RestControllerAdvice</code>.
+                    </p>
+                    <div class="diagram">{
+                        "statusCode": 404,
+                        "statusMessage": "Not Found",
+                        "code": "PRODUCT:NOT_FOUND",
+                        "message": "Product not found",
+                        "extensions": {}
+                        }</div>
+                </div>
+
+                <div class="info-card">
+                    <h3>Lightweight tracing</h3>
+                    <p>
+                        Every request participates in correlation through <code>X-Request-ID</code> and <code>X-Span-ID</code>. The goal is explicit observability and easier log correlation across services, including GraphQL requests and remote HTTP calls.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="modules">
+        <div class="container">
+            <div class="section-head">
+                <h2>Module architecture</h2>
+                <p>
+                    Spring Middleware is published as a multi-module ecosystem managed through a BOM and organized by platform concern.
+                </p>
+            </div>
+
+            <div class="grid-4">
+                <div class="info-card">
+                    <h3>Core</h3>
+                    <p><code>commons</code>, <code>api</code>, <code>app</code>, <code>model-api</code>, <code>model-core</code>, <code>view-api</code>, <code>view-core</code></p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Data</h3>
+                    <p><code>mongo-*</code>, <code>jpa-*</code>, <code>redis-*</code>, <code>cache</code></p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Messaging</h3>
+                    <p><code>rabbitmq</code>, <code>kafka</code> and platform-aligned messaging support</p>
+                </div>
+
+                <div class="info-card">
+                    <h3>Platform</h3>
+                    <p><code>registry-*</code>, <code>graphql</code> and control-plane related modules</p>
+                </div>
+            </div>
+
+            <div class="grid-2" style="margin-top: 18px;">
+                <div class="info-card">
+                    <h3>Typical infrastructure structure</h3>
+                    <div class="diagram">module
+                        ├─ api
+                        ├─ core
+                        └─ core-react (optional)</div>
+                </div>
+
+                <div class="info-card">
+                    <h3>Typical dependency flow</h3>
+                    <div class="diagram">boot
+                        ↓
+                        core
+                        ↓
+                        api</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="layout">
+        <div class="container">
+            <div class="section-head">
+                <h2>Repository and consumption model</h2>
+                <p>
+                    The repository is structured as a Maven multi-module project. Consumers import the BOM and select the modules they need. Contributors work inside the implementation tree.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <div class="info-card">
+                    <h3>For consumers</h3>
+                    <p>
+                        Depend on the BOM and the required modules from Maven Central. This keeps versions aligned across the platform and avoids per-service dependency drift.
+                    </p>
+                </div>
+
+                <div class="info-card">
+                    <h3>For contributors</h3>
+                    <p>
+                        Work inside the parent multi-module project and build from the repository root. The architecture is modular, but intentionally composed as a platform rather than a set of disconnected utilities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="cta-box">
+                <div>
+                    <h2>Read the platform through its building blocks</h2>
+                    <p>
+                        Continue with GraphQL federation, messaging, modules, or the getting started documentation to see how the architecture maps to real runtime behavior and reusable modules.
+                    </p>
+                </div>
+                <a class="button" href="documentation.html">Open documentation</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — explicit architecture for production-grade microservices.
+    </div>
+</footer>
+<script src="js/header.js"></script>
+</body>
+</html>
