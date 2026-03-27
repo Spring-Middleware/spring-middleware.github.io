@@ -1,0 +1,31 @@
+/* HEADER */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  backdrop-filter: blur(14px);
+  background: rgba(8, 16, 29, 0.82);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+.site-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+
+.site-header .nav {
+  display: flex;
+  gap: 18px;
+}
+
+.site-header .nav a {
+  color: var(--muted);
+}
+
+.site-header .nav a.active,
+.site-header .nav a:hover {
+  color: var(--white);
+}

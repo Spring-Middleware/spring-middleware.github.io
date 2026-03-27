@@ -4,309 +4,263 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Spring Middleware</title>
-    <meta name="description" content="Spring Middleware is a platform layer for Spring Boot microservices, designed to standardize infrastructure while keeping architecture explicit and services autonomous." />
+    <meta
+            name="description"
+            content="Spring Middleware is a platform layer for Spring Boot microservices, designed to standardize infrastructure while keeping architecture explicit and services autonomous."
+    />
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="home">
 <div id="site-header"></div>
-<header class="hero" id="top">
-    <div class="container hero-grid">
-        <div>
+
+<main>
+    <section class="hero" id="top">
+        <div class="container">
             <div class="eyebrow">Platform layer for Spring Boot microservices</div>
             <h1>Standardize infrastructure. Keep services autonomous.</h1>
             <p class="lead">
-                Spring Middleware is not another framework on top of Spring Boot. It is a platform layer designed to standardize microservice infrastructure while keeping architecture explicit, service communication consistent, and system topology discoverable.
+                Spring Middleware is a platform layer for microservices built on Spring Boot. It standardizes communication, discovery, messaging, tracing, and infrastructure integration while keeping service boundaries explicit and business logic independent.
             </p>
+
             <div class="hero-actions">
                 <a class="btn btn-primary" href="https://github.com/Spring-Middleware" target="_blank" rel="noreferrer">Explore the project</a>
                 <a class="btn btn-secondary" href="architecture.html">View architecture</a>
                 <a class="btn btn-secondary" href="getting-started.html">Getting started</a>
             </div>
+
             <div class="chip-row">
                 <span class="chip">Java 21</span>
                 <span class="chip">Spring Boot 3.4.x</span>
-                <span class="chip">GraphQL Federation</span>
+                <span class="chip">Registry-driven architecture</span>
+                <span class="chip">GraphQL federation</span>
                 <span class="chip">Kafka & RabbitMQ</span>
-                <span class="chip">Registry-driven Architecture</span>
-                <span class="chip">Active Development</span>
+                <span class="chip">Mongo / JPA / Redis</span>
             </div>
         </div>
-        <aside class="hero-side">
-            <img src="SpringMiddleware.png" alt="Spring Middleware logo large" />
-            <h3>Built from real microservice infrastructure problems</h3>
-            <p>
-                Spring Middleware emerged from production systems where the same infrastructure patterns kept being rebuilt across services. The project turns those recurring concerns into explicit, reusable platform capabilities.
-            </p>
-            <div class="stats">
-                <div class="stat">
-                    <strong>1.3.0</strong>
-                    <span>Current BOM version</span>
-                </div>
-                <div class="stat">
-                    <strong>Platform</strong>
-                    <span>Registry, messaging, GraphQL, data modules</span>
-                </div>
-                <div class="stat">
-                    <strong>Explicit</strong>
-                    <span>No hidden magic. Discoverable topology and metadata.</span>
-                </div>
-            </div>
-        </aside>
-    </div>
-</header>
+    </section>
 
-<section class="section" id="overview">
-    <div class="container">
-        <div class="section-title">
-            <span class="label">Overview</span>
-            <h2>A foundation layer for microservice platforms</h2>
-            <p>
-                Instead of every service reimplementing service discovery, client plumbing, error handling, context propagation, messaging integration, and schema metadata, Spring Middleware provides a consistent platform layer between business logic and infrastructure.
-            </p>
-        </div>
-        <div class="grid-3">
-            <article class="card">
-                <div class="mini">Why it exists</div>
-                <h3>Reduce repeated infrastructure work</h3>
-                <p>
-                    Modern microservice systems keep needing the same capabilities. Spring Middleware standardizes those concerns so teams can focus on domain logic instead of rebuilding plumbing over and over again.
-                </p>
-            </article>
-            <article class="card">
-                <div class="mini">Design philosophy</div>
-                <h3>Explicit architecture over hidden behavior</h3>
-                <p>
-                    Communication, topology, schemas, and error propagation are meant to be visible and understandable. The goal is consistency without turning the system into opaque magic.
-                </p>
-            </article>
-            <article class="card">
-                <div class="mini">What it provides</div>
-                <h3>Platform capabilities, not generic abstractions</h3>
-                <p>
-                    Service discovery, declarative clients, GraphQL federation, context propagation, search engines, Redis utilities, RabbitMQ, Kafka, and a unified error model are first-class parts of the platform.
-                </p>
-            </article>
-        </div>
-    </div>
-</section>
+    <section>
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <div class="section-head">
+                        <h2>What it is</h2>
+                        <p>
+                            Spring Middleware is not another wrapper around Spring Boot. It is a platform layer that sits between service code and infrastructure, so repeated platform concerns do not have to be rebuilt in every application.
+                        </p>
+                    </div>
+                    <pre><code>Application business logic
+        ↓
+Spring Middleware platform layer
+        ↓
+Spring Boot / transport / infrastructure</code></pre>
+                </article>
 
-<section class="section" id="architecture">
-    <div class="container">
-        <div class="section-title">
-            <span class="label">Architecture</span>
-            <h2>Registry-driven microservice infrastructure</h2>
-            <p>
-                The Registry Service acts as the control plane of the platform. Services register REST resources, GraphQL schemas, active nodes, and metadata so the system can reason about topology, health, and runtime composition.
-            </p>
+                <article class="card">
+                    <div class="section-head">
+                        <h2>Why it exists</h2>
+                        <p>
+                            In real distributed systems, the same infrastructure problems keep returning: service discovery, client wiring, schema metadata, context propagation, error normalization, messaging setup, and runtime topology visibility. Spring Middleware turns those into explicit platform capabilities.
+                        </p>
+                    </div>
+                </article>
+            </div>
         </div>
-        <div class="grid-2">
-            <article class="card">
-                <div class="mini">Control plane</div>
-                <h3>Central topology and metadata registry</h3>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>Core platform capabilities</h2>
                 <p>
-                    The registry stores service topology, API metadata, GraphQL schemas, and node health. Services continuously reconcile state so the platform converges automatically toward the real cluster state.
+                    The platform focuses on infrastructure concerns that usually become fragmented or inconsistently implemented across services.
                 </p>
-                <div class="code-block">Application Business Logic
-                    ↓
-                    Spring Middleware
-                    ↓
-                    Spring Boot / Infrastructure</div>
-            </article>
-            <article class="card">
-                <div class="mini">Runtime model</div>
-                <h3>Autonomous services on shared infrastructure</h3>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Registry-driven topology</h3>
+                    <p>
+                        Services register nodes, REST resources, and GraphQL schemas so the runtime topology remains explicit, discoverable, and recoverable.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Declarative service communication</h3>
+                    <p>
+                        Middleware clients resolve target services through the registry and apply consistent request context propagation and remote error handling.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>GraphQL federation</h3>
+                    <p>
+                        Services publish schemas independently and the platform composes them into a unified GraphQL view through a federated gateway model.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Messaging infrastructure</h3>
+                    <p>
+                        Kafka and RabbitMQ integrations are treated as platform concerns rather than per-service boilerplate wiring.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Unified error and tracing model</h3>
+                    <p>
+                        Request identifiers, span propagation, and structured error handling remain consistent across service boundaries.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Reusable data modules</h3>
+                    <p>
+                        Mongo, JPA, Redis, cache, and shared infrastructure utilities support common persistence and coordination patterns across services.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>Architecture first</h2>
                 <p>
-                    Each service remains independent while participating in a common platform model. Communication stays explicit, topology is discoverable, and missing state can be rebuilt through self-healing registration flows.
+                    The project is built around explicit architecture, not hidden behavior. The control plane remains visible, runtime state is discoverable, and services stay autonomous even while sharing common platform infrastructure.
                 </p>
-                <div class="path-list">
-                    <div class="path-item">• REST resources are registered automatically</div>
-                    <div class="path-item">• GraphQL schemas are published as platform metadata</div>
-                    <div class="path-item">• Node instances report health and topology</div>
-                    <div class="path-item">• Services communicate through middleware clients</div>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Control plane</h3>
+                    <p>
+                        The Registry Service maintains topology, schema metadata, registered REST resources, and node state. Services continuously reconcile with it so platform metadata converges back to the real cluster state.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Data plane</h3>
+                    <p>
+                        Application services expose APIs, call each other through declarative clients, publish schemas, consume messaging infrastructure, and remain focused on domain behavior rather than repeated infrastructure plumbing.
+                    </p>
+                </article>
+            </div>
+
+            <div class="hero-actions" style="margin-top: 24px;">
+                <a class="btn btn-secondary" href="architecture.html">Read the architecture guide</a>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>Modular adoption</h2>
+                <p>
+                    Spring Middleware is published as a modular ecosystem. Services can adopt the pieces they need while keeping versions aligned through the BOM.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Platform modules</h3>
+                    <p>
+                        Core platform pieces include the shared application layer, registry support, communication model, and GraphQL infrastructure.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Data modules</h3>
+                    <p>
+                        Redis, Mongo, JPA, and cache modules provide reusable integration patterns instead of ad hoc per-service implementations.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Messaging modules</h3>
+                    <p>
+                        RabbitMQ and Kafka modules support event-driven communication through reusable publishers, subscribers, and platform conventions.
+                    </p>
+                </article>
+            </div>
+
+            <pre style="margin-top: 24px;"><code>&lt;dependencyManagement&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;io.github.spring-middleware&lt;/groupId&gt;
+      &lt;artifactId&gt;bom&lt;/artifactId&gt;
+      &lt;version&gt;1.3.0&lt;/version&gt;
+      &lt;type&gt;pom&lt;/type&gt;
+      &lt;scope&gt;import&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+&lt;/dependencyManagement&gt;</code></pre>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <div class="section-head">
+                        <h2>Start here</h2>
+                        <p>
+                            The fastest way to understand the project is to begin with the architectural model and then move to service bootstrapping.
+                        </p>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-secondary" href="architecture.html">Architecture</a>
+                        <a class="btn btn-secondary" href="getting-started.html">Getting Started</a>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="section-head">
+                        <h2>About the author</h2>
+                        <p>
+                            Spring Middleware is designed and developed by <strong>Fernando Guardiola Ruiz</strong>, a senior backend architect focused on distributed systems, microservice platforms, and production-grade infrastructure design.
+                        </p>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a class="btn btn-secondary" href="mailto:fernandoguardiolaruiz@gmail.com">Contact</a>
+                        <a class="btn btn-secondary" href="https://github.com/Spring-Middleware" target="_blank" rel="noreferrer">GitHub</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <article class="card">
+                <div class="section-head">
+                    <h2>Build Spring microservices with a real platform layer</h2>
+                    <p>
+                        Explore the repository, import the BOM, and use the documentation to understand how Spring Middleware standardizes infrastructure without turning the system into hidden magic.
+                    </p>
                 </div>
-            </article>
-        </div>
-    </div>
-</section>
 
-<section class="section" id="features">
-    <div class="container">
-        <div class="section-title">
-            <span class="label">Capabilities</span>
-            <h2>Designed for consistency, resilience, and discoverability</h2>
-            <p>
-                Spring Middleware focuses on platform concerns that usually become fragmented across teams. The result is a system where infrastructure patterns are standardized without hiding the underlying architecture.
-            </p>
-        </div>
-        <div class="feature-list">
-            <div class="feature-item">
-                <h4>Declarative HTTP clients</h4>
-                <p>Services declare communication contracts while the platform handles discovery, node selection, retries, context propagation, and remote error handling.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Distributed GraphQL federation</h4>
-                <p>Services publish schemas independently and the platform composes them into a unified GraphQL API through a federated gateway model.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Unified error propagation</h4>
-                <p>Errors follow a consistent format across services, preserving transport details and making debugging and observability much clearer.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Request context propagation</h4>
-                <p>X-Request-ID and X-Span-ID travel across calls so distributed operations remain traceable without forcing heavy observability stacks.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Messaging as platform infrastructure</h4>
-                <p>RabbitMQ and Kafka integrations are built around declarative and reusable platform concepts instead of one-off per-service wiring.</p>
-            </div>
-            <div class="feature-item">
-                <h4>Distributed data utilities</h4>
-                <p>Mongo, JPA, and Redis modules provide reusable search engines, shared maps, distributed locks, and consistency patterns across services.</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section class="section" id="modules">
-    <div class="container">
-        <div class="section-title">
-            <span class="label">Modules</span>
-            <h2>A focused modular ecosystem</h2>
-            <p>
-                Spring Middleware is split into modules so teams can adopt what they need while keeping version consistency through the BOM published in Maven Central.
-            </p>
-        </div>
-        <div class="grid-3">
-            <article class="card">
-                <div class="mini">Communication</div>
-                <h3>API, app, registry, GraphQL</h3>
-                <p>
-                    Core platform modules cover declarative clients, registry-driven architecture, GraphQL federation, gateway infrastructure, and the shared application layer.
-                </p>
-            </article>
-            <article class="card">
-                <div class="mini">Data</div>
-                <h3>Mongo, JPA, Redis, cache</h3>
-                <p>
-                    Dynamic search engines and shared infrastructure utilities help standardize persistence patterns across relational and non-relational services.
-                </p>
-            </article>
-            <article class="card">
-                <div class="mini">Messaging</div>
-                <h3>RabbitMQ and Kafka</h3>
-                <p>
-                    Event-driven communication becomes part of the platform through reusable publishers, subscribers, topic support, and integration patterns.
-                </p>
-            </article>
-        </div>
-        <div class="code-block">&lt;dependencyManagement&gt;
-            &lt;dependencies&gt;
-            &lt;dependency&gt;
-            &lt;groupId&gt;io.github.spring-middleware&lt;/groupId&gt;
-            &lt;artifactId&gt;bom&lt;/artifactId&gt;
-            &lt;version&gt;1.3.0&lt;/version&gt;
-            &lt;type&gt;pom&lt;/type&gt;
-            &lt;scope&gt;import&lt;/scope&gt;
-            &lt;/dependency&gt;
-            &lt;/dependencies&gt;
-            &lt;/dependencyManagement&gt;</div>
-    </div>
-</section>
-
-<section class="section" id="docs">
-    <div class="container">
-        <div class="section-title">
-            <span class="label">Documentation</span>
-            <h2>Start with the high-level guides, then drill down</h2>
-            <p>
-                The documentation is organized so you can begin with platform concepts and continue into more specific module guides for GraphQL, Kafka, RabbitMQ, security, communication, and data integrations.
-            </p>
-        </div>
-        <div class="grid-2">
-            <article class="card">
-                <div class="mini">Recommended path</div>
-                <h3>What to read first</h3>
-                <div class="path-list">
-                    <div class="path-item">Architecture overview</div>
-                    <div class="path-item">Registry and schema metadata</div>
-                    <div class="path-item">Service communication and @MiddlewareClient</div>
-                    <div class="path-item">GraphQL support and gateway</div>
-                    <div class="path-item">Security and client-side security modes</div>
-                </div>
-            </article>
-            <article class="card">
-                <div class="mini">Module guides</div>
-                <h3>Deep dives by area</h3>
-                <div class="path-list">
-                    <div class="path-item">Redis, Mongo, and JPA modules</div>
-                    <div class="path-item">RabbitMQ integration and best practices</div>
-                    <div class="path-item">Kafka integration and configuration</div>
-                    <div class="path-item">Request / response logging</div>
-                    <div class="path-item">Module READMEs under parent/*/README.md</div>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="https://github.com/Spring-Middleware" target="_blank" rel="noreferrer">Open GitHub</a>
+                    <a class="btn btn-secondary" href="https://central.sonatype.com/artifact/io.github.spring-middleware/bom" target="_blank" rel="noreferrer">View BOM</a>
                 </div>
             </article>
         </div>
-    </div>
-</section>
+    </section>
+</main>
 
-<section class="container">
-    <div class="cta">
-        <h2>Build Spring microservices with a real platform layer.</h2>
-        <p>
-            Explore the codebase, import the BOM, and follow the documentation to understand how Spring Middleware standardizes infrastructure while preserving explicit architecture and service autonomy.
-        </p>
-        <div class="hero-actions" style="justify-content:center; margin-top: 26px;">
-            <a class="btn btn-primary" href="https://github.com/Spring-Middleware" target="_blank" rel="noreferrer">Open GitHub</a>
-            <a class="btn btn-secondary" href="https://central.sonatype.com/artifact/io.github.spring-middleware/bom" target="_blank" rel="noreferrer">View BOM</a>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <div class="container">
-        <div class="card">
-            <h2>About the author</h2>
-            <p>
-                Spring Middleware is designed and developed by <strong>Fernando Guardiola Ruiz</strong>,
-                a senior backend architect with extensive experience building distributed systems,
-                microservice platforms, and high-throughput architectures in production environments.
-            </p>
-            <p>
-                The platform reflects real-world challenges across service communication,
-                infrastructure standardization, and system topology management.
-            </p>
-            <div class="hero-actions" style="margin-top:16px;">
-                <a class="btn btn-secondary" href="mailto:fernandoguardiolaruiz@gmail.com">Contact</a>
-                <a class="btn btn-secondary" href="https://github.com/Spring-Middleware" target="_blank">GitHub</a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<footer class="footer">
-    <div class="container footer-inner">
-
-        <div class="footer-brand">
-            <strong>Spring Middleware</strong>
-            <span>Platform layer for explicit microservice architecture</span>
-        </div>
-
-        <div class="footer-links">
-            <a href="https://github.com/Spring-Middleware" target="_blank" rel="noreferrer">GitHub</a>
-            <a href="https://central.sonatype.com/artifact/io.github.spring-middleware/bom" target="_blank" rel="noreferrer">Maven Central</a>
-            <a href="getting-started.html">Getting Started</a>
-            <a href="architecture.html">Architecture</a>
-        </div>
-
-    </div>
-
-    <div class="container footer-bottom">
-    <span>
-      © Spring Middleware · Created by <strong>Fernando Guardiola Ruiz</strong>
-    </span>
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — explicit architecture for production-grade microservices.<br><br>
+        Created and maintained by <strong>Fernando Guardiola Ruiz</strong> ·
         <a href="mailto:fernandoguardiolaruiz@gmail.com">Contact</a>
     </div>
 </footer>
+
 <script src="js/header.js"></script>
 </body>
 </html>
