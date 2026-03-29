@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kafka | Spring Middleware</title>
+    <meta
+            name="description"
+            content="Kafka integration in Spring Middleware: publishers, subscribers, EventEnvelope, topic configuration, retries, dead-letter behavior, and platform-aligned runtime conventions."
+    />
+    <link rel="canonical" href="https://spring-middleware.com/kafka.html" />
+    <meta property="og:title" content="Spring Middleware — Kafka" />
+    <meta property="og:description" content="Kafka publishers, subscribers, topic configuration, retries, and dead-letter behavior in Spring Middleware." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/kafka.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — Kafka" />
+    <meta name="twitter:description" content="Kafka publishers, subscribers, topic configuration, retries, and dead-letter behavior in Spring Middleware." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="kafka">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Kafka</div>
+
+            <h1>Kafka publishing and subscription as a platform capability.</h1>
+
+            <p class="lead">
+                Spring Middleware provides an opinionated Kafka integration for publishers and subscribers.
+                It standardizes topic configuration, publisher registration, event envelopes, retry behavior,
+                and dead-letter routing while keeping the runtime model explicit.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#runtime-model">Explore the runtime model</a>
+                <a class="button button-secondary" href="messaging.html">Back to messaging</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Named publishers</span>
+                <span class="chip">Subscriber registration</span>
+                <span class="chip">EventEnvelope&lt;T&gt;</span>
+                <span class="chip">Retry + DLT</span>
+                <span class="chip">Topic creation</span>
+                <span class="chip">Configuration-driven wiring</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the Kafka module does</h2>
+                    <p>
+                        The Kafka module is built around configuration-backed publishers and subscribers.
+                        Publishers are registered by id, subscribers are wired from configuration,
+                        and events are sent through a consistent envelope model instead of ad hoc payload handling.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Register named publishers from configuration</li>
+                        <li>Wire subscriber endpoints from topic, group, and concurrency settings</li>
+                        <li>Wrap payloads in a standard event envelope</li>
+                        <li>Apply retry and dead-letter behavior through module settings</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">What it is not</h2>
+                    <p>
+                        This integration is not intended as a hidden abstraction that makes Kafka disappear.
+                        Topics, publisher ids, consumer groups, retry limits, and dead-letter behavior remain explicit,
+                        because those are operational concerns that should stay visible in the platform.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Explicit topics:</strong> topic names and partitions are declared intentionally.</li>
+                        <li><strong>Explicit publishers:</strong> applications publish through named publisher ids.</li>
+                        <li><strong>Explicit failures:</strong> retry and dead-letter behavior are configuration-driven.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level Kafka flow</h2>
+                <p>
+                    Kafka publishers and subscribers are configured as part of the platform model.
+                    The publisher wraps payloads in an event envelope, Kafka carries the record,
+                    and subscribers consume it with module-level error handling.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 320" xmlns="http://www.w3.org/2000/svg" aria-label="Kafka runtime flow">
+
+                        <!-- Producer -->
+                        <rect x="90" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="180" y="62" text-anchor="middle" fill="white" font-size="15">Producer Service</text>
+
+                        <!-- Publisher -->
+                        <rect x="340" y="30" width="240" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="55" text-anchor="middle" fill="white" font-size="15">Named Kafka Publisher</text>
+                        <text x="460" y="72" text-anchor="middle" fill="#9fb0c9" font-size="12">EventEnvelope + topic resolution</text>
+
+                        <!-- Consumer -->
+                        <rect x="650" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="740" y="62" text-anchor="middle" fill="white" font-size="15">Subscriber Service</text>
+
+                        <!-- Lines -->
+                        <line x1="270" y1="57" x2="340" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="580" y1="57" x2="650" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <!-- Kafka box -->
+                        <rect x="250" y="170" width="420" height="92" rx="22"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.26)"/>
+                        <text x="460" y="199" text-anchor="middle" fill="white" font-size="16">Kafka runtime</text>
+                        <text x="460" y="223" text-anchor="middle" fill="#9fb0c9" font-size="13">topics • partitions • consumer groups</text>
+                        <text x="460" y="245" text-anchor="middle" fill="#9fb0c9" font-size="13">retry • backoff • dead-letter routing</text>
+
+                        <!-- Downward links -->
+                        <line x1="460" y1="84" x2="460" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                        <line x1="740" y1="84" x2="600" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="configuration">
+        <div class="container">
+            <div class="section-head">
+                <h2>Configuration model</h2>
+                <p>
+                    The Kafka module is configured under <code>middleware.kafka</code>.
+                    Topics, publishers, subscribers, logging, and error handling are declared through application configuration.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Recommended application.yml</h3>
+                    <pre class="code-block"><code>middleware:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    create-missing-topics: true
+    logging:
+      enabled: false
+      log-payload: false
+      log-headers: false
+    topics:
+      catalog-events:
+        partitions: 5
+        replication-factor: 3
+    publishers:
+      catalog:
+        topic: ${KAFKA_TOPIC_CATALOG:catalog-events}
+    subscribers:
+      catalog:
+        topic: ${KAFKA_TOPIC_CATALOG:catalog-events}
+        group-id: ${KAFKA_GROUP_ID_CATALOG:catalog-service-group}
+        concurrency: 3</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Important ideas</h3>
+                    <ul class="list-clean">
+                        <li><code>bootstrap-servers</code> points to the broker list</li>
+                        <li><code>create-missing-topics</code> enables topic creation from declared topic metadata</li>
+                        <li><code>publishers.&lt;id&gt;</code> defines named publishers used at runtime</li>
+                        <li><code>subscribers.&lt;id&gt;</code> defines topic, group id, and concurrency for consumers</li>
+                        <li><code>logging</code> controls middleware-level Kafka logging behavior</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="publishers-subscribers">
+        <div class="container">
+            <div class="section-head">
+                <h2>Publishers and subscribers</h2>
+                <p>
+                    Kafka publishers are looked up by id from the registry,
+                    while subscribers are registered through the module's listener registrar.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Publishing model</h3>
+                    <p>
+                        A publisher is registered under a configured id and sends an <code>EventEnvelope&lt;T&gt;</code>
+                        to the configured topic. Applications publish by retrieving the publisher by id and calling
+                        <code>publish(...)</code> or <code>publishWithKey(...)</code>.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Publishers are registered in <code>KafkaPublisherRegistry</code></li>
+                        <li><code>DefaultKafkaPublisher</code> is the standard implementation</li>
+                        <li>Publishing returns a <code>CompletableFuture&lt;PublishResult&gt;</code></li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Subscriber model</h3>
+                    <p>
+                        Subscriber entries under <code>middleware.kafka.subscribers</code> are used by the listener registrar
+                        to wire consumer endpoints with topic, group id, and concurrency settings.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Subscriber ids are configuration-backed</li>
+                        <li>Listener wiring uses <code>@MiddlewareKafkaListener</code></li>
+                        <li>Consumers receive typed <code>EventEnvelope&lt;T&gt;</code> data</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="event-envelope">
+        <div class="container">
+            <div class="section-head">
+                <h2>Event envelope</h2>
+                <p>
+                    Published records are wrapped in a standard envelope so event metadata stays consistent across services.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Envelope fields</h3>
+                    <ul class="list-clean">
+                        <li><code>eventId</code> — unique event identifier</li>
+                        <li><code>eventType</code> — explicit type string or class-derived type</li>
+                        <li><code>timestamp</code> — event timestamp</li>
+                        <li><code>traceId</code> — correlation value from MDC or generated</li>
+                        <li><code>payload</code> — original event payload</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Optional event type</h3>
+                    <pre class="code-block"><code>@EventType("order.created.v1")
+public class OrderCreatedEvent {
+    private String orderId;
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-usage">
+        <div class="container">
+            <div class="section-head">
+                <h2>Runtime usage</h2>
+                <p>
+                    Application code publishes through named publishers and consumes through middleware-managed listener registration.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Publishing through the registry</h3>
+                    <pre class="code-block"><code>KafkaPublisher&lt;CatalogEvent, String&gt; publisher =
+    publisherRegistry.getPublisher("catalog");
+
+publisher.publishWithKey(event, event.getCatalogId());</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Subscriber method</h3>
+                    <pre class="code-block"><code>@MiddlewareKafkaListener("catalog")
+public void onCatalogEvent(EventEnvelope&lt;CatalogEvent&gt; envelope) {
+    CatalogEvent payload = envelope.getPayload();
+    // handle payload
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="error-handling">
+        <div class="container">
+            <div class="section-head">
+                <h2>Error handling, retry, and dead-letter behavior</h2>
+                <p>
+                    Kafka consumer failure behavior is controlled through module configuration.
+                    Retry count, backoff, and dead-letter routing are explicit parts of the runtime model.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Receive record</h3>
+                    <p>The subscriber receives an event from the configured topic and group.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Retry on failure</h3>
+                    <p>Failures can be retried according to configured retry count and backoff.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Route to dead-letter topic</h3>
+                    <p>If retries are exhausted and dead-letter is enabled, the record is routed to the DLT topic.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Error handling configuration</h3>
+                    <pre class="code-block"><code>middleware:
+  kafka:
+    error-handling:
+      enabled: ${KAFKA_ERROR_HANDLING_ENABLED:true}
+      max-retries: ${KAFKA_ERROR_HANDLING_MAX_RETRIES:3}
+      retry-backoff-ms: ${KAFKA_ERROR_HANDLING_RETRY_BACKOFF_MS:1000}
+      dead-letter:
+        enabled: ${KAFKA_ERROR_HANDLING_DEAD_LETTER_ENABLED:true}
+        suffix: .DLT</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Operational meaning</h3>
+                    <ul class="list-clean">
+                        <li><code>max-retries</code> defines how many attempts are made before failure is considered final</li>
+                        <li><code>retry-backoff-ms</code> controls delay between retry attempts</li>
+                        <li><code>dead-letter.enabled</code> enables DLT routing after retries are exhausted</li>
+                        <li><code>dead-letter.suffix</code> defines the topic suffix, such as <code>.DLT</code></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    The Kafka module is most effective when topic naming, publisher ids, and failure behavior are treated as part of the platform contract.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep topic definitions explicit</h3>
+                    <p>
+                        Declare partitions and replication factor in configuration instead of leaving topic shape implicit across environments.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Use stable publisher ids</h3>
+                    <p>
+                        Publisher ids such as <code>catalog</code> or <code>order-created</code> become part of the operational model and should stay predictable.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Be deliberate with logging</h3>
+                    <p>
+                        Payload logging is useful in development, but in production it should be controlled carefully due to size and sensitivity.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-pages">
+        <div class="container">
+            <div class="section-head">
+                <h2>Continue with related pages</h2>
+                <p>
+                    Kafka is one part of the platform messaging model. The broader runtime model and the RabbitMQ integration are covered separately.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="messaging.html">
+                    <h3 style="margin-top: 0;">Messaging overview</h3>
+                    <p>Platform-wide messaging capability and how Kafka and RabbitMQ fit together.</p>
+                </a>
+
+                <a class="card" href="rabbitmq.html">
+                    <h3 style="margin-top: 0;">RabbitMQ</h3>
+                    <p>JMS-like resources, handlers, listeners, acknowledgement, and lifecycle control.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — Kafka integration as an explicit platform capability.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>

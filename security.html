@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Security | Spring Middleware</title>
+    <meta name="description" content="HTTP security configuration in Spring Middleware: API keys, JWT, OIDC and authorization model." />
+    <link rel="canonical" href="https://spring-middleware.com/security.html" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="security">
+<div id="site-header"></div>
+
+<main>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Security</div>
+            <h1>Pluggable HTTP security with a unified authorization model</h1>
+            <p class="lead">
+                Spring Middleware builds on Spring Security and provides a simple, explicit configuration model
+                for authentication and authorization across services.
+            </p>
+
+            <div class="chip-row">
+                <span class="chip">API Key</span>
+                <span class="chip">JWT</span>
+                <span class="chip">OIDC</span>
+                <span class="chip">Basic Auth</span>
+                <span class="chip">Public / Protected paths</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- OVERVIEW -->
+    <section>
+        <div class="container">
+            <div class="grid-2">
+
+                <article class="card">
+                    <h3>What this layer provides</h3>
+                    <ul class="list-clean">
+                        <li>Pluggable authentication modes</li>
+                        <li>Unified authorization model</li>
+                        <li>Stateless HTTP security</li>
+                        <li>Consistent API key error responses</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Configuration entry point</h3>
+                    <pre class="code-block"><code>middleware:
+  security:
+    type: API_KEY
+    public-paths: []
+    protected-paths: []</code></pre>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SECURITY TYPES -->
+    <section>
+        <div class="container">
+
+            <div class="section-head">
+                <h2>Security modes</h2>
+                <p>Authentication is selected through <code>middleware.security.type</code>.</p>
+            </div>
+
+            <div class="grid-3">
+
+                <article class="card">
+                    <h3>NONE</h3>
+                    <ul class="list-clean">
+                        <li>No authentication</li>
+                        <li>All requests permitted</li>
+                        <li>Useful for local/dev</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>BASIC_AUTH</h3>
+                    <ul class="list-clean">
+                        <li>HTTP Basic authentication</li>
+                        <li>In-memory or custom users</li>
+                        <li>Uses protected path rules</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>JWT</h3>
+                    <ul class="list-clean">
+                        <li>Resource server mode</li>
+                        <li>Token validation via secret</li>
+                        <li>Roles from claims</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>OIDC</h3>
+                    <ul class="list-clean">
+                        <li>External identity provider</li>
+                        <li>JWK validation</li>
+                        <li>Roles via claim mapping</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>API_KEY</h3>
+                    <ul class="list-clean">
+                        <li>Header-based authentication</li>
+                        <li>Configurable keys and roles</li>
+                        <li>Unified error model</li>
+                    </ul>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- AUTH MODEL -->
+    <section>
+        <div class="container">
+
+            <div class="section-head">
+                <h2>Authorization model</h2>
+                <p>All security modes share the same path-based authorization rules.</p>
+            </div>
+
+            <div class="grid-2">
+
+                <article class="card">
+                    <h3>Public paths</h3>
+                    <ul class="list-clean">
+                        <li>Always accessible</li>
+                        <li>No authentication required</li>
+                        <li>Used for health, docs, public APIs</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Protected paths</h3>
+                    <ul class="list-clean">
+                        <li>Require authentication</li>
+                        <li>Optional role checks</li>
+                        <li>Ant-style path matching</li>
+                    </ul>
+                </article>
+
+            </div>
+
+            <div class="card" style="margin-top:18px;">
+                <pre class="code-block"><code>protected-paths:
+  - type: ROLES
+    path: /api/**
+    methods: [ GET ]
+    allowed-roles: [ ADMIN ]</code></pre>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- API KEY FLOW -->
+    <section>
+        <div class="container">
+
+            <div class="section-head">
+                <h2>API key flow</h2>
+                <p>Request processing for API key authentication.</p>
+            </div>
+
+            <div class="card">
+
+                <div class="stack-diagram stack-diagram-compact">
+                    <div class="stack-node">Incoming request</div>
+                    <div class="stack-connector"></div>
+                    <div class="stack-node">Resolve protected path</div>
+                    <div class="stack-connector"></div>
+                    <div class="stack-node">Extract API key header</div>
+                    <div class="stack-connector"></div>
+                    <div class="stack-node">Validate key</div>
+                    <div class="stack-connector"></div>
+                    <div class="stack-node stack-node-highlight">Authentication + roles</div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONFIG EXAMPLES -->
+    <section>
+        <div class="container">
+
+            <div class="section-head">
+                <h2>Configuration example</h2>
+                <p>Typical API key setup.</p>
+            </div>
+
+            <div class="card">
+                <pre class="code-block"><code>middleware:
+  security:
+    type: API_KEY
+    public-paths:
+      - /swagger-ui/**
+    protected-paths:
+      - type: ROLES
+        path: /api/**
+        allowed-roles: [ ADMIN ]
+    api-key:
+      credentials:
+        - key: ${API_KEY}
+          roles: [ ADMIN ]</code></pre>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — HTTP security and authorization model.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>

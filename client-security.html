@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Client Security | Spring Middleware</title>
+    <meta
+            name="description"
+            content="Security for declarative @MiddlewareClient proxies in Spring Middleware: passthrough, API key, OAuth2 client credentials, runtime flow, and token management."
+    />
+    <link rel="canonical" href="https://spring-middleware.com/client-security.html" />
+    <meta property="og:title" content="Spring Middleware — Client Security" />
+    <meta property="og:description" content="Security modes for declarative middleware clients: passthrough, API key, and OAuth2 client credentials." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/client-security.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — Client Security" />
+    <meta name="twitter:description" content="Security modes for declarative middleware clients: passthrough, API key, and OAuth2 client credentials." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="client-security">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Client Security</div>
+
+            <h1>Security for declarative clients without hiding outbound behavior.</h1>
+
+            <p class="lead">
+                Spring Middleware lets <code>@MiddlewareClient</code> proxies authenticate to downstream services
+                through explicit security modes such as passthrough, API key, and OAuth2 client credentials.
+                The goal is to keep client security consistent while preserving visibility into what is attached to outbound requests.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#security-modes">Explore security modes</a>
+                <a class="button button-secondary" href="communication.html">See communication</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">NONE</span>
+                <span class="chip">PASSTHROUGH</span>
+                <span class="chip">API_KEY</span>
+                <span class="chip">OAUTH2_CLIENT_CREDENTIALS</span>
+                <span class="chip">Per-method overrides</span>
+                <span class="chip">Token caching</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="overview">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What this covers</h2>
+                    <p>
+                        Declarative middleware clients support several outbound security modes so proxy calls can
+                        authenticate consistently to downstream services. Configuration can be defined at client level
+                        and refined at method level through annotations.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>No security for trusted or local scenarios</li>
+                        <li>Header passthrough from incoming to outgoing request</li>
+                        <li>Static or per-method API key attachment</li>
+                        <li>OAuth2 client credentials with token acquisition and caching</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">What this is not</h2>
+                    <p>
+                        Client security is not the same as service HTTP security. This page describes how a service
+                        authenticates when it calls another service through <code>@MiddlewareClient</code>.
+                        Inbound authentication and authorization are covered separately in the service security guide.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Outbound concern:</strong> how a proxy call is secured.</li>
+                        <li><strong>Configuration-driven:</strong> behavior comes from both config and annotations.</li>
+                        <li><strong>Explicit runtime model:</strong> headers and bearer tokens are applied intentionally.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="security-modes">
+        <div class="container">
+            <div class="section-head">
+                <h2>Security modes</h2>
+                <p>
+                    Declarative clients map to a small set of outbound security strategies.
+                </p>
+            </div>
+
+            <div class="grid-4">
+                <article class="card">
+                    <h3>NONE</h3>
+                    <p>No security is applied to the outbound request.</p>
+                </article>
+
+                <article class="card">
+                    <h3>PASSTHROUGH</h3>
+                    <p>A header from the incoming request is copied to the downstream call.</p>
+                </article>
+
+                <article class="card">
+                    <h3>API_KEY</h3>
+                    <p>An API key header is attached from class-level or per-method configuration.</p>
+                </article>
+
+                <article class="card">
+                    <h3>OAUTH2_CLIENT_CREDENTIALS</h3>
+                    <p>An access token is obtained through client credentials and attached as a bearer token.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="configuration">
+        <div class="container">
+            <div class="section-head">
+                <h2>Configuration model</h2>
+                <p>
+                    Client-wide configuration typically lives under the <code>client</code> prefix.
+                    The effective behavior is a combination of configuration and proxy annotations.
+                </p>
+            </div>
+
+            <article class="card">
+                <h3>Typical YAML</h3>
+                <pre class="code-block"><code>client:
+  registry-endpoint: ${REGISTRY_ENDPOINT:http://localhost:8080/registry}
+  product:
+    security:
+      type: OAUTH2_CLIENT_CREDENTIALS
+      api-key: ${API_KEY_PRODUCT_SERVICE:default-product-api-key}
+      listProducts:
+        api-key: ${API_KEY_PRODUCT_SERVICE:default-product-list-api-key}
+      oauth2:
+        client-id: ${OAUTH2_CLIENT_ID_PRODUCT_SERVICE:product-service}
+        client-secret: ${OAUTH2_CLIENT_SECRET_PRODUCT_SERVICE}
+        token-uri: ${OAUTH2_TOKEN_URI_PRODUCT_SERVICE:http://keycloak:8080/realms/spring-middleware/protocol/openid-connect/token}</code></pre>
+            </article>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Client-level baseline</h3>
+                    <p>
+                        Configuration defines the default security mode and base credentials for the proxy.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Method-level overrides</h3>
+                    <p>
+                        Methods can override class-level API key values or add required OAuth2 scopes when needed.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Final outbound behavior</h3>
+                    <p>
+                        The runtime analyzer combines configuration and annotations to select the effective security strategy.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="annotations">
+        <div class="container">
+            <div class="section-head">
+                <h2>Annotations and per-method behavior</h2>
+                <p>
+                    The proxy metadata model uses annotations to declare how security should be applied to a client and its methods.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Class-level annotations</h3>
+                    <ul class="list-clean">
+                        <li><code>@MiddlewareContract</code> or <code>@MiddlewareClient</code> defines the security type placeholder</li>
+                        <li><code>@MiddlewarePassthrough</code> declares passthrough header behavior</li>
+                        <li><code>@MiddlewareApiKey</code> defines API key header name and value placeholder</li>
+                        <li><code>@MiddlewareClientCredentials</code> defines token endpoint, client id, and secret</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Method-level annotations</h3>
+                    <ul class="list-clean">
+                        <li><code>@MiddlewareApiKeyValue</code> overrides class-level API key value</li>
+                        <li><code>@MiddlewareRequiredScopes</code> declares required OAuth2 scopes for the method</li>
+                        <li>Method metadata is resolved separately from the client baseline</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-flow">
+        <div class="container">
+            <div class="section-head">
+                <h2>Runtime flow</h2>
+                <p>
+                    Outbound security is resolved in a small but explicit runtime sequence.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Analyze proxy security</h3>
+                    <p><code>ProxySecurityAnalyzer</code> inspects annotations and resolved placeholders to build a client security configuration.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Resolve method security</h3>
+                    <p>Method metadata contributes scopes, per-method API keys, or a void configuration when nothing extra is needed.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Select security applier</h3>
+                    <p><code>SecurityManagerApplier</code> delegates to the correct <code>SecurityApplier</code> based on the selected client type.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">04</div>
+                    <h3>Modify the outbound request</h3>
+                    <p>The selected applier attaches headers, API key values, or bearer tokens to the outbound WebClient call.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="flow-diagram">
+        <div class="container">
+            <div class="section-head">
+                <h2>Outbound security path</h2>
+                <p>
+                    The proxy runtime first resolves security metadata, then applies the selected strategy to the request.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 320" xmlns="http://www.w3.org/2000/svg" aria-label="Middleware client security flow">
+
+                        <rect x="90" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="180" y="62" text-anchor="middle" fill="white" font-size="15">Proxy Interface</text>
+
+                        <rect x="340" y="30" width="240" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="55" text-anchor="middle" fill="white" font-size="15">ProxySecurityAnalyzer</text>
+                        <text x="460" y="72" text-anchor="middle" fill="#9fb0c9" font-size="12">client + method metadata</text>
+
+                        <rect x="650" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="740" y="62" text-anchor="middle" fill="white" font-size="15">WebClient Request</text>
+
+                        <line x1="270" y1="57" x2="340" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="580" y1="57" x2="650" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <rect x="240" y="170" width="440" height="96" rx="22"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="460" y="197" text-anchor="middle" fill="white" font-size="16">Security appliers</text>
+                        <text x="460" y="220" text-anchor="middle" fill="#9fb0c9" font-size="13">none • passthrough • api key • client credentials</text>
+                        <text x="460" y="242" text-anchor="middle" fill="#9fb0c9" font-size="13">header copy • API key header • bearer token attachment</text>
+
+                        <line x1="460" y1="84" x2="460" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                        <line x1="740" y1="84" x2="620" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="passthrough">
+        <div class="container">
+            <div class="section-head">
+                <h2>Passthrough mode</h2>
+                <p>
+                    Passthrough forwards a header from the incoming request to the outbound request.
+                    This is useful when the downstream service should receive the caller's authentication token.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Configuration</h3>
+                    <pre class="code-block"><code>client:
+  product:
+    security:
+      type: PASSTHROUGH</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Proxy example</h3>
+                    <pre class="code-block"><code>@MiddlewareContract(security = "PASSTHROUGH")
+@MiddlewarePassthrough(headerName = "Authorization", required = "true")
+public interface ProductClient {
+
+    @GetMapping("/api/v1/products")
+    List&lt;ProductDto&gt; listProducts();
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="api-key">
+        <div class="container">
+            <div class="section-head">
+                <h2>API key mode</h2>
+                <p>
+                    API key mode attaches a configured header to the outbound request.
+                    The value can come from a class-level annotation or a method-level override.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Class + method example</h3>
+                    <pre class="code-block"><code>@MiddlewareContract(security = "API_KEY")
+@MiddlewareApiKey(headerName = "X-API-KEY", value = "${client.product.api-key:}")
+public interface ProductClient {
+
+    @GetMapping("/api/v1/products")
+    @MiddlewareApiKeyValue("${client.product.list-api-key:}")
+    List&lt;ProductDto&gt; listProducts();
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Behavior</h3>
+                    <ul class="list-clean">
+                        <li>Class-level API key config defines the default header and value</li>
+                        <li>Method-level value overrides the class default when present</li>
+                        <li><code>SecurityApiKeyApplier</code> adds the resolved header to the request</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="client-credentials">
+        <div class="container">
+            <div class="section-head">
+                <h2>OAuth2 client credentials</h2>
+                <p>
+                    Client credentials mode acquires an access token and sends it as a bearer token in the outbound request.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Configuration example</h3>
+                    <pre class="code-block"><code>client:
+  product:
+    security:
+      type: OAUTH2_CLIENT_CREDENTIALS
+      oauth2:
+        client-id: ${OAUTH2_CLIENT_ID_PRODUCT_SERVICE:product-service}
+        client-secret: ${OAUTH2_CLIENT_SECRET_PRODUCT_SERVICE}
+        token-uri: ${OAUTH2_TOKEN_URI_PRODUCT_SERVICE:http://keycloak:8080/realms/spring-middleware/protocol/openid-connect/token}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Proxy example</h3>
+                    <pre class="code-block"><code>@MiddlewareContract(security = "OAUTH2_CLIENT_CREDENTIALS")
+@MiddlewareClientCredentials(
+  tokenUri = "${client.product.security.oauth2.token-uri}",
+  clientId = "${client.product.security.oauth2.client-id}",
+  clientSecret = "${client.product.security.oauth2.client-secret}"
+)
+public interface ProductClient {
+
+    @GetMapping("/api/v1/products")
+    @MiddlewareRequiredScopes({"products.read"})
+    List&lt;ProductDto&gt; listProducts();
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="token-management">
+        <div class="container">
+            <div class="section-head">
+                <h2>Token management</h2>
+                <p>
+                    The built-in OAuth2 client is responsible for token acquisition and caching.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>What it does</h3>
+                    <ul class="list-clean">
+                        <li>Builds a cache key from token URI, client id, and scopes</li>
+                        <li>Requests a token using client credentials via form-encoded POST</li>
+                        <li>Caches the access token until expiry</li>
+                        <li>Throws a dedicated exception on token acquisition failure</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Operational value</h3>
+                    <p>
+                        This keeps outbound authentication efficient and predictable.
+                        Services do not need to hand-roll token lifecycle code for each proxy client.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    Declarative client security is most effective when secrets remain externalized and method-level overrides are used deliberately.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep secrets out of source</h3>
+                    <p>Use environment variables or a secrets manager for client secrets and API keys.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Use per-method overrides intentionally</h3>
+                    <p>Override class-level defaults only when different endpoints really need distinct API keys or scopes.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Fail fast on passthrough</h3>
+                    <p>When passthrough headers are required, validate them early so missing caller context does not create ambiguous downstream failures.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-pages">
+        <div class="container">
+            <div class="section-head">
+                <h2>Continue with related pages</h2>
+                <p>
+                    Client security sits between declarative communication and service-level security.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="security.html">
+                    <h3 style="margin-top: 0;">Security</h3>
+                    <p>Inbound service authentication and authorization: API key, JWT, OIDC, public paths, and protected paths.</p>
+                </a>
+
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How <code>@MiddlewareClient</code> resolves services, propagates headers, and executes outbound calls.</p>
+                </a>
+
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>How declarative clients fit into the broader platform architecture and discovery model.</p>
+                </a>
+
+                <a class="card" href="documentation.html">
+                    <h3 style="margin-top: 0;">Documentation</h3>
+                    <p>Entry point to the broader platform guides and capability pages.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — outbound security for declarative clients.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

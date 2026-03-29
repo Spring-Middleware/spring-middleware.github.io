@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RabbitMQ | Spring Middleware</title>
+    <meta
+            name="description"
+            content="RabbitMQ integration in Spring Middleware: JMS-like producers and consumers, handlers, listeners, error handlers, acknowledgement modes, transactions, and runtime lifecycle."
+    />
+    <link rel="canonical" href="https://spring-middleware.com/rabbitmq.html" />
+    <meta property="og:title" content="Spring Middleware — RabbitMQ" />
+    <meta property="og:description" content="RabbitMQ resources, handlers, listeners, acknowledgement modes, and lifecycle management in Spring Middleware." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/rabbitmq.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — RabbitMQ" />
+    <meta name="twitter:description" content="RabbitMQ resources, handlers, listeners, acknowledgement modes, and lifecycle management in Spring Middleware." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="rabbitmq">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">RabbitMQ</div>
+
+            <h1>Annotation-driven RabbitMQ resources with explicit runtime hooks.</h1>
+
+            <p class="lead">
+                Spring Middleware provides a JMS-like RabbitMQ integration built around producers, consumers,
+                handlers, listeners, error handlers, connection pooling, and lifecycle management.
+                The goal is to standardize messaging behavior without hiding acknowledgement, rollback,
+                or processing flow.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#runtime-model">Explore the runtime model</a>
+                <a class="button button-secondary" href="messaging.html">Back to messaging</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">@JmsProducer</span>
+                <span class="chip">@JmsConsumer</span>
+                <span class="chip">@JmsHandler</span>
+                <span class="chip">@JmsListener</span>
+                <span class="chip">@JmsErrorHandler</span>
+                <span class="chip">acknowledge + commit + rollback</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the RabbitMQ module does</h2>
+                    <p>
+                        The RabbitMQ module provides an annotation-driven framework for creating producers and consumers,
+                        wiring processing hooks, managing broker resources, and controlling consumer behavior around
+                        acknowledgement, transactions, and failures.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Discover producers and consumers from scanned packages</li>
+                        <li>Create runtime resources through <code>JmsFactory</code></li>
+                        <li>Attach handlers, listeners, and error handlers by annotation rules</li>
+                        <li>Support queue, topic, binding, converter, and lifecycle concerns</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Why this model matters</h2>
+                    <p>
+                        RabbitMQ integrations often drift into duplicated setup spread across services.
+                        Spring Middleware turns that into a platform concern, while still keeping the broker model,
+                        transaction behavior, and message processing path explicit.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Explicit lifecycle:</strong> producers and consumers are real runtime resources.</li>
+                        <li><strong>Explicit hooks:</strong> handlers, listeners, and error handlers are part of the model.</li>
+                        <li><strong>Explicit processing semantics:</strong> acknowledge, commit, and rollback stay visible.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level RabbitMQ flow</h2>
+                <p>
+                    Producer and consumer resources are wired by the module, while processing hooks are attached through
+                    annotation-based discovery and matching rules.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 320" xmlns="http://www.w3.org/2000/svg" aria-label="RabbitMQ processing flow">
+
+                        <rect x="100" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="190" y="62" text-anchor="middle" fill="white" font-size="15">Producer Resource</text>
+
+                        <rect x="370" y="30" width="180" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="62" text-anchor="middle" fill="white" font-size="15">RabbitMQ Broker</text>
+
+                        <rect x="640" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="730" y="62" text-anchor="middle" fill="white" font-size="15">Consumer Resource</text>
+
+                        <line x1="280" y1="57" x2="370" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="550" y1="57" x2="640" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <rect x="250" y="170" width="420" height="92" rx="22"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="460" y="199" text-anchor="middle" fill="white" font-size="16">Processing hooks</text>
+                        <text x="460" y="223" text-anchor="middle" fill="#9fb0c9" font-size="13">listeners • handlers • error handlers</text>
+                        <text x="460" y="245" text-anchor="middle" fill="#9fb0c9" font-size="13">acknowledge • commit • rollback</text>
+
+                        <line x1="460" y1="84" x2="460" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                        <line x1="730" y1="84" x2="620" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resources">
+        <div class="container">
+            <div class="section-head">
+                <h2>Producer and consumer resources</h2>
+                <p>
+                    The module discovers producer and consumer resource classes and creates runtime objects from them.
+                    This keeps RabbitMQ wiring centralized and annotation-driven.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Producer example</h3>
+                    <pre class="code-block"><code>@JmsProducer(bindings = {
+    @JmsBinding(routingKey = "news.uk"),
+    @JmsBinding(routingKey = "news.es")
+})
+@JmsDestination(
+    name = "amq.topic",
+    exchange = "amq.topic",
+    destinationType = DestinationType.TOPIC
+)
+public class JmsProducerNewsWorld extends JmsProducerResource&lt;TestingMessage&gt; {
+
+    public JmsProducerNewsWorld(
+            String routingKey,
+            ObjectPool&lt;JmsConnection&gt; connectionPool,
+            JmsSessionParameters jmsSessionParameters,
+            JmsResourceDestination jmsResourceDestination,
+            Class&lt;TestingMessage&gt; clazz
+    ) {
+        super(routingKey, connectionPool, jmsSessionParameters, jmsResourceDestination, clazz);
+    }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Consumer example</h3>
+                    <pre class="code-block"><code>@JmsConsumer
+@JmsDestination(name = "information-uk", destinationType = DestinationType.QUEUE)
+public class JmsConsumerUK extends JmsConsumerResource&lt;TestingMessage&gt; {
+
+    @Override
+    public void process(TestingMessage testingMessage, Properties properties) {
+        logger.info("Message Received " + testingMessage.getMessage() + "-UK");
+    }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="handlers-listeners">
+        <div class="container">
+            <div class="section-head">
+                <h2>Handlers, listeners, and error handlers</h2>
+                <p>
+                    The RabbitMQ module provides three complementary extension points for processing control,
+                    cross-cutting behavior, and failure handling.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>@JmsListener</h3>
+                    <p>
+                        Application-level listeners executed before processing. They are useful for tracing,
+                        metrics, audit, conditional short-circuiting, and other cross-cutting concerns.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>@JmsHandler</h3>
+                    <p>
+                        A single wrapper component around the processing flow. It is the right place for transactional
+                        setup, conversion, MDC, resource opening, and finally-style cleanup behavior.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>@JmsErrorHandler</h3>
+                    <p>
+                        Error handler components invoked when processing fails. They are useful for alerts,
+                        persistence of failures, retry routing, and dead-letter patterns.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Handler example</h3>
+                    <pre class="code-block"><code>@JmsHandler(ConsumerHandler.class)
+public class ConsumerHandlerResource&lt;T&gt; extends JmsHandlerResource&lt;String, T&gt; {
+
+    @Override
+    public String handleBeforeProcessingMessage(T message, Properties properties) {
+        return "dbSession";
+    }
+
+    @Override
+    public void handleFinallyConsumingMessage(String handlingMessage) {
+        // cleanup
+    }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Listener example</h3>
+                    <pre class="code-block"><code>@JmsListener
+public class JmsListenerAll implements JmsResourceListener {
+
+    @Override
+    public void onBeforeProcessingMessage(Properties properties) {
+        logger.info("[ALL] Listener on before process message");
+    }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="matching-rules">
+        <div class="container">
+            <div class="section-head">
+                <h2>Annotation matching rules</h2>
+                <p>
+                    The module uses marker-based matching so processing components can be attached selectively
+                    to producers or consumers.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Discover component classes</h3>
+                    <p>The module scans for classes annotated with <code>@JmsHandler</code>, <code>@JmsListener</code>, and <code>@JmsErrorHandler</code>.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Resolve marker annotation</h3>
+                    <p>The <code>value()</code> of the framework annotation points to the user-defined marker annotation used for matching.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Attach component to resource</h3>
+                    <p>The resource gets the matching handler, listener, or error handler according to the module's matching rules.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Common matching modes</h3>
+                    <ul class="list-clean">
+                        <li><code>JmsAll</code> — apply to all resources</li>
+                        <li><code>JmsAllConsumers</code> — apply only to consumers</li>
+                        <li><code>JmsAllProducers</code> — apply only to producers</li>
+                        <li>User marker annotations — apply to explicitly marked resource classes</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Important multiplicity rules</h3>
+                    <ul class="list-clean">
+                        <li>Only one <code>@JmsHandler</code> may be attached to a given resource</li>
+                        <li>Multiple listeners and error handlers may apply to the same resource</li>
+                        <li>Listener and error-handler ordering is controlled by <code>priority()</code></li>
+                        <li>Higher numeric priority runs earlier</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="ack-tx">
+        <div class="container">
+            <div class="section-head">
+                <h2>Transactions and acknowledgement modes</h2>
+                <p>
+                    Consumer runtime behavior depends on two explicit configuration knobs:
+                    transaction mode and acknowledgement mode.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Transacted sessions</h3>
+                    <p>
+                        When <code>transacted = true</code>, the consumer uses a transacted session and explicitly
+                        commits on success or rolls back on failure.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Successful processing triggers <code>session.commit()</code></li>
+                        <li>Processing failure triggers <code>session.rollback()</code></li>
+                        <li>Use deliberately, because transaction semantics affect latency and complexity</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>CLIENT_ACKNOWLEDGE</h3>
+                    <p>
+                        When the session is not transacted and the acknowledge mode is <code>CLIENT_ACKNOWLEDGE</code>,
+                        the message must be acknowledged explicitly.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>By default, the module may attach <code>DefaultJmsAcknowledgeListener</code></li>
+                        <li>If messages are not acknowledged, they may be redelivered</li>
+                        <li>Acknowledge behavior is part of the processing model, not an invisible side effect</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-sequence">
+        <div class="container">
+            <div class="section-head">
+                <h2>Runtime processing sequence</h2>
+                <p>
+                    Consumer message processing follows a well-defined sequence so application behavior remains understandable.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Receive and convert message</h3>
+                    <p>The consumer receives the message, reads its properties, and converts the body to the target type.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Run listeners and handler</h3>
+                    <p>Registered listeners are executed in priority order and the configured handler may wrap the processing flow.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Commit, acknowledge, or handle failure</h3>
+                    <p>On success the module commits or acknowledges as needed; on failure it rolls back and delegates to error handlers.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    The RabbitMQ module is most effective when processing hooks stay small, lifecycle cleanup is explicit,
+                    and failure handling is centralized.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep handlers focused</h3>
+                    <p>
+                        A handler should usually implement one kind of wrapper logic, such as transaction or context setup,
+                        instead of mixing multiple concerns into one large component.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Always clean up in finally hooks</h3>
+                    <p>
+                        If a handler opens DB sessions, MDC, or external resources, release them in the finally phase
+                        so consumers do not leak runtime state.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Centralize failure routing</h3>
+                    <p>
+                        Prefer error handlers for alerts, metrics, persistence of failures, or dead-letter routing
+                        instead of scattering that logic inside each consumer.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="examples">
+        <div class="container">
+            <div class="section-head">
+                <h2>Marker-based error handling example</h2>
+                <p>
+                    Marker annotations let applications attach platform hooks only where they are needed.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Error handler example</h3>
+                    <pre class="code-block"><code>@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DltError {}
+
+@JmsErrorHandler(value = DltError.class)
+public class DltErrorHandler&lt;T&gt; implements JmsResourceErrorHandler&lt;T&gt; {
+
+    @Override
+    public void handleError(ErrorHandlerContext&lt;T&gt; ctx) {
+        dltProducer.send(ctx.getMessage(), ctx.getProperties());
+    }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Usage on a consumer</h3>
+                    <pre class="code-block"><code>@DltError
+@JmsConsumer
+@JmsDestination(name = "orders", destinationType = DestinationType.QUEUE)
+public class OrdersConsumer extends JmsConsumerResource&lt;Order&gt; {
+
+    @Override
+    public void process(Order order, Properties properties) {
+        // ...
+    }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-pages">
+        <div class="container">
+            <div class="section-head">
+                <h2>Continue with related pages</h2>
+                <p>
+                    RabbitMQ is one implementation inside the messaging capability. Kafka and the platform-wide messaging overview are covered separately.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="messaging.html">
+                    <h3 style="margin-top: 0;">Messaging overview</h3>
+                    <p>How Kafka and RabbitMQ fit into the broader platform messaging model.</p>
+                </a>
+
+                <a class="card" href="kafka.html">
+                    <h3 style="margin-top: 0;">Kafka</h3>
+                    <p>Publishers, subscribers, event envelopes, topic configuration, retry, and dead-letter handling.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — RabbitMQ integration as an explicit resource and processing model.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>

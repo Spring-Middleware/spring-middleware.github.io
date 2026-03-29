@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messaging | Spring Middleware</title>
+    <meta
+            name="description"
+            content="Messaging infrastructure in Spring Middleware: Kafka and RabbitMQ conventions, publishers, consumers, handlers, runtime behavior, and platform-aligned messaging patterns."
+    />
+    <link rel="canonical" href="https://spring-middleware.com/messaging.html" />
+    <meta property="og:title" content="Spring Middleware — Messaging" />
+    <meta property="og:description" content="Kafka and RabbitMQ conventions for Spring Middleware." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/messaging.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — Messaging" />
+    <meta name="twitter:description" content="Kafka and RabbitMQ conventions for Spring Middleware." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="messaging">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Messaging</div>
+
+            <h1>Platform-aligned messaging with Kafka and RabbitMQ.</h1>
+
+            <p class="lead">
+                Spring Middleware treats messaging as a platform capability, not as per-service ad hoc setup.
+                It provides reusable patterns for publishers, consumers, handlers, listeners, error handling,
+                and broker integration while keeping runtime behavior explicit.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#messaging-model">Explore the messaging model</a>
+                <a class="button button-secondary" href="architecture.html">See architecture</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Kafka publishers and subscribers</span>
+                <span class="chip">RabbitMQ JMS-like resources</span>
+                <span class="chip">Annotation-driven wiring</span>
+                <span class="chip">Explicit runtime behavior</span>
+                <span class="chip">Handlers, listeners, and error handlers</span>
+                <span class="chip">Dead-letter and retry patterns</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="messaging-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What messaging means here</h2>
+                    <p>
+                        Messaging in Spring Middleware is not just a wrapper around broker clients.
+                        The goal is to standardize how services publish events, consume messages,
+                        attach cross-cutting behavior, and manage infrastructure concerns such as topics,
+                        queues, bindings, retries, and dead-letter routing.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Keep publisher and consumer behavior explicit</li>
+                        <li>Reduce repeated broker-specific setup in each service</li>
+                        <li>Support both event-driven and integration-style messaging</li>
+                        <li>Keep runtime hooks available for tracing, metrics, and error handling</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Two messaging styles</h2>
+                    <p>
+                        Spring Middleware supports two complementary messaging models.
+                        Kafka is oriented to event streams and publisher/subscriber configuration.
+                        RabbitMQ is exposed through a JMS-like, annotation-driven resource model with
+                        producers, consumers, handlers, listeners, and lifecycle control.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Kafka:</strong> topic-based event publishing and subscriber registration.</li>
+                        <li><strong>RabbitMQ:</strong> resource-driven producers and consumers with explicit lifecycle and processing hooks.</li>
+                        <li><strong>Both:</strong> platform conventions instead of one-off per-service wiring.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level messaging view</h2>
+                <p>
+                    Services publish or consume messages through platform-aligned abstractions,
+                    while broker-specific behavior remains visible and configurable.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" aria-label="Messaging platform overview">
+
+                        <!-- Producer -->
+                        <rect x="110" y="28" width="170" height="52" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="195" y="59" text-anchor="middle" fill="white" font-size="15">Producer Service</text>
+
+                        <!-- Consumer -->
+                        <rect x="640" y="28" width="170" height="52" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="725" y="59" text-anchor="middle" fill="white" font-size="15">Consumer Service</text>
+
+                        <!-- Platform layer -->
+                        <rect x="255" y="118" width="410" height="78" rx="22"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="148" text-anchor="middle" fill="white" font-size="18">Spring Middleware Messaging Layer</text>
+                        <text x="460" y="173" text-anchor="middle" fill="#9fb0c9" font-size="13.5">
+                            publishers • consumers • handlers • listeners • error handling
+                        </text>
+
+                        <!-- Brokers -->
+                        <rect x="170" y="255" width="200" height="54" rx="16"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.26)"/>
+                        <text x="270" y="287" text-anchor="middle" fill="white" font-size="15">Kafka Topics</text>
+
+                        <rect x="550" y="255" width="220" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="660" y="287" text-anchor="middle" fill="white" font-size="15">RabbitMQ Queues / Exchanges</text>
+
+                        <!-- Lines -->
+                        <line x1="280" y1="80" x2="365" y2="118" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="640" y1="80" x2="555" y2="118" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <line x1="380" y1="196" x2="300" y2="255" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="540" y1="196" x2="620" y2="255" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="kafka-rabbitmq">
+        <div class="container">
+            <div class="section-head">
+                <h2>Kafka and RabbitMQ in the platform</h2>
+                <p>
+                    Both integrations are first-class, but they solve different runtime problems and expose different extension points.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Kafka</h3>
+                    <p>
+                        The Kafka integration is configuration-driven and opinionated around publishers,
+                        subscribers, topic creation, event envelopes, and consumer error handling.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Named publishers registered from configuration</li>
+                        <li>Subscriber endpoints wired from topic and group settings</li>
+                        <li>Event envelopes with eventId, eventType, timestamp, traceId, and payload</li>
+                        <li>Retry and dead-letter behavior through module configuration</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>RabbitMQ</h3>
+                    <p>
+                        The RabbitMQ integration provides a JMS-like model with annotation-driven producers,
+                        consumers, handlers, listeners, resource discovery, connection pooling, and explicit lifecycle control.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li><code>@JmsProducer</code> and <code>@JmsConsumer</code> resource model</li>
+                        <li>Marker-based handlers, listeners, and error handlers</li>
+                        <li>Transacted sessions and acknowledge modes</li>
+                        <li>Durable queues, exchanges, bindings, and cleanup strategies</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="kafka-flow">
+        <div class="container">
+            <div class="section-head">
+                <h2>Kafka runtime model</h2>
+                <p>
+                    Kafka support is oriented around configuration-backed publishers and subscribers,
+                    with predictable event metadata and module-level error handling.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Configure topics and publishers</h3>
+                    <p>Topic definitions, publisher ids, and subscriber settings are declared under <code>middleware.kafka</code>.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Publish events</h3>
+                    <p>A named publisher wraps payloads into an <code>EventEnvelope&lt;T&gt;</code> and sends them through Kafka.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Consume and handle failures</h3>
+                    <p>Registered subscribers process records with retry and optional dead-letter behavior when configured.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Kafka configuration example</h3>
+                    <pre class="code-block"><code>middleware:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    create-missing-topics: true
+    topics:
+      catalog-events:
+        partitions: 5
+        replication-factor: 3
+    publishers:
+      catalog:
+        topic: ${KAFKA_TOPIC_CATALOG:catalog-events}
+    subscribers:
+      catalog:
+        topic: ${KAFKA_TOPIC_CATALOG:catalog-events}
+        group-id: ${KAFKA_GROUP_ID_CATALOG:catalog-service-group}
+        concurrency: 3</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Error handling example</h3>
+                    <pre class="code-block"><code>middleware:
+  kafka:
+    error-handling:
+      enabled: true
+      max-retries: 3
+      retry-backoff-ms: 1000
+      dead-letter:
+        enabled: true
+        suffix: .DLT</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="rabbitmq-flow">
+        <div class="container">
+            <div class="section-head">
+                <h2>RabbitMQ runtime model</h2>
+                <p>
+                    RabbitMQ support is annotation-driven and resource-oriented.
+                    Producers, consumers, handlers, listeners, and error handlers are discovered and wired at startup.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Discover resources</h3>
+                    <p><code>JmsFactory</code> scans configured packages and creates producers and consumers.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Attach processing hooks</h3>
+                    <p>Listeners, handlers, and error handlers are matched through annotation-based rules.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Process, acknowledge, or rollback</h3>
+                    <p>Runtime behavior depends on transacted sessions, acknowledgement mode, and configured error handlers.</p>
+                </article>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 320" xmlns="http://www.w3.org/2000/svg" aria-label="RabbitMQ processing flow">
+
+                        <!-- Producer -->
+                        <rect x="100" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="190" y="62" text-anchor="middle" fill="white" font-size="15">Producer Resource</text>
+
+                        <!-- Broker -->
+                        <rect x="370" y="30" width="180" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="62" text-anchor="middle" fill="white" font-size="15">RabbitMQ Broker</text>
+
+                        <!-- Consumer -->
+                        <rect x="640" y="30" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="730" y="62" text-anchor="middle" fill="white" font-size="15">Consumer Resource</text>
+
+                        <!-- Horizontal flow -->
+                        <line x1="280" y1="57" x2="370" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="550" y1="57" x2="640" y2="57" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <!-- Hook block -->
+                        <rect x="250" y="170" width="420" height="92" rx="22"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="460" y="199" text-anchor="middle" fill="white" font-size="16">Processing hooks</text>
+                        <text x="460" y="223" text-anchor="middle" fill="#9fb0c9" font-size="13">listeners • handlers • error handlers</text>
+                        <text x="460" y="245" text-anchor="middle" fill="#9fb0c9" font-size="13">acknowledge • commit • rollback</text>
+
+                        <!-- Downward relationships -->
+                        <line x1="460" y1="84" x2="460" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                        <line x1="730" y1="84" x2="620" y2="170" stroke="rgba(148,163,184,0.45)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Consumer example</h3>
+                    <pre class="code-block"><code>@JmsConsumer
+@JmsDestination(name = "information-uk", destinationType = DestinationType.QUEUE)
+public class JmsConsumerUK extends JmsConsumerResource&lt;TestingMessage&gt; {
+
+    public void process(TestingMessage testingMessage, Properties properties) {
+        logger.info("Message Received " + testingMessage.getMessage() + "-UK");
+    }
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Handler pattern</h3>
+                    <pre class="code-block"><code>@JmsHandler(ConsumerHandler.class)
+public class ConsumerHandlerResource&lt;T&gt; extends JmsHandlerResource&lt;String, T&gt; {
+
+    @Override
+    public String handleBeforeProcessingMessage(T message, Properties properties) {
+        return "dbSession";
+    }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="platform-conventions">
+        <div class="container">
+            <div class="section-head">
+                <h2>Messaging conventions in practice</h2>
+                <p>
+                    The messaging model is designed to keep services explicit while reducing repeated infrastructure code.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Explicit configuration</h3>
+                    <p>
+                        Topics, queues, publishers, subscribers, and client behavior are declared clearly instead of being hidden in scattered runtime wiring.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Cross-cutting hooks</h3>
+                    <p>
+                        Handlers, listeners, and error handlers provide structured extension points for tracing, metrics, transactions, and alerts.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Operational predictability</h3>
+                    <p>
+                        Retry, acknowledge, rollback, dead-letter routing, and resource lifecycle remain part of the platform model, not implicit broker magic.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="messaging-pages">
+        <div class="container">
+            <div class="section-head">
+                <h2>Messaging modules</h2>
+                <p>
+                    This page is the platform overview. Broker-specific details can live in dedicated pages.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="kafka.html">
+                    <h3 style="margin-top: 0;">Kafka</h3>
+                    <p>Topics, publishers, subscribers, event envelopes, retry, and dead-letter handling.</p>
+                </a>
+
+                <a class="card" href="rabbitmq.html">
+                    <h3 style="margin-top: 0;">RabbitMQ</h3>
+                    <p>JMS-like resources, producers, consumers, handlers, listeners, acknowledgement, and lifecycle control.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — messaging guidance and platform patterns.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

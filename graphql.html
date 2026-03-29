@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GraphQL Federation | Spring Middleware</title>
+    <meta name="description" content="Spring Middleware provides distributed GraphQL infrastructure for autonomous microservices, including schema registration, gateway composition, GraphQL Links, scalar normalization, and a unified error model." />
+    <link rel="canonical" href="https://spring-middleware.com/graphql.html" />
+    <meta property="og:title" content="Spring Middleware — GraphQL Federation" />
+    <meta property="og:description" content="Registry-driven GraphQL federation for Spring Boot microservices." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/graphql.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — GraphQL Federation" />
+    <meta name="twitter:description" content="Registry-driven GraphQL federation for Spring Boot microservices." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/components.css" />
+</head>
+<body data-page="graphql">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero hero-page">
+        <div class="container">
+            <div class="hero-content narrow">
+                <span class="eyebrow">Platform Capability</span>
+                <h1>Distributed GraphQL for autonomous services</h1>
+                <p class="hero-lead">
+                    Spring Middleware treats GraphQL as a platform concern in a distributed architecture.
+                    Each service owns its schema, registers its metadata in the Registry, and can participate
+                    in a unified GraphQL API exposed through a gateway.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="documentation.html">Read Documentation</a>
+                    <a class="button button-secondary" href="architecture.html">View Architecture</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">What it is</span>
+                <h2>Foundational infrastructure for federated GraphQL</h2>
+                <p>
+                    Spring Middleware does not position GraphQL as a local framework feature inside a single service.
+                    It provides the platform-level pieces required to support distributed GraphQL across multiple services:
+                    schema discovery, registry-backed metadata, gateway composition, centralized error handling, and
+                    cross-service field resolution.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>Schema discovery</h3>
+                    <p>
+                        Services publish GraphQL schema locations and ownership metadata so platform components
+                        can discover them dynamically.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Gateway composition</h3>
+                    <p>
+                        A GraphQL gateway reads registered schema metadata and exposes a single endpoint to clients.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Consistent runtime model</h3>
+                    <p>
+                        Error handling, scalar normalization, and query composition are handled with the same
+                        platform mindset used across the rest of Spring Middleware.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Why it exists</span>
+                <h2>One GraphQL API without coupling services together</h2>
+                <p>
+                    In a microservice architecture, each service should remain autonomous: own its schema, own its
+                    resolvers, and evolve independently. At the same time, clients often need a single GraphQL entry point.
+                    Spring Middleware bridges that gap by making schemas discoverable and composable through the platform.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Keep service ownership explicit</h3>
+                    <p>
+                        Product, catalog, inventory, and other services keep their own schemas and resolver logic.
+                        Federation does not require collapsing domain boundaries into a central monolith.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Standardize the infrastructure layer</h3>
+                    <p>
+                        Registry metadata, gateway behavior, error handling, and remote execution patterns are standardized
+                        so teams do not have to rebuild GraphQL plumbing for every service landscape.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">How it works</span>
+                <h2>Registry-driven GraphQL topology</h2>
+                <p>
+                    The Registry acts as the control plane for GraphQL metadata. Services register their schema locations,
+                    and the gateway uses that information to discover, load, and compose schemas dynamically.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+    <div class="diagram-svg-wrapper">
+        <svg class="diagram-svg" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GraphQL topology">
+            <defs>
+                <linearGradient id="g-gw" x1="0" x2="1"><stop offset="0%" stop-color="rgba(56,189,248,0.12)"/><stop offset="100%" stop-color="rgba(34,197,94,0.08)"/></linearGradient>
+            </defs>
+            <!-- Gateway -->
+            <rect x="220" y="12" rx="12" ry="12" width="240" height="56" fill="url(#g-gw)" stroke="rgba(255,255,255,0.04)" />
+            <text x="340" y="46" fill="white" font-size="14" font-family="Inter, Arial, sans-serif" text-anchor="middle">GraphQL Gateway</text>
+
+            <!-- Arrows to services -->
+            <g stroke="rgba(159,176,201,0.8)" stroke-width="2" fill="none">
+                <path d="M340 68 L180 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+                <path d="M340 68 L340 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+                <path d="M340 68 L500 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+            </g>
+            <defs>
+                <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 L2,3 z" fill="rgba(159,176,201,0.85)"/></marker>
+            </defs>
+
+            <!-- Service boxes -->
+            <rect x="120" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+            <text x="190" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">product-service</text>
+
+            <rect x="270" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+            <text x="340" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">catalog-service</text>
+
+            <rect x="420" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+            <text x="490" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">inventory-service</text>
+        </svg>
+    </div>
+</div>
+
+            <div class="grid grid-4">
+                <article class="card">
+                    <h3>1. Service schema</h3>
+                    <p>Each service exposes its own GraphQL schema and resolvers.</p>
+                </article>
+
+                <article class="card">
+                    <h3>2. Metadata registration</h3>
+                    <p>Schema locations and ownership metadata are published into the Registry.</p>
+                </article>
+
+                <article class="card">
+                    <h3>3. Gateway discovery</h3>
+                    <p>The gateway reads registered schema locations and builds a composed executable schema.</p>
+                </article>
+
+                <article class="card">
+                    <h3>4. Unified endpoint</h3>
+                    <p>Clients interact with a single GraphQL endpoint instead of multiple service-specific endpoints.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Registry metadata</span>
+                <h2>SchemaLocation as platform metadata</h2>
+                <p>
+                    GraphQL federation starts with reliable metadata. Spring Middleware stores schema information in the Registry
+                    so the gateway can discover where schemas live and which nodes expose them.
+                </p>
+                <a href="registry.html">Read more about the Registry model</a>.
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>SchemaLocation tracks</h3>
+                    <ul class="feature-list">
+                        <li>Namespace of the schema</li>
+                        <li>Schema definition location</li>
+                        <li>HTTP context path</li>
+                        <li>GraphQL API path</li>
+                        <li>Nodes exposing the schema</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>What that enables</h3>
+                    <ul class="feature-list">
+                        <li>Runtime discovery of participating schemas</li>
+                        <li>Dynamic gateway composition</li>
+                        <li>Topology-aware federation</li>
+                        <li>Gateway replacement or extension without changing services</li>
+                    </ul>
+                </article>
+            </div>
+
+            <div class="note">
+                <p>
+                    Spring Middleware focuses on schema metadata, discovery, and composition infrastructure. It does not currently
+                    aim to be a fully feature-complete federation engine with advanced query planning or per-field ownership rules.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Cross-service resolution</span>
+                <h2>GraphQL Links</h2>
+                <p>
+                    GraphQL Links allow a field in one service schema to be resolved by a query owned by another service.
+                    The platform collects metadata from annotations, and the gateway uses that metadata to build and execute
+                    remote GraphQL queries while preserving the selection set requested by the client.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Simple argument mapping</h3>
+                    <p>
+                        Use a field value directly as a single remote argument. This is the most direct model for IDs
+                        or lists of IDs.
+                    </p>
+                    <pre><code>@GraphQLLink(
+    schema = "product",
+    type = "Product",
+    query = "productsByIds",
+    arguments = {
+        @GraphQLLinkArgument(name = "ids")
+    },
+    collection = true
+)</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Multi-argument mapping</h3>
+                    <p>
+                        Use a method that returns a map-like structure when a linked field requires multiple target arguments.
+                    </p>
+                    <pre><code>@GraphQLLink(
+    schema = "product",
+    type = "Page_Product",
+    query = "products",
+    arguments = {
+        @GraphQLLinkArgument(name = "catalogId"),
+        @GraphQLLinkArgument(name = "q")
+    }
+)</code></pre>
+                </article>
+            </div>
+
+            <div class="grid grid-4 top-gap">
+                <article class="card">
+                    <h3>Metadata extraction</h3>
+                    <p>
+                        Linked field definitions are built during startup from annotated classes and methods.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Gateway resolution</h3>
+                    <p>
+                        A custom data fetcher resolves linked fields by building remote execution inputs from metadata.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Selection preservation</h3>
+                    <p>
+                        Requested nested fields and inline fragments are preserved when rendering the downstream query.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Response composition</h3>
+                    <p>
+                        Remote data is normalized and merged back into the final response returned to the client.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Execution model</span>
+                <h2>How a linked field is resolved</h2>
+                <p>
+                    The gateway composes an executable schema and delegates linked fields to a remote execution path.
+                    This keeps cross-service resolution explicit and driven by metadata rather than hidden conventions.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <span class="step-number">01</span>
+                    <h3>Client queries the gateway</h3>
+                    <p>The request hits the unified GraphQL endpoint exposed by the gateway.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">02</span>
+                    <h3>Linked field is detected</h3>
+                    <p>The gateway identifies that a field is backed by remote link metadata.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">03</span>
+                    <h3>Remote query is built</h3>
+                    <p>Variables, argument mappings, selection sets, and fragments are rendered for the target service.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">04</span>
+                    <h3>Result is normalized</h3>
+                    <p>The remote response is normalized and returned as part of the original client response.</p>
+                </article>
+            </div>
+
+            <div class="section-heading" style="margin-top: 28px; max-width: 760px;">
+                <h3 style="margin: 0; font-size: 1.35rem;">Execution view</h3>
+                <p style="margin-top: 10px;">
+                    At runtime, the gateway sits between the client and the target services, building and executing
+                    the downstream query path from the link metadata.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+
+                        <!-- Client -->
+                        <rect x="300" y="10" width="160" height="44" rx="14"
+                              fill="rgba(255,255,255,0.04)"
+                              stroke="rgba(148,163,184,0.20)"/>
+                        <text x="380" y="36" text-anchor="middle" fill="white" font-size="14">Client</text>
+
+                        <!-- Arrow -->
+                        <line x1="380" y1="54" x2="380" y2="90" stroke="rgba(148,163,184,0.65)" stroke-width="2"/>
+                        <polygon points="380,100 372,88 388,88" fill="rgba(148,163,184,0.85)"/>
+
+                        <!-- Gateway -->
+                        <rect x="240" y="110" width="280" height="64" rx="18"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.30)"/>
+                        <text x="380" y="138" text-anchor="middle" fill="white" font-size="16">GraphQL Gateway</text>
+                        <text x="380" y="158" text-anchor="middle" fill="#9fb0c9" font-size="13">
+                            analyze + resolve + execute
+                        </text>
+
+                        <!-- Branch lines -->
+                        <line x1="380" y1="174" x2="200" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="380" y1="174" x2="380" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="380" y1="174" x2="560" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <!-- Arrows -->
+                        <polygon points="200,230 192,218 208,218" fill="rgba(148,163,184,0.8)"/>
+                        <polygon points="380,230 372,218 388,218" fill="rgba(148,163,184,0.8)"/>
+                        <polygon points="560,230 552,218 568,218" fill="rgba(148,163,184,0.8)"/>
+
+                        <!-- Services -->
+                        <rect x="120" y="235" width="160" height="48" rx="14"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="200" y="263" text-anchor="middle" fill="white" font-size="13.5">catalog-service</text>
+
+                        <rect x="300" y="235" width="160" height="48" rx="14"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.28)"/>
+                        <text x="380" y="263" text-anchor="middle" fill="white" font-size="13.5">product-service</text>
+
+                        <rect x="480" y="235" width="160" height="48" rx="14"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="560" y="263" text-anchor="middle" fill="white" font-size="13.5">target schema</text>
+
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Type system concerns</span>
+                <h2>Inline fragments and scalar normalization</h2>
+                <p>
+                    Distributed GraphQL is not only about joining schemas. It also requires preserving type semantics across
+                    service boundaries. Spring Middleware is designed to support polymorphic responses and normalize scalar values
+                    so the unified API remains consistent.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Inline fragments</h3>
+                    <p>
+                        Polymorphic queries may include subtype-specific selections such as fields available only on
+                        concrete implementations. The gateway preserves inline fragments when rendering downstream queries,
+                        so type-specific data is still resolved correctly.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Scalar normalization</h3>
+                    <p>
+                        Different services may serialize values such as UUID, Instant, BigDecimal, or LocalDateTime differently.
+                        The gateway can normalize those values so responses remain aligned with the unified schema definition.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Error model</span>
+                <h2>Consistent GraphQL errors across services</h2>
+                <p>
+                    Spring Middleware provides centralized error handling for GraphQL endpoints inside services. The goal is
+                    to keep GraphQL responses aligned with the same domain error model already used across HTTP APIs.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Handled categories</h3>
+                    <ul class="feature-list">
+                        <li>ServiceException</li>
+                        <li>ErrorDescriptor</li>
+                        <li>PersistenceException</li>
+                        <li>ConstraintViolationException</li>
+                        <li>Fallback unknown errors</li>
+                    </ul>
+
+                </article>
+
+                <article class="card">
+                    <h3>Behavior</h3>
+                    <p>
+                        GraphQL errors use the same domain error codes as HTTP responses, exposed through
+                        <code>extensions.code</code>. This keeps error semantics stable across protocols.
+                    </p>
+                </article>
+            </div>
+
+            <div class="code-card">
+<pre><code>{
+  "message": "Product not found",
+  "path": ["product"],
+  "extensions": {
+    "code": "PRODUCT:NOT_FOUND"
+  }
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Dynamic platform behavior</span>
+                <h2>Composition can evolve with topology changes</h2>
+                <p>
+                    Because schema metadata lives in the Registry, a gateway can rebuild its composed schema when the platform
+                    changes. This supports a more dynamic public API surface without forcing a manual gateway redeploy
+                    for every topology update.
+                </p>
+            </div>
+
+            <div class="grid grid-4">
+                <article class="card">
+                    <h3>New service</h3>
+                    <p>A new schema becomes discoverable after registration.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Schema update</h3>
+                    <p>Changes can be reflected by reloading or rebuilding the composed schema.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Node changes</h3>
+                    <p>Joining or leaving nodes can affect where a schema is served from.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Gateway flexibility</h3>
+                    <p>Composition logic can remain platform-native while still being replaceable.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Adoption path</span>
+                <h2>Built-in gateway or custom gateway</h2>
+                <p>
+                    Teams can adopt the built-in GraphQL gateway as a platform-native reference implementation,
+                    or they can build their own gateway that consumes the same registry metadata model.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Use the built-in gateway</h3>
+                    <p>
+                        Use the <code>graphql-gateway</code> module as the central entry point when you want an opinionated
+                        platform-native implementation.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Build your own gateway</h3>
+                    <p>
+                        Keep Spring Middleware as the metadata and discovery layer while implementing custom federation,
+                        execution, or query planning behavior on top.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-cta">
+        <div class="container">
+            <div class="cta-box">
+                <span class="eyebrow">Next steps</span>
+                <h2>Explore the platform pieces behind GraphQL</h2>
+                <p>
+                    GraphQL in Spring Middleware is part of a broader platform model built around registry-driven discovery,
+                    explicit service topology, declarative communication, and consistent infrastructure behavior.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="architecture.html">See Architecture</a>
+                    <a class="button button-secondary" href="modules.html">Browse Modules</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>Spring Middleware — Platform layer for Spring Boot microservices.</p>
+        <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="graphql.html">GraphQL Federation</a>
+            <a href="messaging.html">Kafka / Messaging</a>
+            <a href="modules.html">Modules</a>
+            <a href="documentation.html">Documentation</a>
+        </nav>
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>

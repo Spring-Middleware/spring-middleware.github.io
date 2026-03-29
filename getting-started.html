@@ -8,132 +8,160 @@
             name="description"
             content="Getting started with Spring Middleware: add the right modules, bootstrap a service, register resources, configure the registry, and enable platform capabilities step by step."
     />
+    <link rel="canonical" href="https://spring-middleware.com/getting-started.html"/>
+    <meta property="og:title" content="Spring Middleware — Getting Started"/>
+    <meta property="og:description" content="Add Spring Middleware modules, bootstrap a service, register resources and configure the registry."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://spring-middleware.com/getting-started.html"/>
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Spring Middleware — Getting Started"/>
+    <meta name="twitter:description" content="Guide to integrate Spring Middleware into a service."/>
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+    <link rel="icon" href="SpringMiddleware.png" type="image/png"/>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
 </head>
 <body data-page="getting-started">
 <div id="site-header"></div>
+
 <main>
     <section class="hero">
         <div class="container">
             <div class="eyebrow">Getting Started</div>
+
             <h1>Bring Spring Middleware into a service without hiding how the system works.</h1>
+
             <p class="lead">
                 Spring Middleware does not replace Spring Boot. It adds a platform layer for service registration,
-                declarative communication, topology awareness, messaging, and infrastructure consistency. The goal is to
-                get a service running quickly while keeping the architecture explicit.
+                declarative communication, topology awareness, messaging, and infrastructure consistency.
+                The goal is to get a service running quickly while keeping the architecture explicit.
             </p>
+
             <div class="hero-actions">
-                <a class="btn btn-primary" href="#quick-start">Start with the minimal setup</a>
-                <a class="btn btn-secondary" href="architecture.html">Read the architecture</a>
+                <a class="button button-primary" href="#quick-start">Start with the minimal setup</a>
+                <a class="button button-secondary" href="architecture.html">Read the architecture</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Modular adoption</span>
+                <span class="chip">Standard Spring Boot entry point</span>
+                <span class="chip">Registry-driven communication</span>
+                <span class="chip">Explicit service registration</span>
+                <span class="chip">Incremental platform capabilities</span>
             </div>
         </div>
     </section>
-
 
     <section id="quick-start">
         <div class="container">
-            <div class="section-head">
-                <h2>What you need to start</h2>
-                <p>
-                    A typical service imports the platform modules it needs, keeps its business code in its own modules,
-                    and enables platform capabilities through regular Spring Boot configuration.
-                </p>
-            </div>
-
             <div class="grid-2">
-                <div class="card">
-                    <h3>Recommended approach</h3>
+                <article class="card">
+                    <h2 style="margin-top: 0;">What you need to start</h2>
                     <p>
-                        Import the BOM or shared dependency management, then add the specific runtime modules your
-                        service needs. This keeps versions aligned across the platform and avoids dependency drift
-                        between services.
+                        A typical service imports the platform modules it needs, keeps business logic in its own modules,
+                        and enables platform capabilities through regular Spring Boot configuration.
                     </p>
-                </div>
-                <div class="card">
-                    <h3>Lightweight approach</h3>
+
+                    <ul class="list-clean">
+                        <li>Import dependency management or the required module versions</li>
+                        <li>Add only the runtime modules the service actually needs</li>
+                        <li>Keep a normal Spring Boot entry point</li>
+                        <li>Register resources and configure the Registry endpoint</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Adoption model</h2>
                     <p>
-                        Add only the modules you need with explicit versions. This works for smaller integrations, but
-                        the BOM remains the cleaner option when multiple services share the same platform baseline.
+                        Spring Middleware is modular. You do not need to adopt everything on day one.
+                        Start with the smallest useful set of modules and keep the service architecture explicit.
                     </p>
-                </div>
+
+                    <ul class="key-points">
+                        <li><strong>Recommended approach:</strong> import the BOM and add only the runtime modules you need.</li>
+                        <li><strong>Lightweight approach:</strong> add individual modules with explicit versions for smaller integrations.</li>
+                        <li><strong>Main goal:</strong> keep versions aligned and avoid per-service dependency drift.</li>
+                    </ul>
+                </article>
             </div>
         </div>
     </section>
 
-    <section>
+    <section id="service-structure">
         <div class="container">
             <div class="section-head">
                 <h2>Minimal service structure</h2>
                 <p>
-                    Spring Middleware fits naturally into a modular service layout. Business logic stays in your own
-                    codebase, while the platform layer handles infrastructure concerns consistently.
+                    Spring Middleware fits naturally into a modular service layout.
+                    Business logic stays in your own codebase, while the platform layer handles infrastructure concerns consistently.
                 </p>
             </div>
 
             <div class="grid-2">
-                <div class="card">
-                    <div class="stack">
-                        <div class="stack-row"><code>*-api</code> — shared contracts and DTOs</div>
-                        <div class="stack-row"><code>*-core</code> — business logic</div>
-                        <div class="stack-row"><code>*-boot</code> — Spring Boot runtime module</div>
+                <article class="card">
+                    <h3>Typical module layout</h3>
+
+                    <div class="stack-diagram stack-diagram-compact">
+                        <div class="stack-node"><code>*-api</code> — shared contracts and DTOs</div>
+                        <div class="stack-connector"></div>
+                        <div class="stack-node"><code>*-core</code> — business logic</div>
+                        <div class="stack-connector"></div>
+                        <div class="stack-node stack-node-highlight"><code>*-boot</code> — Spring Boot runtime module</div>
                     </div>
-                </div>
-                <div class="card">
+                </article>
+
+                <article class="card">
                     <h3>Runtime integration</h3>
                     <p>
                         The <code>*-boot</code> module usually depends on Spring Middleware platform modules such as
-                        <code>app</code>, messaging modules, GraphQL support, or data integrations depending on the
-                        service role.
+                        <code>app</code>, messaging modules, GraphQL support, or data integrations depending on the service role.
                     </p>
-                </div>
+
+                    <ul class="list-clean">
+                        <li>Keep shared DTOs and interfaces separate from runtime wiring</li>
+                        <li>Keep business logic in your own core module</li>
+                        <li>Use the Boot module as the integration point for platform capabilities</li>
+                    </ul>
+                </article>
             </div>
         </div>
     </section>
 
-    <section>
+    <section id="startup-flow">
         <div class="container">
             <div class="section-head">
                 <h2>Startup flow</h2>
                 <p>
-                    The initial integration is straightforward: add the right modules, keep a normal Spring Boot
-                    application, register your resources, and configure the control plane endpoint.
+                    The initial integration is straightforward: add the right modules, keep a normal Spring Boot application,
+                    register your resources, and configure the control plane endpoint.
                 </p>
             </div>
 
-            <div class="grid-2">
-                <div class="step">
-                    <div class="step-num">1</div>
-                    <div>
-                        <h3>Add platform dependencies</h3>
-                        <p>Import dependency management and add the Spring Middleware modules required by your
-                            service.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">2</div>
-                    <div>
-                        <h3>Keep a standard Boot application</h3>
-                        <p>No custom runtime model is required. A regular <code>@SpringBootApplication</code> remains
-                            the service entry point.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">3</div>
-                    <div>
-                        <h3>Register resources and clients</h3>
-                        <p>Expose controllers with <code>@Register</code> and use <code>@MiddlewareClient</code> for
-                            declarative cross-service communication.</p>
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-num">4</div>
-                    <div>
-                        <h3>Configure the control plane</h3>
-                        <p>Point the service to the Registry and enable the platform capabilities that apply to your
-                            runtime.</p>
-                    </div>
-                </div>
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Add platform dependencies</h3>
+                    <p>Import dependency management and add the Spring Middleware modules required by your service.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Keep a standard Boot application</h3>
+                    <p>A regular <code>@SpringBootApplication</code> remains the service entry point.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Register resources and clients</h3>
+                    <p>Expose controllers with <code>@Register</code> and use <code>@MiddlewareClient</code> for remote contracts.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">04</div>
+                    <h3>Configure the Registry</h3>
+                    <p>Point the service to the control plane and enable the platform capabilities relevant to the runtime.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -143,15 +171,15 @@
             <div class="section-head">
                 <h2>Dependency management</h2>
                 <p>
-                    In most cases, the cleanest entry point is version alignment through dependency management, followed
-                    by adding only the modules the service actually uses.
+                    In most cases, the cleanest entry point is version alignment through dependency management,
+                    followed by adding only the modules the service actually uses.
                 </p>
             </div>
 
             <div class="grid-2">
-                <div class="card">
+                <article class="card">
                     <h3>Managed versions</h3>
-                    <pre><code>&lt;dependencyManagement&gt;
+                    <pre class="code-block"><code>&lt;dependencyManagement&gt;
   &lt;dependencies&gt;
     &lt;dependency&gt;
       &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
@@ -174,11 +202,11 @@
     &lt;/dependency&gt;
   &lt;/dependencies&gt;
 &lt;/dependencyManagement&gt;</code></pre>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>Runtime modules</h3>
-                    <pre><code>&lt;dependencies&gt;
+                    <pre class="code-block"><code>&lt;dependencies&gt;
   &lt;dependency&gt;
     &lt;groupId&gt;io.github.spring-middleware&lt;/groupId&gt;
     &lt;artifactId&gt;app&lt;/artifactId&gt;
@@ -189,13 +217,14 @@
     &lt;artifactId&gt;kafka-core&lt;/artifactId&gt;
   &lt;/dependency&gt;
 &lt;/dependencies&gt;</code></pre>
-                </div>
+                </article>
             </div>
 
-            <div class="callout" style="margin-top: 18px;">
-                <p>
-                    The important point is not importing everything. The platform is modular. Start with the small set
-                    of modules your service needs, but keep versions aligned through the BOM whenever possible.
+            <div class="card" style="margin-top: 18px;">
+                <h3 style="margin-top: 0;">Practical rule</h3>
+                <p style="margin-bottom: 0;">
+                    Do not import everything. The platform is modular. Start with the small set of modules your service needs,
+                    but keep versions aligned through the BOM whenever possible.
                 </p>
             </div>
         </div>
@@ -206,19 +235,20 @@
             <div class="section-head">
                 <h2>Application entry point</h2>
                 <p>
-                    Spring Middleware does not require a special application model. A standard Boot application remains
-                    the runtime entry point.
+                    Spring Middleware does not require a special application model.
+                    A standard Boot application remains the runtime entry point.
                 </p>
             </div>
 
-            <div class="card">
-          <pre><code>@SpringBootApplication
+            <article class="card">
+                <pre class="code-block"><code>@SpringBootApplication
 public class CatalogApplication {
+
     public static void main(String[] args) {
         SpringApplication.run(CatalogApplication.class, args);
     }
 }</code></pre>
-            </div>
+            </article>
         </div>
     </section>
 
@@ -227,32 +257,36 @@ public class CatalogApplication {
             <div class="section-head">
                 <h2>Declarative clients and registration</h2>
                 <p>
-                    Cross-service communication and topology registration are both explicit. Services declare remote
-                    contracts and register their own resources in the control plane.
+                    Cross-service communication and topology registration are both explicit.
+                    Services declare remote contracts and register their own resources in the control plane.
                 </p>
             </div>
 
             <div class="grid-2">
-                <div class="card">
+                <article class="card">
                     <h3>Declarative client</h3>
-                    <pre><code>@MiddlewareClient(service = "product")
+                    <pre class="code-block"><code>@MiddlewareClient(service = "product")
 public interface ProductClient {
 
     @GetMapping("/products/{id}")
     ProductDto getProduct(@PathVariable("id") UUID id);
 }</code></pre>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>Registered controller</h3>
-                    <pre><code>@RestController
+                    <pre class="code-block"><code>@RestController
 @Register
 @RequestMapping("/catalogs")
 public class CatalogController {
     // endpoints
 }</code></pre>
-                </div>
+                </article>
             </div>
+
+            <p style="margin-top: 16px;">
+                See also the <a href="client-security.html">client security guide</a> for outbound authentication with declarative clients.
+            </p>
 
             <div class="chip-row">
                 <span class="chip">Registry-driven resolution</span>
@@ -268,24 +302,24 @@ public class CatalogController {
             <div class="section-head">
                 <h2>Minimal configuration</h2>
                 <p>
-                    Most services start with registry configuration, client security, and only the infrastructure
-                    sections that are relevant to their runtime behavior.
+                    Most services start with registry configuration, client security,
+                    and only the infrastructure sections that are relevant to their runtime behavior.
                 </p>
             </div>
 
             <div class="grid-2">
-                <div class="card">
+                <article class="card card-zoomable">
                     <h3>Registry</h3>
-                    <pre><code>spring:
+                    <pre class="code-block"><code>spring:
   middleware:
     registry:
       url: ${REGISTRY_ENDPOINT:http://localhost:8080/registry}
       enabled: true</code></pre>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card card-zoomable">
                     <h3>Client configuration</h3>
-                    <pre><code>middleware:
+                    <pre class="code-block"><code>middleware:
   client:
     registry-endpoint: ${REGISTRY_ENDPOINT:http://localhost:8080/registry}
     product:
@@ -296,25 +330,25 @@ public class CatalogController {
           client-id: ${OAUTH2_CLIENT_ID_PRODUCT_SERVICE:product-service}
           client-secret: ${OAUTH2_CLIENT_SECRET_PRODUCT_SERVICE}
           token-uri: ${OAUTH2_TOKEN_URI_PRODUCT_SERVICE:http://keycloak:8080/realms/spring-middleware/protocol/openid-connect/token}</code></pre>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card card-zoomable">
                     <h3>Kafka</h3>
-                    <pre><code>kafka:
+                    <pre class="code-block"><code>kafka:
   bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
   create-missing-topics: true
   topics:
     catalog-events:
       partitions: 5
       replication-factor: 3</code></pre>
-                </div>
+                </article>
 
-                <div class="card">
+                <article class="card card-zoomable">
                     <h3>Logging trigger</h3>
-                    <pre><code>middleware:
+                    <pre class="code-block"><code>middleware:
   log:
     apiKey: ${MIDDLEWARE_LOG_API_KEY:}</code></pre>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -324,29 +358,30 @@ public class CatalogController {
             <div class="section-head">
                 <h2>Security, build, and local execution</h2>
                 <p>
-                    The platform supports service-level and client-level security, but the basic local workflow remains
-                    familiar: package the Boot module and run the jar or start it from the IDE.
+                    The platform supports service-level and client-level security,
+                    but the basic local workflow remains familiar: package the Boot module and run the jar
+                    or start it from the IDE.
                 </p>
             </div>
 
             <div class="grid-3">
-                <div class="card">
+                <a class="card" href="security.html">
                     <h3>Security model</h3>
                     <p>
                         Configure protected paths and client-side authentication depending on the service role.
                         Supported patterns include API key, passthrough security, and OAuth2 client credentials.
                     </p>
-                </div>
+                </a>
 
-                <div class="card">
+                <article class="card">
                     <h3>Build</h3>
-                    <pre><code>mvn -T 1C -DskipTests clean package</code></pre>
-                </div>
+                    <pre class="code-block"><code>mvn -T 1C -DskipTests clean package</code></pre>
+                </article>
 
-                <div class="card">
+                <article class="card">
                     <h3>Run</h3>
-                    <pre><code>java -jar target/your-service-boot-&lt;version&gt;.jar</code></pre>
-                </div>
+                    <pre class="code-block"><code>java -jar target/your-service-boot-&lt;version&gt;.jar</code></pre>
+                </article>
             </div>
         </div>
     </section>
@@ -356,28 +391,30 @@ public class CatalogController {
             <div class="section-head">
                 <h2>Practical notes</h2>
                 <p>
-                    A few details usually matter early: version alignment, local topic creation, Docker build context,
-                    and configuration binding in tests.
+                    A few details usually matter early: version alignment, local topic creation,
+                    Docker build context, and configuration binding in tests.
                 </p>
             </div>
 
             <div class="grid-2">
-                <div class="card">
-                    <ul>
-                        <li>Use the BOM to keep module versions aligned across services.</li>
-                        <li>Enable topic auto-creation locally, but manage topics explicitly in production.</li>
-                        <li>Check <code>.dockerignore</code> if Docker builds cannot see the generated jar.</li>
-                        <li>Make sure required configuration properties can bind in tests.</li>
+                <article class="card">
+                    <h3>Common early checks</h3>
+                    <ul class="list-clean">
+                        <li>Use the BOM to keep module versions aligned across services</li>
+                        <li>Enable topic auto-creation locally, but manage topics explicitly in production</li>
+                        <li>Check <code>.dockerignore</code> if Docker builds cannot see the generated jar</li>
+                        <li>Make sure required configuration properties can bind in tests</li>
                     </ul>
-                </div>
-                <div class="card">
+                </article>
+
+                <article class="card">
                     <h3>What this page is for</h3>
                     <p>
-                        This page is intentionally narrow. It helps a service cross the initial integration line. Deeper
-                        runtime behavior belongs in the architecture, registry, communication, messaging, GraphQL,
-                        security, and error model pages.
+                        This page is intentionally narrow. It helps a service cross the initial integration line.
+                        Deeper runtime behavior belongs in the architecture, registry, communication, messaging,
+                        GraphQL, security, and error model pages.
                     </p>
-                </div>
+                </article>
             </div>
         </div>
     </section>
@@ -387,27 +424,29 @@ public class CatalogController {
             <div class="section-head">
                 <h2>Continue with the platform building blocks</h2>
                 <p>
-                    Once the service is bootstrapped, the next step is understanding how the platform behaves at
-                    runtime.
+                    Once the service is bootstrapped, the next step is understanding how the platform behaves at runtime.
                 </p>
             </div>
 
-            <div class="links-list">
-                <a class="link-card" href="architecture.html">
-                    <strong>Architecture</strong>
-                    <span>Control plane, data plane, topology, registration, and runtime convergence.</span>
+            <div class="grid-2">
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>Control plane, data plane, topology, registration, and runtime convergence.</p>
                 </a>
-                <a class="link-card" href="graphql.html">
-                    <strong>GraphQL Federation</strong>
-                    <span>Schema registration, composition, and gateway behavior across services.</span>
+
+                <a class="card" href="graphql.html">
+                    <h3 style="margin-top: 0;">GraphQL Federation</h3>
+                    <p>Schema registration, composition, and gateway behavior across services.</p>
                 </a>
-                <a class="link-card" href="messaging.html">
-                    <strong>Messaging</strong>
-                    <span>Platform-aligned messaging with Kafka and RabbitMQ integration.</span>
+
+                <a class="card" href="messaging.html">
+                    <h3 style="margin-top: 0;">Messaging</h3>
+                    <p>Platform-aligned messaging with Kafka and RabbitMQ integration.</p>
                 </a>
-                <a class="link-card" href="modules.html">
-                    <strong>Modules</strong>
-                    <span>How the platform is split into reusable module groups and dependency layers.</span>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the platform is split into reusable module groups and dependency layers.</p>
                 </a>
             </div>
         </div>
@@ -419,6 +458,15 @@ public class CatalogController {
         Spring Middleware — getting a service onto the platform without hiding the architecture.
     </div>
 </footer>
+
 <script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
 </body>
 </html>

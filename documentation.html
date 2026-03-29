@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Documentation | Spring Middleware</title>
+    <meta
+            name="description"
+            content="Documentation and guides for Spring Middleware: getting started, architecture, registry, communication, GraphQL, messaging, modules, security, logging, and data integrations."
+    />
+    <link rel="canonical" href="https://spring-middleware.com/documentation.html" />
+    <meta property="og:title" content="Spring Middleware — Documentation" />
+    <meta property="og:description" content="Documentation and guides for Spring Middleware." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/documentation.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Middleware — Documentation" />
+    <meta name="twitter:description" content="Documentation and guides for Spring Middleware." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="documentation">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Documentation</div>
+
+            <h1>Documentation and guides for the platform.</h1>
+
+            <p class="lead">
+                Spring Middleware documentation is organized as a set of platform guides and capability pages.
+                Start with the architectural model, then move into the runtime capabilities your service actually needs.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="getting-started.html">Start with getting started</a>
+                <a class="button button-secondary" href="architecture.html">Read architecture</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Getting started</span>
+                <span class="chip">Architecture and registry</span>
+                <span class="chip">Communication and errors</span>
+                <span class="chip">GraphQL and messaging</span>
+                <span class="chip">Security and logging</span>
+                <span class="chip">Mongo / JPA / Redis</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-to-use">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">How to read the documentation</h2>
+                    <p>
+                        Spring Middleware is not a single feature. It is a platform layer with multiple capabilities.
+                        The documentation is therefore split into platform guides and focused capability pages.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Start with <strong>Getting Started</strong> if you want to integrate a service quickly</li>
+                        <li>Read <strong>Architecture</strong> to understand the control plane and runtime model</li>
+                        <li>Go deeper into <strong>GraphQL</strong>, <strong>Messaging</strong>, or <strong>Data</strong> as needed</li>
+                        <li>Use the security, logging, and communication guides for cross-cutting behavior</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Documentation structure</h2>
+                    <p>
+                        Some pages describe reusable runtime capabilities such as Kafka, RabbitMQ, or GraphQL federation.
+                        Others explain platform-wide concerns such as topology, registry metadata, errors, logging,
+                        and declarative communication.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Platform guides:</strong> explain shared runtime behavior across services.</li>
+                        <li><strong>Capability pages:</strong> explain how specific integrations work in practice.</li>
+                        <li><strong>Module pages:</strong> explain how the reusable parts of the platform are organized.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="start-here">
+        <div class="container">
+            <div class="section-head">
+                <h2>Start here</h2>
+                <p>
+                    These pages give the best entry point into the platform if you are new to Spring Middleware.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="getting-started.html">
+                    <h3 style="margin-top: 0;">Getting Started</h3>
+                    <p>Bootstrap a service, add the right modules, configure the Registry, and enable platform features.</p>
+                </a>
+
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>Control plane, data plane, registry-driven topology, service communication, and self-healing behavior.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="platform-guides">
+        <div class="container">
+            <div class="section-head">
+                <h2>Platform guides</h2>
+                <p>
+                    These guides describe cross-service concerns and the shared behavior that defines the platform model.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>Registry-driven architecture, control plane, service topology, convergence, and runtime flow.</p>
+                </a>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the platform is split into reusable module groups and how services adopt them incrementally.</p>
+                </a>
+
+                <a class="card" href="registry.html">
+                    <h3 style="margin-top: 0;">Registry</h3>
+                    <p>Topology metadata, schema locations, service registration, and the control-plane model.</p>
+                </a>
+
+                <article class="card">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>Declarative clients, service resolution, request propagation, and remote execution behavior.</p>
+                </article>
+
+                <article class="card">
+                    <h3 style="margin-top: 0;">Errors</h3>
+                    <p>Unified error model, propagation across services, and consistent failure representation.</p>
+                </article>
+
+                <article class="card">
+                    <h3 style="margin-top: 0;">Logging</h3>
+                    <p>Request and response logging, correlation identifiers, and platform-level observability behavior.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-capabilities">
+        <div class="container">
+            <div class="section-head">
+                <h2>Runtime capabilities</h2>
+                <p>
+                    These pages explain how specific platform capabilities work once a service is on the platform.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="graphql.html">
+                    <h3 style="margin-top: 0;">GraphQL Federation</h3>
+                    <p>Schema registration, composition, GraphQL Links, gateway execution, and distributed schema behavior.</p>
+                </a>
+
+                <a class="card" href="messaging.html">
+                    <h3 style="margin-top: 0;">Messaging</h3>
+                    <p>Platform-wide messaging overview covering Kafka and RabbitMQ as complementary messaging models.</p>
+                </a>
+
+                <a class="card" href="kafka.html">
+                    <h3 style="margin-top: 0;">Kafka</h3>
+                    <p>Publishers, subscribers, topic configuration, event envelopes, retries, and dead-letter behavior.</p>
+                </a>
+
+                <a class="card" href="rabbitmq.html">
+                    <h3 style="margin-top: 0;">RabbitMQ</h3>
+                    <p>JMS-like resources, handlers, listeners, error handlers, acknowledgement, and lifecycle control.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="data-infra">
+        <div class="container">
+            <div class="section-head">
+                <h2>Data and infrastructure integrations</h2>
+                <p>
+                    These guides cover reusable integrations that services can adopt as part of the platform layer.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3 style="margin-top: 0;">Mongo</h3>
+                    <p>Dynamic search capabilities and reusable query composition for MongoDB-backed services.</p>
+                </article>
+
+                <article class="card">
+                    <h3 style="margin-top: 0;">JPA</h3>
+                    <p>Dynamic search infrastructure and reusable patterns for relational persistence.</p>
+                </article>
+
+                <article class="card">
+                    <h3 style="margin-top: 0;">Redis</h3>
+                    <p>Distributed maps, locks, shared state, and Redis-backed platform utilities.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="security-observability">
+        <div class="container">
+            <div class="section-head">
+                <h2>Security and observability</h2>
+                <p>
+                    These topics define how services stay protected and observable while participating in the platform.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="security.html">
+                    <h3 style="margin-top: 0;">Security</h3>
+                    <p>HTTP security configuration, supported modes, and how protected paths are modeled in the platform.</p>
+                </a>
+
+                <a class="card" href="client-security.html">
+                    <h3 style="margin-top: 0;">Client security</h3>
+                    <p>Security modes for declarative clients, including passthrough, API key, and OAuth2 client credentials.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section id="next-step">
+        <div class="container">
+            <div class="cta-box">
+                <div>
+                    <h2>Start from a runtime concern</h2>
+                    <p>
+                        The fastest way to navigate the documentation is to start from the capability your service needs today,
+                        then move into the related platform guides that explain how it behaves at runtime.
+                    </p>
+                </div>
+                <a class="button button-secondary" href="getting-started.html">Open getting started</a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — documentation, platform guides, and capability pages.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>

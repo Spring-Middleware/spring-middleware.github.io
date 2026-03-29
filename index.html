@@ -62,6 +62,54 @@
 
     <section>
         <div class="container">
+            <div class="section-head">
+                <h2>Platform runtime infrastructure</h2>
+                <p>
+                    Spring Middleware runs on top of standard infrastructure components that provide
+                    messaging, distributed coordination, and state sharing across services.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Registry Service</h3>
+                    <p>
+                        The control plane of the platform. It stores service topology, node endpoints,
+                        REST resources, and GraphQL schema locations.
+                    </p>
+                    <a href="registry.html">Learn about the Registry</a>
+                </article>
+
+                <article class="card">
+                    <h3>RabbitMQ</h3>
+                    <p>
+                        Used for event-driven communication and node-scoped messaging patterns.
+                        Enables asynchronous workflows and platform-level event propagation.
+                    </p>
+                    <a href="rabbitmq.html">Messaging with RabbitMQ</a>
+                </article>
+
+                <article class="card">
+                    <h3>Redis</h3>
+                    <p>
+                        Provides distributed data structures, shared state, and coordination primitives
+                        such as locks and caches across services.
+                    </p>
+                    <a href="modules.html">See Redis module</a>
+                </article>
+            </div>
+
+            <div class="card" style="margin-top: 18px;">
+                <p style="margin: 0;">
+                    These components are part of the platform runtime. Services remain autonomous,
+                    but rely on this shared infrastructure to achieve consistent behavior across the system.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
             <div class="grid-2">
                 <article class="card">
                     <div class="section-head">
