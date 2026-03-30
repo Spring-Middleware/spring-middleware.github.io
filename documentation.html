@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Documentation | Spring Middleware</title>
+
+    <title>Spring Boot Microservices Guide and Architecture Documentation | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Documentation and guides for Spring Middleware: getting started, architecture, registry, communication, GraphQL, messaging, modules, security, logging, and data integrations."
+            content="Spring Boot microservices documentation and guides. Learn architecture, service discovery, communication, GraphQL, messaging, security, logging, Redis, caching, and data integrations in Spring Middleware."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/documentation.html" />
-    <meta property="og:title" content="Spring Middleware — Documentation" />
-    <meta property="og:description" content="Documentation and guides for Spring Middleware." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Spring Boot Microservices Guide and Documentation | Spring Middleware" />
+    <meta property="og:description"
+          content="Architecture guides, service communication, GraphQL, messaging, Redis, caching, and infrastructure patterns for Spring Boot microservices." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/documentation.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Documentation" />
-    <meta name="twitter:description" content="Documentation and guides for Spring Middleware." />
+    <meta name="twitter:title" content="Spring Boot Microservices Guide and Documentation | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Guides for Spring Boot microservices architecture, communication, GraphQL, messaging, Redis, caching, security, and logging." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,13 +38,15 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Documentation</div>
 
-            <h1>Documentation and guides for the platform.</h1>
+            <div class="eyebrow">Spring Boot microservices documentation</div>
+
+            <h1>Guides and documentation for Spring Boot microservices architecture</h1>
 
             <p class="lead">
-                Spring Middleware documentation is organized as a set of platform guides and capability pages.
-                Start with the architectural model, then move into the runtime capabilities your service actually needs.
+                Spring Middleware documentation is organized as a set of platform guides for Spring Boot microservices.
+                Start with the architecture and service discovery model, then explore communication, GraphQL federation,
+                messaging, security, logging, Redis, caching, and data integrations depending on your use case.
             </p>
 
             <div class="hero-actions">
@@ -43,13 +55,14 @@
             </div>
 
             <div class="chip-row">
-                <span class="chip">Getting started</span>
-                <span class="chip">Architecture and registry</span>
-                <span class="chip">Communication and errors</span>
-                <span class="chip">GraphQL and messaging</span>
-                <span class="chip">Security and logging</span>
+                <span class="chip">Spring Boot microservices guide</span>
+                <span class="chip">Architecture and service discovery</span>
+                <span class="chip">Communication and error handling</span>
+                <span class="chip">GraphQL federation and messaging</span>
+                <span class="chip">Security, logging, and caching</span>
                 <span class="chip">Mongo / JPA / Redis</span>
             </div>
+
         </div>
     </section>
 
@@ -137,20 +150,20 @@
                     <p>Topology metadata, schema locations, service registration, and the control-plane model.</p>
                 </a>
 
-                <article class="card">
+                <a class="card" href="communication.html">
                     <h3 style="margin-top: 0;">Communication</h3>
                     <p>Declarative clients, service resolution, request propagation, and remote execution behavior.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="errors.html">
                     <h3 style="margin-top: 0;">Errors</h3>
                     <p>Unified error model, propagation across services, and consistent failure representation.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="logging.html">
                     <h3 style="margin-top: 0;">Logging</h3>
                     <p>Request and response logging, correlation identifiers, and platform-level observability behavior.</p>
-                </article>
+                </a>
             </div>
         </div>
     </section>
@@ -197,21 +210,26 @@
                 </p>
             </div>
 
-            <div class="grid-3">
-                <article class="card">
+            <div class="grid-4">
+                <a class="card" href="mongo.html">
                     <h3 style="margin-top: 0;">Mongo</h3>
                     <p>Dynamic search capabilities and reusable query composition for MongoDB-backed services.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="jpa.html">
                     <h3 style="margin-top: 0;">JPA</h3>
                     <p>Dynamic search infrastructure and reusable patterns for relational persistence.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="redis.html">
                     <h3 style="margin-top: 0;">Redis</h3>
                     <p>Distributed maps, locks, shared state, and Redis-backed platform utilities.</p>
-                </article>
+                </a>
+
+                <a class="card" href="cache.html">
+                    <h3 style="margin-top: 0;">Cache</h3>
+                    <p>Redis-based caching with TTL configuration, runtime statistics, cache inspection, and programmatic cache management.</p>
+                </a>
             </div>
         </div>
     </section>
@@ -241,15 +259,18 @@
 
     <section id="next-step">
         <div class="container">
-            <div class="cta-box">
-                <div>
-                    <h2>Start from a runtime concern</h2>
+            <div class="cta-box cta-box-final">
+                <div class="cta-copy">
+                    <div class="eyebrow">Next steps</div>
+                    <h2>Continue through the platform</h2>
                     <p>
-                        The fastest way to navigate the documentation is to start from the capability your service needs today,
-                        then move into the related platform guides that explain how it behaves at runtime.
+                        Explore the related guides and capability pages to understand how this part of Spring Middleware fits into the broader runtime model.
                     </p>
                 </div>
-                <a class="button button-secondary" href="getting-started.html">Open getting started</a>
+                <div class="cta-actions">
+                    <a class="button button-primary" href="getting-started.html">Getting Started</a>
+                    <a class="button button-secondary" href="architecture.html">See architecture</a>
+                </div>
             </div>
         </div>
     </section>

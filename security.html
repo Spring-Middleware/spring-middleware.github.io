@@ -3,9 +3,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Security | Spring Middleware</title>
-    <meta name="description" content="HTTP security configuration in Spring Middleware: API keys, JWT, OIDC and authorization model." />
+
+    <title>Spring Boot Security for Microservices (JWT, OIDC, API Key) | Spring Middleware</title>
+
+    <meta name="description"
+          content="Spring Boot security for microservices using JWT, OIDC, API keys, and basic auth. Unified authorization model with explicit configuration for protected and public endpoints." />
+
     <link rel="canonical" href="https://spring-middleware.com/security.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Spring Boot Security for Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="HTTP security for Spring Boot microservices with JWT, OIDC, API keys, and unified authorization model." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/security.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Security for Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Authentication and authorization for Spring Boot microservices using JWT, OIDC, and API keys." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
 
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
@@ -19,20 +38,31 @@
     <!-- HERO -->
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Security</div>
-            <h1>Pluggable HTTP security with a unified authorization model</h1>
+
+            <div class="eyebrow">Security / Authentication</div>
+
+            <h1>Security for Spring Boot microservices</h1>
+
             <p class="lead">
-                Spring Middleware builds on Spring Security and provides a simple, explicit configuration model
-                for authentication and authorization across services.
+                Spring Middleware provides a unified security model for Spring Boot microservices.
+                It builds on Spring Security and supports JWT, OIDC, API keys, and basic authentication,
+                with explicit configuration of protected and public endpoints across services.
             </p>
 
-            <div class="chip-row">
-                <span class="chip">API Key</span>
-                <span class="chip">JWT</span>
-                <span class="chip">OIDC</span>
-                <span class="chip">Basic Auth</span>
-                <span class="chip">Public / Protected paths</span>
+            <div class="hero-actions">
+                <a class="button button-primary" href="#security-modes">Explore security</a>
+                <a class="button button-secondary" href="client-security.html">View client security</a>
             </div>
+
+            <div class="chip-row">
+                <span class="chip">JWT authentication</span>
+                <span class="chip">OIDC integration</span>
+                <span class="chip">API key authentication</span>
+                <span class="chip">Basic authentication</span>
+                <span class="chip">Authorization rules</span>
+                <span class="chip">Protected and public paths</span>
+            </div>
+
         </div>
     </section>
 
@@ -65,7 +95,7 @@
     </section>
 
     <!-- SECURITY TYPES -->
-    <section>
+    <section id="security-modes">
         <div class="container">
 
             <div class="section-head">

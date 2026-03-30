@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Spring Boot Core Modules (API, App, Commons, View) | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Spring Boot core modules for Spring Middleware. API contracts, application wiring, shared utilities, request logging, declarative clients, error handling, and role-based view transformations."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/core.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Spring Boot Core Modules | Spring Middleware" />
+    <meta property="og:description"
+          content="Core Spring Middleware modules for Spring Boot microservices: api, app, commons, and view." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/core.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Spring Boot Core Modules | Spring Middleware" />
+    <meta name="twitter:description"
+          content="API contracts, application utilities, shared infrastructure, and view transformation for Spring Boot microservices." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="core">
+<div id="site-header"></div>
+
+<main>
+
+    <section class="hero">
+        <div class="container">
+
+            <div class="eyebrow">Core modules</div>
+
+            <h1>Core modules for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware core modules provide the stable foundation used across the platform.
+                They cover annotation contracts, runtime application wiring, shared infrastructure helpers,
+                and view transformation utilities for Spring Boot microservices.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#core-model">Explore core modules</a>
+                <a class="button button-secondary" href="modules.html">View modules</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">API contracts</span>
+                <span class="chip">Application wiring</span>
+                <span class="chip">Shared utilities</span>
+                <span class="chip">Request logging</span>
+                <span class="chip">Declarative clients</span>
+                <span class="chip">Role-based views</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="core-model">
+        <div class="container">
+            <div class="grid-2">
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the core provides</h2>
+                    <p>
+                        The core is the shared platform foundation. It contains the small, stable contracts
+                        and runtime helpers that the rest of Spring Middleware builds on top of.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Common annotations and contracts</li>
+                        <li>Application-level Spring wiring and filters</li>
+                        <li>Shared utilities, exceptions, and converters</li>
+                        <li>View transformation and role-based shaping</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Core module families</h2>
+                    <ul class="key-points">
+                        <li><strong>api:</strong> annotation contracts and stable primitives</li>
+                        <li><strong>app:</strong> runtime wiring, filters, controllers, and boot helpers</li>
+                        <li><strong>commons:</strong> shared utilities, config, error model, and converters</li>
+                        <li><strong>view:</strong> response shaping and role-based view helpers</li>
+                    </ul>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="high-level-view">
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level core view</h2>
+                <p>
+                    The core modules are intentionally small and focused. Stable annotations live in
+                    <code>api</code>, runtime Spring wiring lives in <code>app</code>, shared helpers live
+                    in <code>commons</code>, and response shaping lives in <code>view</code>.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 960 260" xmlns="http://www.w3.org/2000/svg" aria-label="Spring Middleware core modules overview">
+
+                        <rect x="60" y="88" width="180" height="58" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="150" y="122" text-anchor="middle" fill="white" font-size="15">User Service</text>
+
+                        <rect x="300" y="48" width="120" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="360" y="80" text-anchor="middle" fill="white" font-size="15">api</text>
+
+                        <rect x="440" y="48" width="120" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="500" y="80" text-anchor="middle" fill="white" font-size="15">app</text>
+
+                        <rect x="580" y="48" width="120" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="640" y="80" text-anchor="middle" fill="white" font-size="15">commons</text>
+
+                        <rect x="720" y="48" width="120" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="780" y="80" text-anchor="middle" fill="white" font-size="15">view</text>
+
+                        <rect x="360" y="150" width="360" height="56" rx="18"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="540" y="183" text-anchor="middle" fill="white" font-size="15">Shared platform foundation for the rest of Spring Middleware</text>
+
+                        <line x1="240" y1="117" x2="300" y2="75" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="240" y1="117" x2="440" y2="75" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="240" y1="117" x2="580" y2="75" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="240" y1="117" x2="720" y2="75" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                        <line x1="360" y1="102" x2="430" y2="150" stroke="rgba(148,163,184,0.40)" stroke-width="2"/>
+                        <line x1="500" y1="102" x2="500" y2="150" stroke="rgba(148,163,184,0.40)" stroke-width="2"/>
+                        <line x1="640" y1="102" x2="580" y2="150" stroke="rgba(148,163,184,0.40)" stroke-width="2"/>
+                        <line x1="780" y1="102" x2="650" y2="150" stroke="rgba(148,163,184,0.40)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="api-module">
+        <div class="container">
+            <div class="section-head">
+                <h2>API module</h2>
+                <p>
+                    The <code>api</code> module contains stable annotations and simple contracts that
+                    other modules and user services depend on.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Purpose</h3>
+                    <p>
+                        Keep the public surface annotation-driven and stable. This is where declarative
+                        middleware contracts, registry markers, GraphQL annotations, and client security
+                        annotations belong.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Key annotations</h3>
+                    <ul class="list-clean">
+                        <li><code>@MiddlewareContract</code> and <code>@MiddlewareContractConnection</code></li>
+                        <li><code>@MiddlewareCircuitBreaker</code></li>
+                        <li><code>@Register</code> and <code>@RegisterSchema</code></li>
+                        <li><code>@GraphQLLink</code>, <code>@GraphQLType</code>, <code>@GraphQLCustomScalar</code></li>
+                        <li><code>@MiddlewareApiKey</code>, <code>@MiddlewarePassthrough</code>, <code>@MiddlewareClientCredentials</code></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="app-module">
+        <div class="container">
+            <div class="section-head">
+                <h2>App module</h2>
+                <p>
+                    The <code>app</code> module contains most of the runtime wiring used by bootable services.
+                    If a helper is expected to exist as a Spring-managed runtime component, it usually belongs here.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Client wiring</h3>
+                    <p>
+                        Declarative client analysis, proxy configuration, resilience registries,
+                        and security appliers live under the client packages.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Web filters and logging</h3>
+                    <p>
+                        Request context propagation, request/response logging, and forced logging helpers
+                        are part of the application runtime layer.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Registration and lifecycle</h3>
+                    <p>
+                        Bootstrap registration, managers, GraphQL integration, schedulers, controllers,
+                        and error handling helpers are exposed here.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Representative runtime classes</h3>
+                    <ul class="list-clean">
+                        <li><code>RegistryClient</code></li>
+                        <li><code>ProxyClientAnalyzer</code></li>
+                        <li><code>ClusterCircuitBreakerRegistry</code></li>
+                        <li><code>ClusterBulkheadRegistry</code></li>
+                        <li><code>RequestLoggingFilter</code></li>
+                        <li><code>LogRequestResponse</code></li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>When to use app</h3>
+                    <p>
+                        Use <code>app</code> for Spring Boot auto-configuration, filters, runtime managers,
+                        and shared Spring-managed components that services should get out of the box.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="commons-module">
+        <div class="container">
+            <div class="section-head">
+                <h2>Commons module</h2>
+                <p>
+                    The <code>commons</code> module centralizes small shared helpers used across modules,
+                    keeping duplication low and the rest of the codebase more focused.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Config and environment</h3>
+                    <p>
+                        Property helpers, configuration classes, and environment resolution utilities
+                        used by the rest of the platform.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Error model and exceptions</h3>
+                    <p>
+                        Unified error model classes, exception utilities, and shared error abstractions
+                        used across HTTP, GraphQL, and service communication.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Converters and utilities</h3>
+                    <p>
+                        General converters, validation constraints, controller helpers, and shared utility code
+                        that do not belong in more specialized modules.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-module">
+        <div class="container">
+            <div class="section-head">
+                <h2>View module</h2>
+                <p>
+                    The <code>view</code> module provides response shaping helpers so controllers can stay thin
+                    while role-based representation logic remains centralized.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>What it does</h3>
+                    <ul class="list-clean">
+                        <li>Role-based response shaping</li>
+                        <li>View adaptors and transformation helpers</li>
+                        <li>Context-aware property filtering</li>
+                        <li>Centralized API representation logic</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Key classes</h3>
+                    <ul class="list-clean">
+                        <li><code>View</code></li>
+                        <li><code>DataAdaptor</code></li>
+                        <li><code>PropertyRolesAllowedAuthorizer</code></li>
+                        <li><code>ContextFilterPredicate</code></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="configuration">
+        <div class="container">
+            <div class="section-head">
+                <h2>Common configuration points</h2>
+                <p>
+                    The core modules expose configuration that services commonly use for logging,
+                    middleware clients, resilience, and outbound client security.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Request and response logging</h3>
+                    <pre class="code-block"><code>middleware:
+  log:
+    apiKey: ${MIDDLEWARE_LOG_API_KEY:}
+    request:
+      enabled: true
+    response:
+      enabled: true
+    responseTime:
+      enabled: false
+    exclude:
+      urlPatterns:
+        - "/actuator/**"
+        - "/health/**"</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Client defaults and resilience</h3>
+                    <pre class="code-block"><code>middleware:
+  client:
+    registry-endpoint: ${REGISTRY_ENDPOINT:http://localhost:8080/registry}
+    defaultMaxConcurrent: 25
+    product:
+      connection:
+        timeout: 30000
+        max-connections: 50
+        max-concurrent-calls: 200
+        max-retries: 3
+        retry-backoff-millis: 1000
+      circuit-breaker:
+        enabled: true
+        failure-rate-threshold: 50
+        wait-duration-in-open-state-ms: 10000</code></pre>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>What these properties drive</h3>
+                    <ul class="list-clean">
+                        <li><code>middleware.log.*</code> drives request/response logging behavior</li>
+                        <li><code>middleware.client.*.connection.*</code> maps to middleware client connection settings</li>
+                        <li><code>middleware.client.*.circuit-breaker.*</code> configures resilience registries</li>
+                        <li><code>middleware.client.*.security.*</code> configures outbound client authentication</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Forced logging</h3>
+                    <p>
+                        Sending a request with <code>X-Logging-Key</code> matching the configured
+                        <code>middleware.log.apiKey</code> forces request/response logging even when
+                        INFO-level logging would otherwise be suppressed.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="contract-example">
+        <div class="container">
+            <div class="section-head">
+                <h2>Middleware contract example</h2>
+                <p>
+                    The core modules work together around annotation-driven contracts. A declarative client can
+                    define connection, resilience, and security behavior through the <code>api</code> annotations,
+                    while the <code>app</code> module handles runtime wiring.
+                </p>
+            </div>
+
+            <div class="card card-zoomable">
+                <h3>@MiddlewareContract example</h3>
+                <pre class="code-block"><code>@MiddlewareContract(
+  name = "product",
+  connection = @MiddlewareContractConnection(
+    timeout = "${middleware.client.product.connection.timeout:30000}",
+    maxConnections = "${middleware.client.product.connection.max-connections:50}",
+    maxConcurrentCalls = "${middleware.client.product.connection.max-concurrent-calls:200}",
+    maxRetries = "${middleware.client.product.connection.max-retries:3}",
+    retryBackoffMillis = "${middleware.client.product.connection.retry-backoff-millis:1000}"
+  ),
+  circuitBreaker = @MiddlewareCircuitBreaker(
+    enabled = "${middleware.client.product.circuit-breaker.enabled:true}",
+    failureRateThreshold = "${middleware.client.product.circuit-breaker.failure-rate-threshold:50}",
+    waitDurationInOpenStateMs = "${middleware.client.product.circuit-breaker.wait-duration-in-open-state-ms:10000}",
+    slidingWindowSize = "${middleware.client.product.circuit-breaker.sliding-window-size:20}",
+    minimumNumberOfCalls = "${middleware.client.product.circuit-breaker.minimum-number-of-calls:10}",
+    permittedNumberOfCallsInHalfOpenState = "${middleware.client.product.circuit-breaker.permitted-number-of-calls-in-half-open-state:3}",
+    statusShouldOpenBreaker = {"${middleware.client.product.circuit-breaker.status-should-open-breaker:5xx}"},
+    statusShouldIgnoreBreaker = {"${middleware.client.product.circuit-breaker.status-should-ignore-breaker:4xx}"}
+  ),
+  security = "${middleware.client.product.security.type:API_KEY}"
+)
+public interface ProductApiClient {
+    @GetMapping("/api/v1/products/{id}")
+    ProductDto getProduct(@PathVariable("id") UUID id);
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="patterns">
+        <div class="container">
+            <div class="section-head">
+                <h2>Common patterns</h2>
+                <p>
+                    Most services interact with the core modules through a few repeated platform patterns.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Declarative middleware clients</h3>
+                    <p>
+                        Services declare contracts with annotations from <code>api</code>, while
+                        runtime wiring and resilience live in <code>app</code>.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Request logging and forced logging</h3>
+                    <p>
+                        The logging filter and its helpers combine property-driven behavior with
+                        a header-based forced logging mechanism for incident debugging.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Unified error propagation</h3>
+                    <p>
+                        The shared error abstractions from <code>commons</code> integrate with
+                        HTTP and GraphQL handling through the runtime wiring in <code>app</code>.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Design guidance</h2>
+                <p>
+                    The core is intentionally focused. Public APIs should stay stable and annotation-driven,
+                    while runtime complexity should remain in small Spring-managed helpers.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep api stable</h3>
+                    <p>
+                        Prefer adding a small annotation and a focused helper contract instead of exposing
+                        a large mutable runtime API surface.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Use app for runtime wiring</h3>
+                    <p>
+                        Spring-managed runtime helpers, auto-configuration, filters, and managers
+                        belong in <code>app</code>.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Centralize shared helpers in commons</h3>
+                    <p>
+                        If a helper is reused across modules, place it in <code>commons</code>
+                        rather than duplicating it in specialized modules.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The core area is spread across the main foundational modules of the repository.
+                </p>
+            </div>
+
+            <div class="grid-4">
+                <article class="card code-ref">
+                    <h3>API annotations</h3>
+                    <span class="code-tag">api module</span>
+                    <p class="code-path">.../api/src/main/java/io/github/spring/middleware/annotation</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>Application wiring</h3>
+                    <span class="code-tag">app module</span>
+                    <p class="code-path">.../app/src/main/java/io/github/spring/middleware</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>Shared utilities</h3>
+                    <span class="code-tag">commons module</span>
+                    <p class="code-path">.../commons/src/main/java/io/github/spring/middleware</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>View helpers</h3>
+                    <span class="code-tag">view module</span>
+                    <p class="code-path">.../view/api/src/main/java/io/github/spring/middleware/view</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-core-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    The core modules connect directly with communication, security, logging, and the modular
+                    structure of the platform.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the core modules fit into the modular platform structure.</p>
+                </a>
+
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How declarative clients and runtime wiring use the core contracts and helpers.</p>
+                </a>
+
+                <a class="card" href="security.html">
+                    <h3 style="margin-top: 0;">Security</h3>
+                    <p>How authentication and authorization build on top of the core configuration and runtime layer.</p>
+                </a>
+
+                <a class="card" href="logging.html">
+                    <h3 style="margin-top: 0;">Logging</h3>
+                    <p>How request and response logging is implemented by the core application layer.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — core platform modules, contracts, and shared runtime foundation.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

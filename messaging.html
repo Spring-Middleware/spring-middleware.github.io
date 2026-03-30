@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Messaging | Spring Middleware</title>
+
+    <title>Messaging in Spring Boot Microservices (Kafka & RabbitMQ) | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Messaging infrastructure in Spring Middleware: Kafka and RabbitMQ conventions, publishers, consumers, handlers, runtime behavior, and platform-aligned messaging patterns."
+            content="Messaging in Spring Boot microservices using Kafka and RabbitMQ. Publishers, consumers, event-driven patterns, retries, dead-letter handling, and platform-aligned messaging architecture."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/messaging.html" />
-    <meta property="og:title" content="Spring Middleware — Messaging" />
-    <meta property="og:description" content="Kafka and RabbitMQ conventions for Spring Middleware." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Messaging in Spring Boot Microservices (Kafka & RabbitMQ) | Spring Middleware" />
+    <meta property="og:description"
+          content="Kafka and RabbitMQ messaging patterns for Spring Boot microservices with publishers, consumers, retries, and dead-letter handling." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/messaging.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Messaging" />
-    <meta name="twitter:description" content="Kafka and RabbitMQ conventions for Spring Middleware." />
+    <meta name="twitter:title" content="Messaging in Spring Boot Microservices (Kafka & RabbitMQ) | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Event-driven messaging for Spring Boot microservices using Kafka and RabbitMQ." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,29 +38,31 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Messaging</div>
 
-            <h1>Platform-aligned messaging with Kafka and RabbitMQ.</h1>
+            <div class="eyebrow">Messaging / Event-Driven Architecture</div>
+
+            <h1>Messaging for Spring Boot microservices with Kafka and RabbitMQ</h1>
 
             <p class="lead">
-                Spring Middleware treats messaging as a platform capability, not as per-service ad hoc setup.
-                It provides reusable patterns for publishers, consumers, handlers, listeners, error handling,
-                and broker integration while keeping runtime behavior explicit.
+                Spring Middleware provides a platform model for messaging in Spring Boot microservices.
+                It standardizes publishers, consumers, and event-driven patterns across Kafka and RabbitMQ,
+                including retry strategies, dead-letter handling, and explicit runtime behavior.
             </p>
 
             <div class="hero-actions">
-                <a class="button button-primary" href="#messaging-model">Explore the messaging model</a>
-                <a class="button button-secondary" href="architecture.html">See architecture</a>
+                <a class="button button-primary" href="#messaging-model">Explore messaging</a>
+                <a class="button button-secondary" href="architecture.html">View architecture</a>
             </div>
 
             <div class="chip-row">
-                <span class="chip">Kafka publishers and subscribers</span>
-                <span class="chip">RabbitMQ JMS-like resources</span>
-                <span class="chip">Annotation-driven wiring</span>
-                <span class="chip">Explicit runtime behavior</span>
-                <span class="chip">Handlers, listeners, and error handlers</span>
-                <span class="chip">Dead-letter and retry patterns</span>
+                <span class="chip">Kafka messaging</span>
+                <span class="chip">RabbitMQ messaging</span>
+                <span class="chip">Event-driven architecture</span>
+                <span class="chip">Publishers and consumers</span>
+                <span class="chip">Retry and dead-letter handling</span>
+                <span class="chip">Platform messaging patterns</span>
             </div>
+
         </div>
     </section>
 

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>MongoDB Dynamic Search and Aggregation for Spring Boot | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="MongoDB dynamic search and aggregation for Spring Boot microservices. Typed search DTOs, generated queries, pagination, geo queries, and reusable aggregation pipeline builders."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/mongo.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="MongoDB Dynamic Search and Aggregation for Spring Boot | Spring Middleware" />
+    <meta property="og:description"
+          content="Dynamic MongoDB queries, aggregation pipelines, pagination, geo queries, and reusable search DTO infrastructure for Spring Boot microservices." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/mongo.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MongoDB Dynamic Search and Aggregation for Spring Boot | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Dynamic MongoDB queries and aggregation pipelines for Spring Boot microservices." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="mongo">
+<div id="site-header"></div>
+
+<main>
+
+    <section class="hero">
+        <div class="container">
+
+            <div class="eyebrow">MongoDB integration</div>
+
+            <h1>Dynamic MongoDB search and aggregation for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware provides a dynamic query layer on top of Spring Data MongoDB.
+                It translates typed search DTOs into MongoDB queries and aggregation pipelines,
+                making search behavior reusable, explicit, and consistent across Spring Boot microservices.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#mongo-model">Explore Mongo</a>
+                <a class="button button-secondary" href="modules.html">View modules</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Dynamic search DTOs</span>
+                <span class="chip">Aggregation pipelines</span>
+                <span class="chip">Generated query JSON</span>
+                <span class="chip">Pagination support</span>
+                <span class="chip">Geo queries</span>
+                <span class="chip">Reusable query builders</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="mongo-model">
+        <div class="container">
+            <div class="grid-2">
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the Mongo module provides</h2>
+                    <p>
+                        The Mongo module adds dynamic search and aggregation helpers on top of Spring Data MongoDB.
+                        Instead of hardcoding query logic in each repository, services can define typed search DTOs
+                        and let the platform translate them into queries and aggregation stages.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Dynamic find, count, and aggregate operations</li>
+                        <li>Typed search DTO to query translation</li>
+                        <li>Pagination and result helpers</li>
+                        <li>Support for geo queries and nested criteria</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Core runtime pieces</h2>
+                    <ul class="key-points">
+                        <li><strong>MongoSearchRepositoryImpl:</strong> repository base for dynamic find, count, and aggregate operations.</li>
+                        <li><strong>CriteriaBuilderComponent:</strong> builds MongoDB <code>Criteria</code> objects.</li>
+                        <li><strong>QueryCreatorComponent:</strong> creates <code>Query</code> instances from search DTOs.</li>
+                        <li><strong>PipeLineBuilderComponent:</strong> builds aggregation pipelines.</li>
+                        <li><strong>AddFieldsBuilderComponent:</strong> builds computed fields inside aggregation stages.</li>
+                    </ul>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-head">
+                <h2>How it works</h2>
+                <p>
+                    The module uses a small processing pipeline that inspects a <code>MongoSearch</code> DTO
+                    and translates annotated fields into MongoDB criteria and aggregation stages.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Define a search DTO</h3>
+                    <p>Create a typed <code>MongoSearch</code> DTO describing the search fields for your domain.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Process properties</h3>
+                    <p>Property processors inspect DTO fields and decide how they map to equality, range, OR, geo, or nested criteria.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Build query or pipeline</h3>
+                    <p>The builder components translate the DTO into a MongoDB <code>Query</code> or <code>Aggregation</code>.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Property-level processing</h3>
+                    <p>
+                        <code>MongoSearchPropertyProcessor</code> applies annotation semantics and field mapping rules
+                        to produce query fragments for equality, ranges, OR/AND combinations, geo conditions, and nested arrays.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Class-level orchestration</h3>
+                    <p>
+                        <code>MongoSearchClassProcessor</code> and related processors orchestrate the translation of the full DTO,
+                        composing nested criteria and delegating to query and aggregation builders.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="repository-usage">
+        <div class="container">
+            <div class="section-head">
+                <h2>Repository usage</h2>
+                <p>
+                    Services define a search DTO, extend the repository contract, and use high-level methods such as
+                    <code>findBySearch</code>, <code>aggregateBySearch</code>, and <code>countBySearch</code>.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Repository example</h3>
+                    <pre class="code-block"><code>public interface ProductSearchRepository
+    extends MongoSearchRepository&lt;Product, ProductSearch&gt; {
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Service usage example</h3>
+                    <pre class="code-block"><code>@Autowired
+private ProductSearchRepository productSearchRepository;
+
+Pagination pagination = new Pagination(0, 20);
+
+Page&lt;Product&gt; page =
+    productSearchRepository.findBySearch(searchDto, pagination);</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="generated-queries">
+        <div class="container">
+            <div class="section-head">
+                <h2>Generated query examples</h2>
+                <p>
+                    The module test suite shows how typed search DTOs are translated into MongoDB criteria and aggregation JSON.
+                    These examples illustrate the kind of queries the builders generate.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Simple equality</h3>
+                    <pre class="code-block"><code>{
+  "$and": [ { "key": "KEY" } ]
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Combined conditions</h3>
+                    <pre class="code-block"><code>{
+  "$and": [ { "value": "VALUE" }, { "key": "KEY" } ]
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Nested sub-search</h3>
+                    <pre class="code-block"><code>{
+  "$and": [
+    { "$and": [ { "subSearch.propA": "PROP_A" }, { "subSearch.propB": "PROP_B" } ] },
+    { "key": "KEY" }
+  ]
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>OR conditions</h3>
+                    <pre class="code-block"><code>{
+  "$or": [ { "orB": "OR_B" }, { "orA": "OR_A" } ]
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="nested-and-aggregation">
+        <div class="container">
+            <div class="section-head">
+                <h2>Nested arrays and aggregation stages</h2>
+                <p>
+                    The module also supports nested array matching and computed fields through aggregation pipeline builders.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Nested arrays with elemMatch</h3>
+                    <pre class="code-block"><code>{
+  "$and": [
+    {
+      "itemSearch": {
+        "$elemMatch": {
+          "$and": [
+            { "propItemA": "PROP_ITEM_A" },
+            { "propItemB": "PROP_ITEM_B" }
+          ]
+        }
+      }
+    }
+  ]
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>AddFields example</h3>
+                    <pre class="code-block"><code>{
+  "$addFields": {
+    "itemSearch": {
+      "$map": {
+        "input": "$itemSearch",
+        "as": "u",
+        "in": {
+          "propAB": { "$concat": ["$$u.propA", " ", "$$u.propB"] },
+          "propItemA": "$$u.propItemA",
+          "class": "$$u.class",
+          "propItemD": "$$u.propItemD",
+          "propItemC": "$$u.propItemC",
+          "propItemB": "$$u.propItemB"
+        }
+      }
+    }
+  }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="pagination-geo">
+        <div class="container">
+            <div class="section-head">
+                <h2>Pagination, aggregation, and geo queries</h2>
+                <p>
+                    The repository helpers support pagination and can build richer aggregations and geo-aware criteria
+                    from the search DTO and processing components.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Pagination</h3>
+                    <p>
+                        Use the provided <code>Pagination</code> DTO and result wrappers when executing
+                        <code>findBySearch(...)</code>.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Aggregation pipelines</h3>
+                    <p>
+                        Pipelines can combine stages such as <code>$addFields</code>, <code>$match</code>,
+                        <code>$group</code>, <code>$project</code>, <code>$sort</code>, <code>$skip</code>, and <code>$limit</code>.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Geo queries</h3>
+                    <p>
+                        Geo-related fields in the search DTO can generate criteria such as
+                        <code>nearSphere</code> and <code>geoWithin</code> where appropriate.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="extending">
+        <div class="container">
+            <div class="section-head">
+                <h2>Extending the module</h2>
+                <p>
+                    The module is intentionally extensible. Builder components and processors can be customized
+                    to support project-specific operators or mappings.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Customize builders</h3>
+                    <p>
+                        Extend or override components such as <code>CriteriaBuilderComponent</code> or
+                        <code>AddFieldsBuilderComponent</code> to add custom query operators.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Reuse repository entry points</h3>
+                    <p>
+                        Keep using <code>MongoSearchRepositoryImpl</code> and its high-level methods while
+                        adapting the translation logic to project-specific search needs.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    Dynamic query infrastructure is powerful, but it should remain bounded and explicit.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep search DTOs focused</h3>
+                    <p>
+                        Avoid large unconstrained DTOs that can generate overly broad or expensive queries.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Validate search inputs</h3>
+                    <p>
+                        Apply validation to page size, geo radius, and user-controlled search parameters.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Use computed fields carefully</h3>
+                    <p>
+                        <code>$addFields</code> is powerful, but can make aggregations more expensive if overused.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The Mongo module is centered around repository helpers, processors, and builder components.
+                </p>
+            </div>
+
+            <div class="grid-4">
+                <article class="card code-ref">
+                    <h3>MongoSearchRepositoryImpl</h3>
+                    <span class="code-tag">mongo core</span>
+                    <p class="code-path">.../mongo/repository/MongoSearchRepositoryImpl.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>CriteriaBuilderComponent</h3>
+                    <span class="code-tag">mongo components</span>
+                    <p class="code-path">.../mongo/components/CriteriaBuilderComponent.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>PipeLineBuilderComponent</h3>
+                    <span class="code-tag">mongo components</span>
+                    <p class="code-path">.../mongo/components/PipeLineBuilderComponent.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>Mongo processors</h3>
+                    <span class="code-tag">mongo core-commons</span>
+                    <p class="code-path">.../mongo/processor/*</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-mongo-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    The Mongo module fits into the broader platform as part of the data integration model,
+                    alongside communication, architecture, and reusable module composition.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>How dynamic data modules fit into the broader platform and runtime model.</p>
+                </a>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the Mongo module fits into the modular platform structure.</p>
+                </a>
+
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How search-backed services participate in the broader service communication model.</p>
+                </a>
+
+                <a class="card" href="graphql.html">
+                    <h3 style="margin-top: 0;">GraphQL Federation</h3>
+                    <p>How Mongo-backed services can expose search capabilities inside the platform GraphQL model.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — MongoDB dynamic search and aggregation infrastructure.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

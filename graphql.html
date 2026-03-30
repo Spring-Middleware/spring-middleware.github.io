@@ -3,18 +3,29 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GraphQL Federation | Spring Middleware</title>
-    <meta name="description" content="Spring Middleware provides distributed GraphQL infrastructure for autonomous microservices, including schema registration, gateway composition, GraphQL Links, scalar normalization, and a unified error model." />
+
+    <title>GraphQL Federation for Spring Boot Microservices | Spring Middleware</title>
+
+    <meta name="description"
+          content="Distributed GraphQL federation for Spring Boot microservices. Schema registration, gateway composition, GraphQL Links, and unified error handling in a registry-driven architecture." />
+
     <link rel="canonical" href="https://spring-middleware.com/graphql.html" />
-    <meta property="og:title" content="Spring Middleware — GraphQL Federation" />
-    <meta property="og:description" content="Registry-driven GraphQL federation for Spring Boot microservices." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="GraphQL Federation for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Registry-driven GraphQL federation for Spring Boot microservices with schema composition, gateway orchestration, and unified error handling." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/graphql.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — GraphQL Federation" />
-    <meta name="twitter:description" content="Registry-driven GraphQL federation for Spring Boot microservices." />
+    <meta name="twitter:title" content="GraphQL Federation for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Distributed GraphQL architecture for Spring Boot microservices with schema federation and gateway composition." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
 
     <link rel="stylesheet" href="css/styles.css" />
@@ -27,12 +38,14 @@
     <section class="hero hero-page">
         <div class="container">
             <div class="hero-content narrow">
-                <span class="eyebrow">Platform Capability</span>
-                <h1>Distributed GraphQL for autonomous services</h1>
+                <span class="eyebrow">GraphQL Federation</span>
+
+                <h1>GraphQL federation for Spring Boot microservices</h1>
+
                 <p class="hero-lead">
-                    Spring Middleware treats GraphQL as a platform concern in a distributed architecture.
-                    Each service owns its schema, registers its metadata in the Registry, and can participate
-                    in a unified GraphQL API exposed through a gateway.
+                    Spring Middleware provides a distributed GraphQL architecture for Spring Boot microservices.
+                    Each service owns its schema, registers it in the Registry, and participates in a unified
+                    GraphQL API composed at runtime through a gateway.
                 </p>
 
                 <div class="hero-actions">
@@ -445,9 +458,15 @@
                 <span class="eyebrow">Error model</span>
                 <h2>Consistent GraphQL errors across services</h2>
                 <p>
-                    Spring Middleware provides centralized error handling for GraphQL endpoints inside services. The goal is
-                    to keep GraphQL responses aligned with the same domain error model already used across HTTP APIs.
+                    Spring Middleware provides centralized error handling for GraphQL endpoints inside services.
+                    The goal is to keep GraphQL responses aligned with the same domain error model already used
+                    across HTTP APIs. This ensures consistent error semantics across transport layers
                 </p>
+                <div class="section-actions">
+                    <a class="button button-secondary" href="errors.html">
+                        See more about errors
+                    </a>
+                </div>
             </div>
 
             <div class="grid grid-2">

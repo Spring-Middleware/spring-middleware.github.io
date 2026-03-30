@@ -1,24 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Modules | Spring Middleware</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <title>Modular Architecture for Spring Boot Microservices | Spring Middleware</title>
+
     <meta
             name="description"
-            content="How Spring Middleware is organized into reusable modules: core, data, messaging, platform services, and the platform documentation that explains runtime behavior."
+            content="Modular architecture for Spring Boot microservices. Spring Middleware provides reusable modules for core infrastructure, data, messaging, and platform services with BOM-based dependency management."
     />
-    <link rel="canonical" href="https://spring-middleware.com/modules.html" />
-    <meta property="og:title" content="Spring Middleware — Modules" />
-    <meta property="og:description" content="Module groups, BOM-based adoption, and platform documentation for Spring Middleware." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://spring-middleware.com/modules.html" />
-    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Modules" />
-    <meta name="twitter:description" content="Module groups, BOM-based adoption, and platform documentation for Spring Middleware." />
-    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
-    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+
+    <link rel="canonical" href="https://spring-middleware.com/modules.html"/>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Modular Architecture for Spring Boot Microservices | Spring Middleware"/>
+    <meta property="og:description"
+          content="Reusable modules for Spring Boot microservices with BOM-based version alignment and incremental adoption."/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://spring-middleware.com/modules.html"/>
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content="Modular Architecture for Spring Boot Microservices | Spring Middleware"/>
+    <meta name="twitter:description"
+          content="Modular platform for Spring Boot microservices with core, data, messaging, and platform modules."/>
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png"/>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
 </head>
@@ -28,28 +38,30 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Modules</div>
 
-            <h1>A modular platform, not a single monolith.</h1>
+            <div class="eyebrow">Modular Architecture</div>
+
+            <h1>Modular architecture for Spring Boot microservices</h1>
 
             <p class="lead">
-                Spring Middleware is split into focused modules that can be adopted incrementally.
-                Core runtime infrastructure, data integrations, messaging capabilities, registry-driven platform services,
-                and cross-cutting documentation all evolve as parts of the same platform model.
+                Spring Middleware is organized as a modular platform for Spring Boot microservices.
+                It provides reusable modules for core infrastructure, data access, messaging, and platform services,
+                allowing incremental adoption while maintaining consistent runtime behavior across services.
             </p>
 
             <div class="hero-actions">
-                <a class="button button-primary" href="#module-groups">Explore module groups</a>
-                <a class="button button-secondary" href="getting-started.html">Getting started</a>
+                <a class="button button-primary" href="#module-groups">Explore modules</a>
+                <a class="button button-secondary" href="getting-started.html">Start setup</a>
             </div>
 
             <div class="chip-row">
-                <span class="chip">BOM-based version alignment</span>
+                <span class="chip">BOM dependency management</span>
                 <span class="chip">Incremental adoption</span>
-                <span class="chip">Core + data + messaging + platform</span>
-                <span class="chip">Registry-driven architecture</span>
-                <span class="chip">Focused runtime capabilities</span>
+                <span class="chip">Core, data, messaging, platform modules</span>
+                <span class="chip">Spring Boot modular architecture</span>
+                <span class="chip">Reusable infrastructure components</span>
             </div>
+
         </div>
     </section>
 
@@ -83,7 +95,9 @@
                     <ul class="key-points">
                         <li><strong>Use the BOM</strong> to keep module versions aligned.</li>
                         <li><strong>Start small</strong> with the runtime modules your service needs today.</li>
-                        <li><strong>Grow by capability</strong> as messaging, GraphQL, registry, or data concerns appear.</li>
+                        <li><strong>Grow by capability</strong> as messaging, GraphQL, registry, or data concerns
+                            appear.
+                        </li>
                     </ul>
                 </article>
             </div>
@@ -145,7 +159,7 @@
             </div>
 
             <div class="grid-4">
-                <article class="card">
+                <a class="card" href="core.html">
                     <h3>Core</h3>
                     <p>
                         Foundational runtime pieces used across the platform, including
@@ -158,7 +172,7 @@
                         <li><code>model-api</code> / <code>model-core</code></li>
                         <li><code>view-api</code> / <code>view-core</code></li>
                     </ul>
-                </article>
+                </a>
 
                 <article class="card">
                     <h3>Data</h3>
@@ -167,26 +181,22 @@
                         locks, and reusable data access infrastructure into the platform layer.
                     </p>
                     <ul class="list-clean">
-                        <li>Mongo search engine</li>
-                        <li>JPA search engine</li>
-                        <li>Redis integration</li>
-                        <li>Cache utilities</li>
+                        <li><a href="mongo.html">Mongo search engine</a></li>
+                        <li><a href="jpa.html">JPA search engine</a></li>
+                        <li><a href="redis.html">Redis integration</a></li>
+                        <li><a href="cache.html">Redis cache module</a></li>
                     </ul>
                 </article>
 
-                <article class="card">
+                <a class="card" href="messaging.html">
                     <h3>Messaging</h3>
-                    <p>
-                        Event-driven and broker integrations for services that need asynchronous communication,
-                        including publisher/subscriber models and explicit processing hooks.
-                    </p>
                     <ul class="list-clean">
                         <li>Kafka integration</li>
                         <li>RabbitMQ integration</li>
                         <li>Retry and dead-letter patterns</li>
                         <li>Consumer and handler conventions</li>
                     </ul>
-                </article>
+                </a>
 
                 <article class="card">
                     <h3>Platform</h3>
@@ -195,8 +205,8 @@
                         including registry services and GraphQL-related components.
                     </p>
                     <ul class="list-clean">
-                        <li>Registry modules</li>
-                        <li>GraphQL support</li>
+                        <li><a href="registry.html">Registry modules</a></li>
+                        <li><a href="graphql.html">GraphQL support</a></li>
                         <li>GraphQL gateway</li>
                         <li>Topology and schema metadata</li>
                     </ul>
@@ -217,13 +227,15 @@
 
             <div class="diagram-card">
                 <div class="diagram-svg-wrapper">
-                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg" aria-label="Spring Middleware module map">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 960 360" xmlns="http://www.w3.org/2000/svg"
+                         aria-label="Spring Middleware module map">
 
                         <!-- BOM -->
                         <rect x="350" y="20" width="260" height="58" rx="18"
                               fill="rgba(56,189,248,0.08)"
                               stroke="rgba(56,189,248,0.28)"/>
-                        <text x="480" y="53" text-anchor="middle" fill="white" font-size="17">Spring Middleware BOM</text>
+                        <text x="480" y="53" text-anchor="middle" fill="white" font-size="17">Spring Middleware BOM
+                        </text>
 
                         <!-- Lines from BOM -->
                         <line x1="480" y1="78" x2="180" y2="145" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
@@ -236,28 +248,35 @@
                               fill="rgba(255,255,255,0.03)"
                               stroke="rgba(148,163,184,0.16)"/>
                         <text x="180" y="172" text-anchor="middle" fill="white" font-size="15">Core Modules</text>
-                        <text x="180" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">app • api • commons • models</text>
+                        <text x="180" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">app • api • commons •
+                            models
+                        </text>
 
                         <!-- Data -->
                         <rect x="280" y="145" width="200" height="66" rx="18"
                               fill="rgba(34,197,94,0.08)"
                               stroke="rgba(34,197,94,0.26)"/>
                         <text x="380" y="172" text-anchor="middle" fill="white" font-size="15">Data Modules</text>
-                        <text x="380" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">mongo • jpa • redis • cache</text>
+                        <text x="380" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">mongo • jpa • redis •
+                            cache
+                        </text>
 
                         <!-- Messaging -->
                         <rect x="480" y="145" width="200" height="66" rx="18"
                               fill="rgba(255,255,255,0.03)"
                               stroke="rgba(148,163,184,0.16)"/>
                         <text x="580" y="172" text-anchor="middle" fill="white" font-size="15">Messaging Modules</text>
-                        <text x="580" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">kafka • rabbitmq</text>
+                        <text x="580" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">kafka • rabbitmq
+                        </text>
 
                         <!-- Platform -->
                         <rect x="680" y="145" width="200" height="66" rx="18"
                               fill="rgba(255,255,255,0.03)"
                               stroke="rgba(148,163,184,0.16)"/>
                         <text x="780" y="172" text-anchor="middle" fill="white" font-size="15">Platform Modules</text>
-                        <text x="780" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">registry • graphql • gateway</text>
+                        <text x="780" y="193" text-anchor="middle" fill="#9fb0c9" font-size="12.5">registry • graphql •
+                            gateway
+                        </text>
 
                         <!-- Documentation box -->
                         <rect x="200" y="260" width="560" height="78" rx="22"
@@ -316,7 +335,8 @@
             <div class="section-head">
                 <h2>Platform guides</h2>
                 <p>
-                    Not everything is a module page. Some topics describe how the platform behaves across modules and services.
+                    Not everything is a module page. Some topics describe how the platform behaves across modules and
+                    services.
                 </p>
             </div>
 
@@ -339,10 +359,10 @@
                 <article class="card">
                     <h3>Communication and failures</h3>
                     <ul class="list-clean">
-                        <li><code>communication</code> guide</li>
-                        <li><code>errors</code> guide</li>
-                        <li>Declarative clients</li>
-                        <li>Unified error propagation</li>
+                        <li><a href="communication.html"><code>communication</code> guide</a></li>
+                        <li><a href="errors.html"><code>errors</code> guide</a></li>
+                        <li>Declarative client model</li>
+                        <li>Structured error propagation</li>
                     </ul>
                 </article>
 
@@ -350,8 +370,8 @@
                     <h3>Security and observability</h3>
                     <ul class="list-clean">
                         <li><a href="security.html">Security</a></li>
-                        <li><code>client-security</code> guide</li>
-                        <li><code>logging</code> guide</li>
+                        <li><a href="client-security.html"><code>client-security</code> guide</a></li>
+                        <li><a href="logging.html"><code>logging</code> guide</a></li>
                         <li>Cross-service tracing and request logging</li>
                     </ul>
                 </article>
@@ -364,45 +384,50 @@
             <div class="section-head">
                 <h2>Data and infrastructure integrations</h2>
                 <p>
-                    Several capabilities are already documented at module level and can be linked from here as focused deep dives.
+                    Several capabilities are already documented at module level and can be linked from here as focused
+                    deep dives.
                 </p>
             </div>
 
             <div class="grid-4">
-                <article class="card">
+                <a class="card" href="mongo.html">
                     <h3>Mongo</h3>
                     <p>Dynamic search capabilities and reusable query composition for MongoDB-backed services.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="jpa.html">
                     <h3>JPA</h3>
                     <p>Dynamic search capabilities and reusable query infrastructure for relational persistence.</p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="redis.html">
                     <h3>Redis</h3>
                     <p>Distributed maps, locks, and reusable Redis abstractions for platform services.</p>
-                </article>
+                </a>
 
-                <article class="card">
-                    <h3>Logging</h3>
-                    <p>Request and response logging behavior configured through platform-level middleware properties.</p>
-                </article>
+                <a class="card" href="cache.html">
+                    <h3>Cache</h3>
+                    <p>Redis-based caching with TTL configuration, runtime statistics, cache inspection, and
+                        programmatic cache management.</p>
+                </a>
             </div>
         </div>
     </section>
 
     <section id="next-step">
         <div class="container">
-            <div class="cta-box">
-                <div>
-                    <h2>Start from capability, not from folder names</h2>
+            <div class="cta-box cta-box-final">
+                <div class="cta-copy">
+                    <div class="eyebrow">Next steps</div>
+                    <h2>Continue through the platform</h2>
                     <p>
-                        The most useful way to adopt Spring Middleware is to start from the capability your service needs
-                        today, then pull in only the modules and guides that support that runtime concern.
+                        Explore the related guides and capability pages to understand how this part of Spring Middleware fits into the broader runtime model.
                     </p>
                 </div>
-                <a class="button button-secondary" href="getting-started.html">Open getting started</a>
+                <div class="cta-actions">
+                    <a class="button button-primary" href="architecture.html">Arquitecture</a>
+                    <a class="button button-secondary" href="documentation.html">Open documentation</a>
+                </div>
             </div>
         </div>
     </section>

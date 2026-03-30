@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Primary SEO -->
-    <title>Spring Middleware — Platform Layer for Spring Boot Microservices</title>
+    <title>Spring Boot Microservices Architecture Platform — Spring Middleware</title>
     <meta name="description"
-          content="Spring Middleware is a registry-driven platform layer for Spring Boot microservices. It standardizes service discovery, declarative communication, GraphQL federation, messaging, and infrastructure concerns." />
+          content="Spring Middleware is a platform layer for Spring Boot microservices, providing service discovery, declarative clients, GraphQL federation, messaging, and a unified error model." />
     <link rel="canonical" href="https://spring-middleware.com" />
 
     <!-- Open Graph (LinkedIn, etc.) -->
-    <meta property="og:title" content="Spring Middleware — Platform Layer for Microservices" />
+    <meta property="og:title" content="Spring Boot Microservices Platform — Spring Middleware" />
     <meta property="og:description"
           content="Registry-driven architecture, declarative clients, GraphQL federation, messaging, and infrastructure standardization for Spring Boot microservices." />
     <meta property="og:type" content="website" />
@@ -38,7 +38,7 @@
     <section class="hero" id="top">
         <div class="container">
             <div class="eyebrow">Platform layer for Spring Boot microservices</div>
-            <h1>Standardize infrastructure. Keep services autonomous.</h1>
+            <h1>Platform layer for Spring Boot microservices</h1>
             <p class="lead">
                 Spring Middleware is a platform layer for microservices built on Spring Boot. It standardizes communication, discovery, messaging, tracing, and infrastructure integration while keeping service boundaries explicit and business logic independent.
             </p>
@@ -70,33 +70,43 @@
                 </p>
             </div>
 
+            <div class="section-head">
+                <h2>Required infrastructure</h2>
+                <p>
+                    Spring Middleware is a platform layer that depends on external infrastructure components.
+                    These are not optional libraries — they are part of the runtime model.
+                </p>
+            </div>
+
             <div class="grid-3">
+
                 <article class="card">
                     <h3>Registry Service</h3>
                     <p>
-                        The control plane of the platform. It stores service topology, node endpoints,
-                        REST resources, and GraphQL schema locations.
+                        Core platform component acting as the control plane.
+                        Stores service topology, node endpoints, and API metadata.
                     </p>
                     <a href="registry.html">Learn about the Registry</a>
                 </article>
 
                 <article class="card">
-                    <h3>RabbitMQ</h3>
+                    <h3>RabbitMQ (Infrastructure)</h3>
                     <p>
-                        Used for event-driven communication and node-scoped messaging patterns.
-                        Enables asynchronous workflows and platform-level event propagation.
+                        Required messaging infrastructure used for node-level communication
+                        and event propagation across the platform.
                     </p>
                     <a href="rabbitmq.html">Messaging with RabbitMQ</a>
                 </article>
 
                 <article class="card">
-                    <h3>Redis</h3>
+                    <h3>Redis (Infrastructure)</h3>
                     <p>
-                        Provides distributed data structures, shared state, and coordination primitives
-                        such as locks and caches across services.
+                        Required for shared state and coordination. Used by the Registry
+                        for distributed topology management and runtime coordination.
                     </p>
-                    <a href="modules.html">See Redis module</a>
+                    <a href="redis.html">See Redis module</a>
                 </article>
+
             </div>
 
             <div class="card" style="margin-top: 18px;">
@@ -147,39 +157,44 @@ Spring Boot / transport / infrastructure</code></pre>
             </div>
 
             <div class="grid-3">
-                <article class="card">
+                <a class="card" href="registry.html">
                     <h3>Registry-driven topology</h3>
                     <p>
                         Services register nodes, REST resources, and GraphQL schemas so the runtime topology remains explicit, discoverable, and recoverable.
                     </p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="communication.html">
                     <h3>Declarative service communication</h3>
                     <p>
                         Middleware clients resolve target services through the registry and apply consistent request context propagation and remote error handling.
                     </p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="graphql.html">
                     <h3>GraphQL federation</h3>
                     <p>
                         Services publish schemas independently and the platform composes them into a unified GraphQL view through a federated gateway model.
                     </p>
-                </article>
+                </a>
 
-                <article class="card">
+                <a class="card" href="messaging.html">
                     <h3>Messaging infrastructure</h3>
                     <p>
                         Kafka and RabbitMQ integrations are treated as platform concerns rather than per-service boilerplate wiring.
                     </p>
-                </article>
+                </a>
 
                 <article class="card">
                     <h3>Unified error and tracing model</h3>
                     <p>
                         Request identifiers, span propagation, and structured error handling remain consistent across service boundaries.
                     </p>
+
+                    <div class="card-links">
+                        <a href="errors.html">Errors</a>
+                        <a href="logging.html">Tracing & Logging</a>
+                    </div>
                 </article>
 
                 <article class="card">
@@ -202,12 +217,12 @@ Spring Boot / transport / infrastructure</code></pre>
             </div>
 
             <div class="grid-2">
-                <article class="card">
+                <a class="card" href="registry.html">
                     <h3>Control plane</h3>
                     <p>
                         The Registry Service maintains topology, schema metadata, registered REST resources, and node state. Services continuously reconcile with it so platform metadata converges back to the real cluster state.
                     </p>
-                </article>
+                </a>
 
                 <article class="card">
                     <h3>Data plane</h3>
@@ -247,12 +262,12 @@ Spring Boot / transport / infrastructure</code></pre>
                     </p>
                 </article>
 
-                <article class="card">
+                <a class="card" href="messaging.html">
                     <h3>Messaging modules</h3>
                     <p>
                         RabbitMQ and Kafka modules support event-driven communication through reusable publishers, subscribers, and platform conventions.
                     </p>
-                </article>
+                </a>
             </div>
 
             <pre style="margin-top: 24px;"><code>&lt;dependencyManagement&gt;

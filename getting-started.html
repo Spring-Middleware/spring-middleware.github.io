@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Getting Started | Spring Middleware</title>
+
+    <title>Spring Boot Microservices Getting Started Guide | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Getting started with Spring Middleware: add the right modules, bootstrap a service, register resources, configure the registry, and enable platform capabilities step by step."
+            content="Getting started with Spring Boot microservices using Spring Middleware. Learn how to bootstrap a service, configure service discovery, and enable communication, messaging, and platform capabilities."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/getting-started.html"/>
-    <meta property="og:title" content="Spring Middleware — Getting Started"/>
-    <meta property="og:description" content="Add Spring Middleware modules, bootstrap a service, register resources and configure the registry."/>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Spring Boot Microservices Getting Started Guide | Spring Middleware"/>
+    <meta property="og:description"
+          content="Step-by-step guide to build Spring Boot microservices with service discovery, communication, and platform capabilities."/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://spring-middleware.com/getting-started.html"/>
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image"/>
-    <meta name="twitter:title" content="Spring Middleware — Getting Started"/>
-    <meta name="twitter:description" content="Guide to integrate Spring Middleware into a service."/>
+    <meta name="twitter:title" content="Spring Boot Microservices Getting Started Guide | Spring Middleware"/>
+    <meta name="twitter:description"
+          content="Guide to build and bootstrap Spring Boot microservices with registry, communication, and messaging."/>
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png"/>
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png"/>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,28 +38,30 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Getting Started</div>
 
-            <h1>Bring Spring Middleware into a service without hiding how the system works.</h1>
+            <div class="eyebrow">Spring Boot microservices guide</div>
+
+            <h1>Getting started with Spring Boot microservices</h1>
 
             <p class="lead">
-                Spring Middleware does not replace Spring Boot. It adds a platform layer for service registration,
-                declarative communication, topology awareness, messaging, and infrastructure consistency.
-                The goal is to get a service running quickly while keeping the architecture explicit.
+                Spring Middleware helps you build Spring Boot microservices by adding a platform layer for service discovery,
+                communication, and infrastructure consistency. Start with a minimal setup, register your service,
+                and progressively enable platform capabilities such as declarative clients, messaging, and GraphQL.
             </p>
 
             <div class="hero-actions">
-                <a class="button button-primary" href="#quick-start">Start with the minimal setup</a>
-                <a class="button button-secondary" href="architecture.html">Read the architecture</a>
+                <a class="button button-primary" href="#quick-start">Start setup</a>
+                <a class="button button-secondary" href="architecture.html">View architecture</a>
             </div>
 
             <div class="chip-row">
-                <span class="chip">Modular adoption</span>
-                <span class="chip">Standard Spring Boot entry point</span>
-                <span class="chip">Registry-driven communication</span>
-                <span class="chip">Explicit service registration</span>
-                <span class="chip">Incremental platform capabilities</span>
+                <span class="chip">Spring Boot microservices tutorial</span>
+                <span class="chip">Service discovery setup</span>
+                <span class="chip">Declarative communication</span>
+                <span class="chip">Service registration</span>
+                <span class="chip">Incremental platform adoption</span>
             </div>
+
         </div>
     </section>
 
@@ -353,6 +365,40 @@ public class CatalogController {
         </div>
     </section>
 
+    <section id="reference-example">
+        <div class="container">
+            <div class="section-head">
+                <h2>Reference service example</h2>
+                <p>
+                    See a concrete multi-module example with a root aggregator, a minimal
+                    <code>catalog-service</code>, realistic runtime configuration, and a declarative
+                    client calling another service.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>What the example includes</h3>
+                    <ul class="list-clean">
+                        <li>Root aggregator <code>pom.xml</code></li>
+                        <li>Minimal <code>catalog-service</code> module</li>
+                        <li>Spring Boot main class</li>
+                        <li>Realistic <code>application.yml</code></li>
+                        <li>Declarative client usage with <code>ProductApi</code></li>
+                    </ul>
+                </article>
+
+                <a class="card" href="reference-service-example.html">
+                    <h3 style="margin-top: 0;">Open the reference example</h3>
+                    <p>
+                        A complete Spring Boot microservices example showing how a real Spring Middleware
+                        service is structured, configured, and connected to the platform.
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
     <section id="security-build">
         <div class="container">
             <div class="section-head">
@@ -451,6 +497,7 @@ public class CatalogController {
             </div>
         </div>
     </section>
+
 </main>
 
 <footer class="site-footer">

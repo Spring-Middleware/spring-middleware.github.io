@@ -29,3 +29,30 @@
 .site-header .nav a:hover {
   color: var(--white);
 }
+
+.cta-box-final {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    padding: 40px 32px;
+}
+
+.cta-box-final .eyebrow {
+    margin-bottom: 12px;
+}
+
+.cta-box-final h2 {
+    margin: 0 0 12px 0;
+}
+
+.cta-box-final p {
+    margin: 0;
+    max-width: 760px;
+}
+
+.cta-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}

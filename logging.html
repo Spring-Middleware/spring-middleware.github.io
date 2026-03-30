@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Request and Response Logging in Spring Boot | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Request and response logging in Spring Boot microservices. Logging filters, response time tracking, URL exclusions, and forced logging for debugging and observability."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/logging.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Request and Response Logging in Spring Boot | Spring Middleware" />
+    <meta property="og:description"
+          content="Logging filters, response time tracking, and forced logging for Spring Boot microservices." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/logging.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Request and Response Logging in Spring Boot | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Request and response logging for Spring Boot microservices with filters and debugging support." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="logging">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+
+            <div class="eyebrow">Logging / Observability</div>
+
+            <h1>Request and response logging in Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware provides structured request and response logging for Spring Boot microservices.
+                It uses a built-in <code>RequestLoggingFilter</code> with configurable logging behavior,
+                response time tracking, URL exclusions, and forced logging for targeted debugging.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#logging-model">Explore logging</a>
+                <a class="button button-secondary" href="communication.html">See communication</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Request logging</span>
+                <span class="chip">Response logging</span>
+                <span class="chip">Response time tracking</span>
+                <span class="chip">URL exclusions</span>
+                <span class="chip">Forced logging</span>
+                <span class="chip">Observability patterns</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="logging-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What logging means here</h2>
+                    <p>
+                        Logging is not just a framework toggle. Spring Middleware provides a
+                        platform-level request and response logging model with explicit controls
+                        for enablement, exclusions, response timing, and incident-focused overrides.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Centralized request and response logging behavior</li>
+                        <li>Explicit configuration under <code>middleware.log</code></li>
+                        <li>Operational controls for production debugging</li>
+                        <li>Consistent behavior across services</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Main runtime component</h2>
+                    <p>
+                        The built-in <code>RequestLoggingFilter</code> is the main integration point.
+                        It reads the logging properties, decides whether a request should be logged,
+                        handles exclusions, and emits request and response entries when applicable.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>Configuration class:</strong> <code>MiddlewareLogProperties</code></li>
+                        <li><strong>Filter:</strong> <code>RequestLoggingFilter</code></li>
+                        <li><strong>Prefix:</strong> <code>middleware.log</code></li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="logging-flow">
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level logging flow</h2>
+                <p>
+                    The logging path is simple and explicit: evaluate configuration, skip excluded
+                    requests, capture request and response data when allowed, and optionally measure
+                    response time.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 250" xmlns="http://www.w3.org/2000/svg" aria-label="Request logging flow">
+
+                        <rect x="60" y="90" width="160" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="140" y="122" text-anchor="middle" fill="white" font-size="15">Incoming Request</text>
+
+                        <rect x="270" y="90" width="170" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="355" y="122" text-anchor="middle" fill="white" font-size="15">RequestLoggingFilter</text>
+
+                        <rect x="490" y="90" width="160" height="54" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="570" y="122" text-anchor="middle" fill="white" font-size="15">Service Execution</text>
+
+                        <rect x="700" y="90" width="160" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="780" y="122" text-anchor="middle" fill="white" font-size="15">Response Log</text>
+
+                        <line x1="220" y1="117" x2="270" y2="117" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="440" y1="117" x2="490" y2="117" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="650" y1="117" x2="700" y2="117" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="logging-properties">
+        <div class="container">
+            <div class="section-head">
+                <h2>Logging properties</h2>
+                <p>
+                    All logging controls live under <code>middleware.log</code>. These properties
+                    define whether request logging, response logging, response time measurement,
+                    exclusions, and forced logging are enabled.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Example configuration</h3>
+                    <pre class="code-block"><code>middleware:
+  log:
+    request:
+      enabled: true
+    response:
+      enabled: true
+    responseTime:
+      enabled: false
+    exclude:
+      url-patterns:
+        - /actuator/**
+    apiKey: ${LOGGING_API_KEY:my-support-key}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Key properties</h3>
+                    <ul class="list-clean">
+                        <li><code>middleware.log.request.enabled</code> — request logging</li>
+                        <li><code>middleware.log.response.enabled</code> — response logging</li>
+                        <li><code>middleware.log.responseTime.enabled</code> — response timing</li>
+                        <li><code>middleware.log.exclude.url-patterns</code> — excluded paths</li>
+                        <li><code>middleware.log.apiKey</code> — forced logging key</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="request-response-behavior">
+        <div class="container">
+            <div class="section-head">
+                <h2>RequestLoggingFilter behavior</h2>
+                <p>
+                    The filter does more than print messages. It applies exclusions, avoids known
+                    problematic bodies, respects logger level checks, and conditionally measures
+                    response time.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Evaluate request logging</h3>
+                    <p>Request logging is emitted when request logging is enabled and the logger can write at INFO level.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Apply exclusions and safety checks</h3>
+                    <p>Excluded URL patterns, multipart requests, and actuator paths are skipped or handled conservatively.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Emit response details</h3>
+                    <p>Response logging includes status and, when available, body details plus optional response time.</p>
+                </article>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Request logging</h3>
+                    <p>
+                        When enabled, the filter logs the request line and, when possible,
+                        the request body.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Response logging</h3>
+                    <p>
+                        When enabled, the filter logs the response status and, when possible,
+                        the response body.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Response time logging</h3>
+                    <p>
+                        Response time can be appended when enabled through configuration and
+                        the runtime response-time toggle.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="logging-exclusions">
+        <div class="container">
+            <div class="section-head">
+                <h2>Exclusions and runtime safeguards</h2>
+                <p>
+                    The logging model is intentionally defensive. It avoids unnecessary or risky
+                    body inspection for specific request types and infrastructure endpoints.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Excluded paths</h3>
+                    <p>
+                        Ant-style patterns defined in <code>middleware.log.exclude.url-patterns</code>
+                        are evaluated by the filter's skip logic.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li><code>/actuator/**</code></li>
+                        <li>Other sensitive or noisy operational endpoints</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Safety checks</h3>
+                    <ul class="key-points">
+                        <li><strong>Multipart requests:</strong> body reading is avoided</li>
+                        <li><strong>Actuator paths:</strong> skipped explicitly</li>
+                        <li><strong>Logger gating:</strong> INFO logging still depends on logger configuration</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="forced-logging">
+        <div class="container">
+            <div class="section-head">
+                <h2>Forced logging for incident debugging</h2>
+                <p>
+                    Spring Middleware supports a targeted override for a single request. This makes
+                    it possible to capture request and response logs during a live incident without
+                    changing the application's global logging level.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 230" xmlns="http://www.w3.org/2000/svg" aria-label="Forced logging flow">
+
+                        <rect x="70" y="80" width="180" height="60" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="160" y="105" text-anchor="middle" fill="white" font-size="15">Incoming Request</text>
+                        <text x="160" y="125" text-anchor="middle" fill="#9fb0c9" font-size="12.5">X-Logging-Key header</text>
+
+                        <rect x="370" y="70" width="180" height="80" rx="18"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="101" text-anchor="middle" fill="white" font-size="15">Forced Logging Check</text>
+                        <text x="460" y="123" text-anchor="middle" fill="#9fb0c9" font-size="12.5">compare header with</text>
+                        <text x="460" y="140" text-anchor="middle" fill="#9fb0c9" font-size="12.5">middleware.log.apiKey</text>
+
+                        <rect x="670" y="80" width="180" height="60" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="760" y="105" text-anchor="middle" fill="white" font-size="15">Emit Logs</text>
+                        <text x="760" y="125" text-anchor="middle" fill="#9fb0c9" font-size="12.5">even when INFO is suppressed</text>
+
+                        <line x1="250" y1="110" x2="370" y2="110" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="550" y1="110" x2="670" y2="110" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Header example</h3>
+                    <pre class="code-block"><code>X-Logging-Key: my-support-key</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Why it exists</h3>
+                    <p>
+                        In production you often cannot raise log verbosity globally. Forced logging
+                        provides a targeted mechanism for collecting a single request/response pair
+                        during incident analysis.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>How it works</h3>
+                    <p>
+                        If the request header value matches <code>middleware.log.apiKey</code>,
+                        logging for that request is forced.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Logger-level bypass</h3>
+                    <p>
+                        Forced logging bypasses the normal INFO-level guard by emitting through
+                        an internal fallback path when necessary.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Operational scope</h3>
+                    <p>
+                        The mechanism is intended for targeted support and incident debugging,
+                        not for normal traffic capture.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="security-notes">
+        <div class="container">
+            <div class="section-head">
+                <h2>Security and operational guidance</h2>
+                <p>
+                    Forced logging is useful, but it must be treated as an operational capability
+                    with clear security boundaries.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Treat the key as a secret</h3>
+                    <p>
+                        Store <code>middleware.log.apiKey</code> in a secure configuration source
+                        and rotate it periodically.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Protect sensitive endpoints</h3>
+                    <p>
+                        Use <code>exclude.url-patterns</code> for paths involving credentials,
+                        payment data, or regulated personal information.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Prefer short-lived support workflows</h3>
+                    <p>
+                        A time-limited support path or gateway-injected header is safer than a
+                        long-lived static debugging key.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="alternatives">
+        <div class="container">
+            <div class="section-head">
+                <h2>Operational alternatives</h2>
+                <p>
+                    Forced logging is useful when you need raw request and response payloads,
+                    but it is not the only observability tool in the platform.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Use tracing and metrics first</h3>
+                    <p>
+                        In many cases, metrics, request identifiers, and distributed tracing are
+                        enough to identify the failing path without capturing payload bodies.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Use forced logging selectively</h3>
+                    <p>
+                        When raw payload visibility is required, enable it only for the minimum
+                        scope necessary and prefer redaction where possible.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The request and response logging behavior is implemented in a small set of
+                    platform classes.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card code-ref">
+                    <h3>LogRequestResponse</h3>
+                    <span class="code-tag">app module</span>
+                    <p class="code-path">.../middleware/log/LogRequestResponse.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>RequestLoggingFilter</h3>
+                    <span class="code-tag">app module</span>
+                    <p class="code-path">.../middleware/filter/RequestLoggingFilter.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>PropertyNames</h3>
+                    <span class="code-tag">commons module</span>
+                    <p class="code-path">.../middleware/config/PropertyNames.java</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-logging-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    Logging is closely related to request context propagation, structured errors,
+                    and client-facing communication behavior.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How request context propagates and how downstream calls carry tracing metadata.</p>
+                </a>
+
+                <a class="card" href="errors.html">
+                    <h3 style="margin-top: 0;">Errors</h3>
+                    <p>How request identifiers and tracing metadata appear in structured error responses.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — request and response logging guidance and operational controls.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

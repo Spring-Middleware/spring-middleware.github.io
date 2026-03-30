@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registry | Spring Middleware</title>
+
+    <title>Service Discovery and Registry for Spring Boot Microservices | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Registry Service in Spring Middleware: control plane, service topology, nodes, REST resource registration, GraphQL schema discovery, and service-to-service lookup."
+            content="Service registry and discovery for Spring Boot microservices. Spring Middleware provides a control plane for service topology, nodes, REST resources, and GraphQL schema registration."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/registry.html" />
-    <meta property="og:title" content="Spring Middleware — Registry" />
-    <meta property="og:description" content="Registry Service as the control plane for topology, resources, nodes, and GraphQL schemas." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Service Discovery and Registry for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Registry-driven service discovery for Spring Boot microservices, including topology, nodes, REST resources, and GraphQL schema registration." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/registry.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Registry" />
-    <meta name="twitter:description" content="Registry Service as the control plane for topology, resources, nodes, and GraphQL schemas." />
+    <meta name="twitter:title" content="Service Discovery and Registry for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Service registry and discovery for Spring Boot microservices with topology awareness and schema registration." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,14 +38,14 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Registry</div>
+            <div class="eyebrow">Service Discovery / Registry</div>
 
-            <h1>The control plane for topology, resources, nodes, and schema discovery.</h1>
+            <h1>Service registry and discovery for Spring Boot microservices</h1>
 
             <p class="lead">
-                The Registry Service is the control plane of Spring Middleware.
-                It maintains global knowledge about clusters, running nodes, registered REST resources,
-                and GraphQL schema locations so services can remain autonomous while the platform stays discoverable.
+                The Registry Service is the control plane of Spring Middleware. It provides service discovery,
+                tracks clusters and running nodes, and stores metadata such as REST resources and GraphQL schema locations.
+                This allows Spring Boot microservices to remain autonomous while the platform stays discoverable and consistent.
             </p>
 
             <div class="hero-actions">
@@ -44,12 +54,12 @@
             </div>
 
             <div class="chip-row">
-                <span class="chip">Control plane</span>
                 <span class="chip">Service discovery</span>
+                <span class="chip">Control plane</span>
                 <span class="chip">Cluster + node model</span>
                 <span class="chip">REST resource registration</span>
-                <span class="chip">GraphQL schema locations</span>
-                <span class="chip">Topology cleanup</span>
+                <span class="chip">GraphQL schema discovery</span>
+                <span class="chip">Topology awareness</span>
             </div>
         </div>
     </section>

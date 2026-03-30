@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Redis Integration for Spring Boot Microservices | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Redis integration for Spring Boot microservices. Typed key-value operations, distributed locks, mutexes, connection pooling, and Redis configuration with Spring Middleware."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/redis.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Redis Integration for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Redis support for Spring Boot microservices with typed key-value operations, distributed locks, and connection configuration." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/redis.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Redis Integration for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Redis integration for Spring Boot microservices with typed operations, distributed locks, and connection pooling." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="redis">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Redis / Data</div>
+
+            <h1>Redis integration for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware provides a Redis module for Spring Boot microservices with low-level
+                connection management and higher-level primitives for typed key-value operations,
+                distributed locks, and mutex-based coordination. The goal is to keep Redis integration
+                reusable and explicit without turning it into scattered ad hoc infrastructure code.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#redis-model">Explore the Redis module</a>
+                <a class="button button-secondary" href="modules.html">See modules</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Typed key-value operations</span>
+                <span class="chip">Distributed locks</span>
+                <span class="chip">Redis mutexes</span>
+                <span class="chip">Connection pooling</span>
+                <span class="chip">Cluster-aware configuration</span>
+                <span class="chip">Spring Boot Redis integration</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="redis-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the Redis module provides</h2>
+                    <p>
+                        The Redis module is not limited to raw connection wiring. It provides a small
+                        platform model around Redis access: connection parameters, typed service APIs,
+                        and coordination utilities for distributed execution.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Redis connection and pool configuration</li>
+                        <li>Typed key-value operations through <code>RedisService</code></li>
+                        <li>Distributed locks and mutex utilities</li>
+                        <li>Reusable Redis patterns across services</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Key runtime concepts</h2>
+                    <ul class="key-points">
+                        <li><strong>RedisConnectionParameters:</strong> Spring configuration model for host, port, timeout, pool, and cluster options.</li>
+                        <li><strong>RedisService:</strong> typed service API for key-value reads, writes, and deletes.</li>
+                        <li><strong>RedisLock / RedisLockFactory / RedisMutex:</strong> coordination primitives for distributed workflows.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="redis-overview">
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level Redis view</h2>
+                <p>
+                    Services interact with Redis through a typed service abstraction, while connection
+                    settings and coordination primitives remain explicit and configurable.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 210" xmlns="http://www.w3.org/2000/svg" aria-label="Redis module overview">
+
+                        <rect x="80" y="78" width="170" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="165" y="110" text-anchor="middle" fill="white" font-size="15">Application Service</text>
+
+                        <rect x="315" y="60" width="290" height="86" rx="22"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+
+                        <text x="460" y="88" text-anchor="middle" fill="white" font-size="17">
+                            Spring Middleware Redis Module
+                        </text>
+
+                        <text x="460" y="111" text-anchor="middle" fill="#9fb0c9" font-size="13">
+                            typed operations • locks
+                        </text>
+
+                        <text x="460" y="131" text-anchor="middle" fill="#9fb0c9" font-size="13">
+                            connection management
+                        </text>
+
+                        <rect x="670" y="78" width="170" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="755" y="110" text-anchor="middle" fill="white" font-size="15">Redis</text>
+
+                        <line x1="250" y1="105" x2="315" y2="105" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="605" y1="105" x2="670" y2="105" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="configuration">
+        <div class="container">
+            <div class="section-head">
+                <h2>Configuration</h2>
+                <p>
+                    The module reads Redis settings from the <code>redis</code> prefix. This includes
+                    connection parameters, pool sizing, timeouts, and cluster-related options.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Minimal Redis configuration</h3>
+                    <pre class="code-block"><code>redis:
+  host: ${REDIS_HOST:localhost}
+  port: ${REDIS_PORT:6379}
+  database: 0
+  timeout: 2000
+  max-pool-conn: 10
+  max-idle-pool-conn: 10
+  min-idle-pool-conn: 1
+  max-wait-millis: 1000
+  is-cluster: false</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>What is configured here</h3>
+                    <ul class="list-clean">
+                        <li>Redis host and port</li>
+                        <li>Database selection</li>
+                        <li>Connection timeout</li>
+                        <li>Pool size and idle thresholds</li>
+                        <li>Cluster mode toggle</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="typed-operations">
+        <div class="container">
+            <div class="section-head">
+                <h2>Typed key-value operations</h2>
+                <p>
+                    The Redis module promotes typed access patterns instead of scattering raw string
+                    keys and unstructured payload handling across services.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Domain contracts</h3>
+                    <p>
+                        Services define Redis-facing domain types by implementing
+                        <code>RedisKey</code>, <code>RedisValue</code>, and <code>RedisKeyValue</code>.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Typed keys</li>
+                        <li>Typed values</li>
+                        <li>Typed key-value pairs</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>RedisService</h3>
+                    <p>
+                        <code>RedisService</code> provides a generic API for reading, writing,
+                        and deleting typed key-value pairs with custom functional converters.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Conceptual usage</h3>
+                    <pre class="code-block"><code>- Autowire RedisService&lt;MyKey, MyValue, MyKeyValue&gt;
+- Build a collection of keys
+- Retrieve typed key/value pairs
+- Apply domain-specific converters</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Why this matters</h3>
+                    <ul class="key-points">
+                        <li><strong>Consistency:</strong> Redis access follows the same typed model across services.</li>
+                        <li><strong>Reuse:</strong> converters and access patterns can be shared.</li>
+                        <li><strong>Clarity:</strong> Redis usage stays close to the domain model.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="locking">
+        <div class="container">
+            <div class="section-head">
+                <h2>Distributed locks and coordination</h2>
+                <p>
+                    The module also provides explicit coordination primitives for distributed execution,
+                    useful when multiple nodes can update the same shared resource.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>RedisLock</h3>
+                    <p>
+                        Represents a distributed lock used to protect multi-step operations that
+                        should not run concurrently across nodes.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>RedisLockFactory</h3>
+                    <p>
+                        Creates lock instances so services can acquire distributed coordination
+                        when needed.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>RedisMutex</h3>
+                    <p>
+                        Provides mutex-style coordination for cases where strong cross-node
+                        synchronization is required.
+                    </p>
+                </article>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 220" xmlns="http://www.w3.org/2000/svg" aria-label="Redis distributed locking">
+
+                        <rect x="80" y="80" width="170" height="56" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="165" y="114" text-anchor="middle" fill="white" font-size="15">Service Node A</text>
+
+                        <rect x="375" y="70" width="170" height="76" rx="20"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="102" text-anchor="middle" fill="white" font-size="16">Redis Lock</text>
+                        <text x="460" y="125" text-anchor="middle" fill="#9fb0c9" font-size="12.5">coordination point</text>
+
+                        <rect x="670" y="80" width="170" height="56" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="755" y="114" text-anchor="middle" fill="white" font-size="15">Service Node B</text>
+
+                        <line x1="250" y1="108" x2="375" y2="108" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="545" y1="108" x2="670" y2="108" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Notes and best practices</h2>
+                <p>
+                    Redis is fast, but good usage still depends on key design, payload discipline,
+                    and coordination boundaries.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Tune pool settings</h3>
+                    <p>
+                        Adjust connection pool configuration to match traffic patterns and deployment size.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Keep keys focused</h3>
+                    <p>
+                        Prefer small, well-scoped keys and compact payloads to keep Redis usage efficient.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Lock only when needed</h3>
+                    <p>
+                        Use distributed locks for real coordination boundaries, not as a default for every operation.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The Redis module is built around a small set of core configuration and service classes.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card code-ref">
+                    <h3>RedisConnectionParameters</h3>
+                    <span class="code-tag">redis core</span>
+                    <p class="code-path">.../redis/config/RedisConnectionParameters.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>RedisServiceImpl</h3>
+                    <span class="code-tag">redis core</span>
+                    <p class="code-path">.../redis/service/RedisServiceImpl.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>RedisLockFactory</h3>
+                    <span class="code-tag">redis core</span>
+                    <p class="code-path">.../redis/service/RedisLockFactory.java</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-redis-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    Redis fits into the broader platform as a data and coordination capability,
+                    alongside communication, errors, logging, and the overall architecture.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>How Redis fits into the broader control plane and platform model.</p>
+                </a>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the Redis module fits into the modular platform structure.</p>
+                </a>
+
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How platform communication and Redis-backed coordination can coexist in service workflows.</p>
+                </a>
+
+                <a class="card" href="logging.html">
+                    <h3 style="margin-top: 0;">Logging</h3>
+                    <p>How request correlation and operational visibility relate to Redis-backed flows.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — Redis integration and distributed coordination patterns.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kafka | Spring Middleware</title>
+
+    <title>Kafka Integration for Spring Boot Microservices | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Kafka integration in Spring Middleware: publishers, subscribers, EventEnvelope, topic configuration, retries, dead-letter behavior, and platform-aligned runtime conventions."
+            content="Kafka integration for Spring Boot microservices. Publishers, subscribers, EventEnvelope, topic configuration, retries, and dead-letter handling with platform-aligned patterns."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/kafka.html" />
-    <meta property="og:title" content="Spring Middleware — Kafka" />
-    <meta property="og:description" content="Kafka publishers, subscribers, topic configuration, retries, and dead-letter behavior in Spring Middleware." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Kafka Integration for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Kafka publishers and subscribers for Spring Boot microservices with retries, dead-letter topics, and configuration-driven wiring." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/kafka.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Kafka" />
-    <meta name="twitter:description" content="Kafka publishers, subscribers, topic configuration, retries, and dead-letter behavior in Spring Middleware." />
+    <meta name="twitter:title" content="Kafka Integration for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Kafka messaging for Spring Boot microservices with publishers, subscribers, retry, and dead-letter handling." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,14 +38,15 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Kafka</div>
 
-            <h1>Kafka publishing and subscription as a platform capability.</h1>
+            <div class="eyebrow">Kafka / Messaging</div>
+
+            <h1>Kafka integration for Spring Boot microservices</h1>
 
             <p class="lead">
-                Spring Middleware provides an opinionated Kafka integration for publishers and subscribers.
-                It standardizes topic configuration, publisher registration, event envelopes, retry behavior,
-                and dead-letter routing while keeping the runtime model explicit.
+                Spring Middleware provides a platform-aligned Kafka integration for Spring Boot microservices.
+                It standardizes publishers, subscribers, topic configuration, event envelopes, retry behavior,
+                and dead-letter handling while keeping the runtime model explicit and predictable.
             </p>
 
             <div class="hero-actions">
@@ -44,13 +55,14 @@
             </div>
 
             <div class="chip-row">
-                <span class="chip">Named publishers</span>
-                <span class="chip">Subscriber registration</span>
+                <span class="chip">Kafka publishers</span>
+                <span class="chip">Kafka consumers</span>
                 <span class="chip">EventEnvelope&lt;T&gt;</span>
-                <span class="chip">Retry + DLT</span>
-                <span class="chip">Topic creation</span>
+                <span class="chip">Retry and dead-letter topics</span>
+                <span class="chip">Topic configuration</span>
                 <span class="chip">Configuration-driven wiring</span>
             </div>
+
         </div>
     </section>
 

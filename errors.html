@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Error Handling in Spring Boot Microservices | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Error handling in Spring Boot microservices with a unified error model. Structured error responses, domain error codes, propagation across services, and REST and GraphQL consistency."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/errors.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Error Handling in Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Unified error model for Spring Boot microservices with structured responses, domain error codes, and propagation across services." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/errors.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Error Handling in Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Structured error handling for Spring Boot microservices with REST and GraphQL consistency." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="errors">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+
+            <div class="eyebrow">Error Handling</div>
+
+            <h1>Error handling for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware defines a unified error handling model for Spring Boot microservices.
+                It provides structured error responses, domain-specific error codes, and consistent propagation
+                across service boundaries for both REST and GraphQL APIs.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#error-model">Explore the error model</a>
+                <a class="button button-secondary" href="communication.html">See communication</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Structured error responses</span>
+                <span class="chip">Domain error codes</span>
+                <span class="chip">Request and span correlation</span>
+                <span class="chip">Remote error propagation</span>
+                <span class="chip">REST and GraphQL consistency</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="error-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the error model provides</h2>
+                    <p>
+                        Errors are not treated as raw HTTP responses or framework exceptions.
+                        The platform defines a consistent structure that allows clients and services
+                        to understand failures in a predictable and machine-readable way.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Stable error contract for clients</li>
+                        <li>Explicit domain-level error codes</li>
+                        <li>Context propagation across services</li>
+                        <li>Clear distinction between domain and technical failures</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Where it applies</h2>
+                    <p>
+                        The same error model is used across the platform, regardless of the entry point
+                        or communication style.
+                    </p>
+
+                    <ul class="key-points">
+                        <li><strong>REST APIs:</strong> structured JSON error payloads</li>
+                        <li><strong>GraphQL APIs:</strong> error codes exposed through extensions</li>
+                        <li><strong>Service communication:</strong> errors propagated across services</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="http-errors">
+        <div class="container">
+            <div class="section-head">
+                <h2>HTTP error representation</h2>
+                <p>
+                    All REST endpoints return errors using the same JSON structure, making error handling
+                    predictable for clients and consistent across services.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Standard error payload</h3>
+                    <pre class="code-block"><code>{
+  "statusCode": 404,
+  "statusMessage": "Not Found",
+  "code": "PRODUCT:NOT_FOUND",
+  "message": "Product not found",
+  "extensions": {}
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Key fields</h3>
+                    <ul class="list-clean">
+                        <li><strong>statusCode:</strong> HTTP status (e.g. 404, 500)</li>
+                        <li><strong>code:</strong> domain error identifier (DOMAIN:KEY)</li>
+                        <li><strong>message:</strong> human-readable description</li>
+                        <li><strong>extensions:</strong> contextual metadata</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="error-propagation">
+        <div class="container">
+            <div class="section-head">
+                <h2>Error propagation across services</h2>
+                <p>
+                    Errors produced by one service are propagated through the communication layer
+                    without losing structure or metadata.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 220" xmlns="http://www.w3.org/2000/svg">
+
+                        <rect x="70" y="70" width="180" height="70" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="160" y="98" text-anchor="middle" fill="white">Service A</text>
+                        <text x="160" y="118" text-anchor="middle" fill="#9fb0c9" font-size="12">throws error</text>
+
+                        <rect x="370" y="60" width="180" height="90" rx="18"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="90" text-anchor="middle" fill="white">Communication Layer</text>
+                        <text x="460" y="115" text-anchor="middle" fill="#9fb0c9" font-size="12">maps to structured error</text>
+
+                        <rect x="670" y="70" width="180" height="70" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="760" y="98" text-anchor="middle" fill="white">Service B</text>
+                        <text x="760" y="118" text-anchor="middle" fill="#9fb0c9" font-size="12">receives structured error</text>
+
+                        <line x1="250" y1="105" x2="370" y2="105" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="550" y1="105" x2="670" y2="105" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>What is preserved</h3>
+                    <ul class="list-clean">
+                        <li>HTTP status and error code</li>
+                        <li>Domain-level meaning</li>
+                        <li>Request ID and span information</li>
+                        <li>Call chain across services</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>RemoteServerException</h3>
+                    <p>
+                        Remote failures are wrapped into structured exceptions that expose
+                        remote service metadata and allow applications to inspect or translate errors.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="graphql-errors">
+        <div class="container">
+            <div class="section-head">
+                <h2>GraphQL error representation</h2>
+                <p>
+                    GraphQL uses the same domain error codes, exposed through the <code>extensions</code> field.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>GraphQL error example</h3>
+                    <pre class="code-block"><code>{
+  "message": "Product not found",
+  "path": ["product"],
+  "extensions": {
+    "code": "PRODUCT:NOT_FOUND"
+  }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Consistency with REST</h3>
+                    <ul class="list-clean">
+                        <li>Same domain error codes</li>
+                        <li>Same error catalog</li>
+                        <li>Same propagation model</li>
+                        <li>Different transport, same semantics</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="service-guidelines">
+        <div class="container">
+            <div class="section-head">
+                <h2>Guidelines for service authors</h2>
+                <p>
+                    Services should align with the error model to ensure consistency across the platform.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Define clear error codes</h3>
+                    <p>Use DOMAIN:KEY patterns like PRODUCT:NOT_FOUND or ORDER:INVALID_STATE.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Use ServiceException</h3>
+                    <p>Throw structured exceptions instead of raw runtime errors.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Avoid leaking internals</h3>
+                    <p>Translate low-level failures into domain-level errors.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    The error model is tightly integrated with communication, GraphQL, and service contracts.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How errors propagate across service boundaries.</p>
+                </a>
+
+                <a class="card" href="graphql.html">
+                    <h3 style="margin-top: 0;">GraphQL</h3>
+                    <p>GraphQL error handling and centralized exception mapping.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — unified error model and propagation.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

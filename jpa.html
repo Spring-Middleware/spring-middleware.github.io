@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dynamic JPA Queries for Spring Boot Microservices | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Dynamic JPA queries for Spring Boot microservices. Build parameterized JPQL from typed search DTOs with joins, sub-searches, pagination, ordering, and extensible condition builders."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/jpa.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Dynamic JPA Queries for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Parameterized JPQL generation for Spring Boot microservices with typed search DTOs, joins, pagination, ordering, and extensible query builders." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/jpa.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Dynamic JPA Queries for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Build dynamic JPQL queries in Spring Boot microservices using typed search DTOs, joins, pagination, and reusable query builders." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="jpa">
+<div id="site-header"></div>
+
+<main>
+
+    <section class="hero">
+        <div class="container">
+
+            <div class="eyebrow">JPA integration</div>
+
+            <h1>Dynamic JPA queries for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware provides a small framework for building parameterized JPQL queries
+                from typed search DTOs. It keeps repository code declarative by translating annotated
+                search objects into joins, conditions, ordering, and pagination at runtime.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#jpa-model">Explore JPA</a>
+                <a class="button button-secondary" href="modules.html">View modules</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Typed search DTOs</span>
+                <span class="chip">Parameterized JPQL</span>
+                <span class="chip">Join handling</span>
+                <span class="chip">Sub-searches</span>
+                <span class="chip">Pagination and ordering</span>
+                <span class="chip">Extensible condition builders</span>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="jpa-model">
+        <div class="container">
+            <div class="grid-2">
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the JPA module provides</h2>
+                    <p>
+                        The JPA module builds safe, parameterized JPQL from POJO search objects.
+                        Instead of manually composing query strings in each repository, services define
+                        focused search DTOs and let the framework generate the query structure at runtime.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Declarative search with annotated DTOs</li>
+                        <li>Automatic join handling</li>
+                        <li>Pagination, ordering, and optional post-filtering</li>
+                        <li>Small, testable query builder components</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Key capabilities</h2>
+                    <ul class="key-points">
+                        <li><strong>@SearchProperty:</strong> equality, LIKE, comparison, inclusion, concat, null checks, and pre-conditions.</li>
+                        <li><strong>@SearchProperties:</strong> multiple search properties on one field, combined into OR fragments.</li>
+                        <li><strong>@SubSearch:</strong> nested search composition.</li>
+                        <li><strong>@SearchPropertyExists:</strong> empty / not-empty collection checks.</li>
+                        <li><strong>@Join:</strong> explicit join metadata with LEFT, RIGHT, and FETCH options.</li>
+                    </ul>
+                </article>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-head">
+                <h2>How it works</h2>
+                <p>
+                    The module uses a set of small buffers and builders to generate a JPQL query string,
+                    parameterize it safely, and execute it through JPA.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Define a search DTO</h3>
+                    <p>Annotate a search class with <code>@SearchForClass</code> and annotate fields with search metadata.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Build query structure</h3>
+                    <p><code>QueryBuffer</code>, <code>WhereBuffer</code>, and <code>JoinBuffer</code> generate SELECT, FROM, JOIN, and WHERE fragments.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Parameterize and execute</h3>
+                    <p><code>QueryParameterizer</code> binds values safely and <code>SearchRepositoryImpl</code> executes the query with <code>EntityManager</code>.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Repository entry point</h3>
+                    <p>
+                        <code>SearchRepositoryImpl</code> creates <code>QueryBufferParameters</code>,
+                        delegates query construction to <code>QueryBuffer</code>, then parameterizes and executes the result.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Small builder model</h3>
+                    <p>
+                        Condition builders transform annotation semantics into query fragments.
+                        This keeps JPQL generation testable and extensible instead of hiding logic in one large query utility.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="annotations">
+        <div class="container">
+            <div class="section-head">
+                <h2>Important annotations</h2>
+                <p>
+                    Search DTOs stay declarative because most of the query semantics live in annotations
+                    rather than in handwritten repository code.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>@SearchForClass</h3>
+                    <p>
+                        Defines the entity class used in the SELECT and FROM clauses,
+                        and whether <code>DISTINCT</code> should be applied.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>@SearchProperty</h3>
+                    <p>
+                        The main field-level annotation for LIKE, comparisons, inclusion operators,
+                        joins, concatenation, null checks, and pre-conditions.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>@SubSearch and related annotations</h3>
+                    <p>
+                        Nested search objects, collection existence checks, and grouped property definitions
+                        allow richer WHERE fragments without manual JPQL composition.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="search-dto-example">
+        <div class="container">
+            <div class="section-head">
+                <h2>Defining a search DTO</h2>
+                <p>
+                    Search DTOs describe query intent. The framework reads the annotations and turns them
+                    into joins, parameterized predicates, and optional DISTINCT selection.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>CatalogSearch example</h3>
+                    <pre class="code-block"><code>@SearchForClass(value = Catalog.class, distinct = true)
+public class CatalogSearch implements Search {
+
+    @SearchProperty(
+        value = "name",
+        isLike = true,
+        concat = @Concat({"name", "description"})
+    )
+    private String q;
+
+    @SearchProperty(
+        value = "products",
+        isLike = false,
+        join = @Join(value = "c.products p", left = true, fetch = true)
+    )
+    private List&lt;UUID&gt; productIds;
+
+    // getters / setters
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>ProductSearch example</h3>
+                    <pre class="code-block"><code>@SearchForClass(value = Product.class)
+public class ProductSearch implements Search {
+
+    @SearchProperty(value = "name", isLike = true)
+    private String name;
+
+    @SearchProperty(value = "catalog.id", isLike = false)
+    private UUID catalogId;
+
+    // getters / setters
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="repository-usage">
+        <div class="container">
+            <div class="section-head">
+                <h2>Repository usage</h2>
+                <p>
+                    Services extend the repository contract and use high-level search methods instead of
+                    composing JPQL manually in each repository.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Repository interface</h3>
+                    <pre class="code-block"><code>public interface CatalogSearchRepository
+    extends SearchRepository&lt;Catalog, CatalogSearch&gt; {
+}</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>Service usage</h3>
+                    <pre class="code-block"><code>// then in service:
+List&lt;Catalog&gt; result =
+    catalogSearchRepository.findBySearch(searchDto, pagination);</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="generated-jpql">
+        <div class="container">
+            <div class="section-head">
+                <h2>Generated JPQL</h2>
+                <p>
+                    Query generation is deterministic and can be unit-tested directly. A search DTO with
+                    a non-null text query and product ids can produce JPQL like the following.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Conceptual JPQL output</h3>
+                    <pre class="code-block"><code>SELECT DISTINCT c FROM Catalog c LEFT JOIN FETCH c.products p
+ WHERE (UPPER(CONCAT(c.name,' ',c.description)) LIKE :param0)
+   AND (c.products IN :param1)
+ ORDER BY c.name</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>What this shows</h3>
+                    <ul class="list-clean">
+                        <li><code>DISTINCT</code> from <code>@SearchForClass</code></li>
+                        <li>JOIN emitted once from join metadata</li>
+                        <li>Concatenated LIKE expression</li>
+                        <li>Parameterized values instead of raw string interpolation</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="joins-subsearches">
+        <div class="container">
+            <div class="section-head">
+                <h2>Joins, sub-searches, and complex conditions</h2>
+                <p>
+                    The module supports richer query construction than simple equality checks.
+                    Joins, grouped properties, pre-conditions, and nested search fragments can all participate in the final WHERE clause.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Join handling</h3>
+                    <p>
+                        <code>JoinBuffer</code> collects and normalizes joins, preventing duplicate JOIN clauses
+                        when multiple search properties reference the same path.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Nested sub-searches</h3>
+                    <p>
+                        <code>@SubSearch</code> allows a nested search object to generate its own WHERE fragment
+                        and be embedded into the parent search.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Pre-conditions and grouped properties</h3>
+                    <p>
+                        Raw JPQL fragments and grouped <code>@SearchProperties</code> definitions make it possible
+                        to combine generated predicates with more specific query rules.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="pagination-ordering">
+        <div class="container">
+            <div class="section-head">
+                <h2>Pagination, ordering, and post-filtering</h2>
+                <p>
+                    Query generation is not limited to WHERE clauses. The repository implementation also coordinates
+                    ordering, pagination, and optional in-memory post-filtering when required.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Ordering</h3>
+                    <p>
+                        <code>OrderBy</code> is wired into <code>QueryBufferParameters</code> so
+                        <code>QueryBuffer</code> can append an <code>ORDER BY</code> clause.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Pagination</h3>
+                    <p>
+                        Pagination is applied through <code>setFirstResult</code> and <code>setMaxResults</code>
+                        when post-filtering is not required.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Optional post-filtering</h3>
+                    <p>
+                        When a custom <code>QueryFilter</code> is involved, pagination may be applied after
+                        the database fetch using <code>PaginableResultDB</code>.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="extending-builders">
+        <div class="container">
+            <div class="section-head">
+                <h2>Extending the condition builders</h2>
+                <p>
+                    The module is extensible through small, annotation-driven builders. This makes it possible
+                    to introduce project-specific query semantics without rewriting the base infrastructure.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Builder resolution</h3>
+                    <p>
+                        The framework resolves a field annotation to a builder through
+                        <code>@ConditionBufferBuilderClass</code>, then asks the Spring-based factory
+                        for the concrete <code>ConditionBufferBuilder</code>.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Custom annotations</h3>
+                    <p>
+                        You can add new domain-specific annotations and small builder implementations
+                        when the default builders do not cover a project-specific use case.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="testing">
+        <div class="container">
+            <div class="section-head">
+                <h2>Testing the generated queries</h2>
+                <p>
+                    Because query generation is deterministic, it is straightforward to unit-test the produced JPQL
+                    and verify join, concat, and placeholder behavior.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Unit test example</h3>
+                    <pre class="code-block"><code>@Test
+public void buildsCatalogQuery_joinAndConcat_present() {
+    CatalogSearch s = new CatalogSearch();
+    s.setQ("summer");
+    s.setProductIds(Collections.singletonList(UUID.randomUUID()));
+
+    QueryBufferParameters&lt;Catalog, Search&gt; params =
+        new QueryBufferParameters&lt;&gt;(s, Catalog.class, new OrderBy(), false);
+
+    QueryBuffer&lt;Catalog, Search&gt; qb = new QueryBuffer&lt;&gt;(params);
+    String query = qb.toString();
+
+    Assertions.assertTrue(query.contains("LEFT JOIN") || query.contains("JOIN"));
+    Assertions.assertTrue(query.toUpperCase().contains("UPPER(CONCAT"));
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Testing guidance</h3>
+                    <ul class="list-clean">
+                        <li>Instantiate <code>QueryBuffer</code> directly</li>
+                        <li>Assert the produced JPQL string</li>
+                        <li>Reuse the project tests as patterns for new annotations and joins</li>
+                        <li>Mock <code>ApplicationContext</code> when testing builder factories</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    Dynamic JPQL generation should stay focused, explicit, and bounded.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Keep search DTOs small</h3>
+                    <p>
+                        Every exposed field can add more complexity to the generated JPQL, so keep search objects focused.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Paginate large queries</h3>
+                    <p>
+                        Prefer pagination whenever a search may return many rows.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Use join metadata intentionally</h3>
+                    <p>
+                        Use <code>@Join</code> to control LEFT, RIGHT, or FETCH joins and to avoid N+1 issues when appropriate.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The JPA module is centered around repository execution, buffers, and concrete condition builders.
+                </p>
+            </div>
+
+            <div class="grid-4">
+                <article class="card code-ref">
+                    <h3>SearchRepositoryImpl</h3>
+                    <span class="code-tag">jpa repository</span>
+                    <p class="code-path">.../jpa/repository/SearchRepositoryImpl.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>QueryBuffer</h3>
+                    <span class="code-tag">jpa buffer</span>
+                    <p class="code-path">.../jpa/buffer/QueryBuffer.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>JoinBuffer</h3>
+                    <span class="code-tag">jpa buffer</span>
+                    <p class="code-path">.../jpa/buffer/JoinBuffer.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>Condition builders</h3>
+                    <span class="code-tag">jpa builders</span>
+                    <p class="code-path">.../jpa/buffer/builder/*</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-jpa-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    The JPA module fits into the broader platform as part of the data integration model,
+                    alongside communication, architecture, and reusable module composition.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>How dynamic data modules fit into the broader platform and runtime model.</p>
+                </a>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the JPA module fits into the modular platform structure.</p>
+                </a>
+
+                <a class="card" href="communication.html">
+                    <h3 style="margin-top: 0;">Communication</h3>
+                    <p>How database-backed services participate in the broader service communication model.</p>
+                </a>
+
+                <a class="card" href="errors.html">
+                    <h3 style="margin-top: 0;">Errors</h3>
+                    <p>How persistence-backed services integrate with the platform error model.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — dynamic JPQL generation and reusable JPA query infrastructure.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>

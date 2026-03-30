@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Client Security | Spring Middleware</title>
+
+    <title>Client Security for Spring Boot Microservices | Spring Middleware</title>
+
     <meta
             name="description"
-            content="Security for declarative @MiddlewareClient proxies in Spring Middleware: passthrough, API key, OAuth2 client credentials, runtime flow, and token management."
+            content="Client security for Spring Boot microservices. Declarative clients with OAuth2 client credentials, API key authentication, passthrough mode, and explicit outbound request security."
     />
+
     <link rel="canonical" href="https://spring-middleware.com/client-security.html" />
-    <meta property="og:title" content="Spring Middleware — Client Security" />
-    <meta property="og:description" content="Security modes for declarative middleware clients: passthrough, API key, and OAuth2 client credentials." />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Client Security for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Declarative client security for Spring Boot microservices with OAuth2 client credentials, API keys, and passthrough authentication." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/client-security.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spring Middleware — Client Security" />
-    <meta name="twitter:description" content="Security modes for declarative middleware clients: passthrough, API key, and OAuth2 client credentials." />
+    <meta name="twitter:title" content="Client Security for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Security for declarative clients in Spring Boot microservices with OAuth2, API keys, and passthrough modes." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/components.css">
@@ -28,14 +38,16 @@
 <main>
     <section class="hero">
         <div class="container">
-            <div class="eyebrow">Client Security</div>
 
-            <h1>Security for declarative clients without hiding outbound behavior.</h1>
+            <div class="eyebrow">Client Security / Authentication</div>
+
+            <h1>Client security for Spring Boot microservices</h1>
 
             <p class="lead">
-                Spring Middleware lets <code>@MiddlewareClient</code> proxies authenticate to downstream services
-                through explicit security modes such as passthrough, API key, and OAuth2 client credentials.
-                The goal is to keep client security consistent while preserving visibility into what is attached to outbound requests.
+                Spring Middleware provides explicit client security for Spring Boot microservices.
+                Declarative <code>@MiddlewareClient</code> proxies can authenticate to downstream services
+                using OAuth2 client credentials, API keys, or passthrough modes, while keeping outbound
+                request behavior visible and consistent.
             </p>
 
             <div class="hero-actions">
@@ -44,13 +56,14 @@
             </div>
 
             <div class="chip-row">
-                <span class="chip">NONE</span>
-                <span class="chip">PASSTHROUGH</span>
-                <span class="chip">API_KEY</span>
-                <span class="chip">OAUTH2_CLIENT_CREDENTIALS</span>
+                <span class="chip">OAuth2 client credentials</span>
+                <span class="chip">API key authentication</span>
+                <span class="chip">Passthrough security</span>
+                <span class="chip">Declarative clients</span>
                 <span class="chip">Per-method overrides</span>
                 <span class="chip">Token caching</span>
             </div>
+
         </div>
     </section>
 

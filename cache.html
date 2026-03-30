@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Redis Cache for Spring Boot Microservices | Spring Middleware</title>
+
+    <meta
+            name="description"
+            content="Redis cache for Spring Boot microservices. Annotation-driven TTL configuration, cache statistics, cache inspection endpoints, Micrometer metrics, and programmatic cache management."
+    />
+
+    <link rel="canonical" href="https://spring-middleware.com/cache.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Redis Cache for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Redis-based caching for Spring Boot microservices with TTL configuration, runtime statistics, Micrometer metrics, and cache management endpoints." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/cache.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Redis Cache for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Redis cache integration for Spring Boot microservices with annotation-driven TTL, metrics, and runtime inspection." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-page="cache">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero">
+        <div class="container">
+            <div class="eyebrow">Cache / Redis</div>
+
+            <h1>Redis cache for Spring Boot microservices</h1>
+
+            <p class="lead">
+                Spring Middleware provides a Redis-based cache module for Spring Boot microservices.
+                It adds annotation-driven TTL configuration, runtime cache inspection, Micrometer-backed
+                statistics, and programmatic cache operations while keeping caching behavior explicit and observable.
+            </p>
+
+            <div class="hero-actions">
+                <a class="button button-primary" href="#cache-model">Explore the cache module</a>
+                <a class="button button-secondary" href="redis.html">See Redis module</a>
+            </div>
+
+            <div class="chip-row">
+                <span class="chip">Redis cache integration</span>
+                <span class="chip">Annotation-driven TTL</span>
+                <span class="chip">Runtime cache statistics</span>
+                <span class="chip">Micrometer metrics</span>
+                <span class="chip">Cache inspection endpoints</span>
+                <span class="chip">Programmatic cache management</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="cache-model">
+        <div class="container">
+            <div class="grid-2">
+                <article class="card">
+                    <h2 style="margin-top: 0;">What the cache module provides</h2>
+                    <p>
+                        The cache module extends Spring caching with Redis-specific helpers and runtime
+                        introspection. It is designed to keep cache behavior explicit instead of scattering
+                        TTL rules, statistics access, and cache clearing logic across services.
+                    </p>
+
+                    <ul class="list-clean">
+                        <li>Annotation-driven TTL configuration</li>
+                        <li>Automatic Redis cache registration</li>
+                        <li>Runtime cache inspection endpoints</li>
+                        <li>Micrometer-backed cache statistics</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h2 style="margin-top: 0;">Core runtime pieces</h2>
+                    <ul class="key-points">
+                        <li><strong>@RedisCacheConfiguration:</strong> method-level TTL configuration for caches declared with <code>@Cacheable</code>.</li>
+                        <li><strong>RedisCacheConfigurationSupport:</strong> scans methods and registers per-cache Redis settings.</li>
+                        <li><strong>CacheService:</strong> clears caches and exposes runtime statistics.</li>
+                        <li><strong>CacheController:</strong> small REST API for cache config and inspection.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="cache-overview">
+        <div class="container">
+            <div class="section-head">
+                <h2>High-level cache view</h2>
+                <p>
+                    Services declare cacheable methods as usual, then optionally add Redis-specific TTL
+                    metadata. The module collects that information at startup and wires the Redis cache
+                    manager accordingly.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 920 230" xmlns="http://www.w3.org/2000/svg" aria-label="Cache module overview">
+
+                        <rect x="70" y="82" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="160" y="114" text-anchor="middle" fill="white" font-size="15">Application Service</text>
+
+                        <rect x="315" y="66" width="290" height="86" rx="22"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.28)"/>
+                        <text x="460" y="92" text-anchor="middle" fill="white" font-size="17">Spring Middleware Cache Module</text>
+                        <text x="460" y="116" text-anchor="middle" fill="#9fb0c9" font-size="13">TTL configuration • statistics</text>
+                        <text x="460" y="136" text-anchor="middle" fill="#9fb0c9" font-size="13">inspection • cache management</text>
+
+                        <rect x="670" y="82" width="180" height="54" rx="16"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="760" y="114" text-anchor="middle" fill="white" font-size="15">Redis Cache</text>
+
+                        <line x1="250" y1="109" x2="315" y2="109" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="605" y1="109" x2="670" y2="109" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works">
+        <div class="container">
+            <div class="section-head">
+                <h2>How it works</h2>
+                <p>
+                    Cache configuration stays close to the application code, but the module translates
+                    it into Redis cache manager settings at startup.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <div class="step-number">01</div>
+                    <h3>Declare a cacheable method</h3>
+                    <p>Use Spring's <code>@Cacheable("my-cache")</code> on the method as usual.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">02</div>
+                    <h3>Add Redis TTL metadata</h3>
+                    <p>Optionally annotate the same method with <code>@RedisCacheConfiguration</code>.</p>
+                </article>
+
+                <article class="process-step">
+                    <div class="step-number">03</div>
+                    <h3>Register runtime cache config</h3>
+                    <p><code>RedisCacheConfigurationSupport</code> scans methods and customizes the Redis cache manager builder.</p>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Startup behavior</h3>
+                    <p>
+                        The module uses reflection to find methods annotated with both
+                        <code>@Cacheable</code> and <code>@RedisCacheConfiguration</code>,
+                        resolves TTL values, and registers per-cache settings.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Runtime behavior</h3>
+                    <p>
+                        Once configured, cache statistics and cache operations can be observed
+                        and managed through the service API or the built-in controller endpoints.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="configuration">
+        <div class="container">
+            <div class="section-head">
+                <h2>Configuration</h2>
+                <p>
+                    Redis caching builds on Spring cache configuration. Redis infrastructure is assumed
+                    to be configured separately.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>Minimal configuration</h3>
+                    <pre class="code-block"><code>spring:
+  cache:
+    type: redis
+    redis:
+      enable-statistics: true</code></pre>
+                </article>
+
+                <article class="card card-zoomable">
+                    <h3>TTL placeholder example</h3>
+                    <pre class="code-block"><code>@Cacheable("catalog-events")
+@RedisCacheConfiguration(
+    ttlString = "${CACHE_TTL_SECONDS:300}",
+    chronoUnitString = "SECONDS"
+)
+List&lt;Item&gt; findByCatalogId(UUID catalogId) { ... }</code></pre>
+                </article>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>RedisCacheConfiguration options</h3>
+                    <ul class="list-clean">
+                        <li><code>ttl</code> — numeric TTL</li>
+                        <li><code>chronoUnit</code> — time unit</li>
+                        <li><code>ttlString</code> — placeholder-based TTL</li>
+                        <li><code>chronoUnitString</code> — placeholder-based time unit</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>Recommended approach</h3>
+                    <p>
+                        Prefer <code>ttlString</code> with environment placeholders in production
+                        so cache TTLs can be tuned without code changes.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="runtime-inspection">
+        <div class="container">
+            <div class="section-head">
+                <h2>Runtime inspection and metrics</h2>
+                <p>
+                    The module exposes runtime information about caches and can integrate with
+                    Micrometer metrics when statistics are enabled.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Cache statistics</h3>
+                    <p>
+                        Runtime statistics include hit, miss, pending, and puts through the
+                        <code>CacheInformationStatistics</code> DTO.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Micrometer integration</h3>
+                    <p>
+                        The service reads meters such as <code>cache.gets</code> and <code>cache.puts</code>
+                        to expose cache behavior programmatically.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Configured caches</h3>
+                    <p>
+                        The module can expose known cache names and their Redis configuration
+                        parameters at runtime.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="controller-endpoints">
+        <div class="container">
+            <div class="section-head">
+                <h2>Cache controller endpoints</h2>
+                <p>
+                    A small REST API is available under <code>/cache</code> for inspection and cache clearing.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>GET /cache/stadistics</h3>
+                    <p>
+                        Returns a collection of <code>CacheInformationStatistics</code>,
+                        optionally filtered by cache name.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>GET /cache/config</h3>
+                    <p>
+                        Returns the current Redis cache configuration parameters known by the module.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>GET /cache/clear</h3>
+                    <p>
+                        Clears the named cache and returns whether the operation succeeded.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="programmatic-api">
+        <div class="container">
+            <div class="section-head">
+                <h2>Programmatic API</h2>
+                <p>
+                    Services can interact with runtime cache information through the <code>CacheService</code>.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card card-zoomable">
+                    <h3>CacheService example</h3>
+                    <pre class="code-block"><code>@Autowired
+private CacheService cacheService;
+
+cacheService.clearCache("catalog-events");
+
+Collection&lt;CacheInformationStatistics&gt; stats =
+    cacheService.getCacheInformationStadistics(
+        CacheInformationStadisticsFilter.builder()
+            .cacheNames(List.of("catalog-events"))
+            .build()
+    );</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Why use the service API</h3>
+                    <ul class="key-points">
+                        <li><strong>Operational control:</strong> clear or inspect caches programmatically.</li>
+                        <li><strong>Consistency:</strong> use one platform API instead of custom cache utilities per service.</li>
+                        <li><strong>Observability:</strong> keep statistics accessible from service code.</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="advanced-usage">
+        <div class="container">
+            <div class="section-head">
+                <h2>Advanced usage</h2>
+                <p>
+                    The module can be extended programmatically and includes a default JSON serializer
+                    suited for complex cached objects.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <article class="card">
+                    <h3>Programmatic extensions</h3>
+                    <p>
+                        <code>RedisCacheConfigurationSupport#getSpecificRedisCacheConfigurations()</code>
+                        can be overridden by framework modules to add extra cache configurations.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Default serializer</h3>
+                    <p>
+                        The module registers a <code>GenericJackson2JsonRedisSerializer</code> backed
+                        by an <code>ObjectMapper</code> configured for JDK8 and Java time types,
+                        with polymorphic typing enabled.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="best-practices">
+        <div class="container">
+            <div class="section-head">
+                <h2>Best practices</h2>
+                <p>
+                    Cache effectiveness depends on naming, TTL control, statistics usage, and serialization choices.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card">
+                    <h3>Use descriptive cache names</h3>
+                    <p>
+                        Keep cache responsibilities focused and avoid mixing unrelated workloads in one cache.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Enable statistics selectively</h3>
+                    <p>
+                        Use <code>spring.cache.redis.enable-statistics</code> when you need runtime visibility,
+                        but avoid unnecessary overhead.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Prefer environment-driven TTLs</h3>
+                    <p>
+                        Use placeholder-based TTL configuration so runtime tuning does not require code changes.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="code-references">
+        <div class="container">
+            <div class="section-head">
+                <h2>Where to look in the code</h2>
+                <p>
+                    The cache module is centered around annotation processing, runtime cache configuration,
+                    and operational APIs.
+                </p>
+            </div>
+
+            <div class="grid-3">
+                <article class="card code-ref">
+                    <h3>RedisCacheConfiguration</h3>
+                    <span class="code-tag">cache annotations</span>
+                    <p class="code-path">.../cache/annotations/RedisCacheConfiguration.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>RedisCacheConfigurationSupport</h3>
+                    <span class="code-tag">cache config</span>
+                    <p class="code-path">.../cache/config/RedisCacheConfigurationSupport.java</p>
+                </article>
+
+                <article class="card code-ref">
+                    <h3>CacheServiceImpl</h3>
+                    <span class="code-tag">cache service</span>
+                    <p class="code-path">.../cache/service/CacheServiceImpl.java</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="related-cache-docs">
+        <div class="container">
+            <div class="section-head">
+                <h2>Related documentation</h2>
+                <p>
+                    The cache module sits on top of Redis infrastructure and connects naturally
+                    with modules focused on data access, runtime behavior, and platform operations.
+                </p>
+            </div>
+
+            <div class="grid-2">
+                <a class="card" href="redis.html">
+                    <h3 style="margin-top: 0;">Redis</h3>
+                    <p>Connection management, locks, mutexes, and the Redis runtime model.</p>
+                </a>
+
+                <a class="card" href="modules.html">
+                    <h3 style="margin-top: 0;">Modules</h3>
+                    <p>How the cache module fits into the modular platform structure.</p>
+                </a>
+
+                <a class="card" href="logging.html">
+                    <h3 style="margin-top: 0;">Logging</h3>
+                    <p>Operational visibility and runtime inspection for cache-backed workflows.</p>
+                </a>
+
+                <a class="card" href="architecture.html">
+                    <h3 style="margin-top: 0;">Architecture</h3>
+                    <p>How caching fits into the broader platform and infrastructure model.</p>
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-line">
+        Spring Middleware — Redis cache integration and runtime cache observability.
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+<script src="js/code-zoom.js"></script>
+<div id="code-zoom-overlay" class="code-zoom-overlay" aria-hidden="true">
+    <div class="code-zoom-backdrop"></div>
+    <div class="code-zoom-modal">
+        <button id="code-zoom-close" class="code-zoom-close" aria-label="Close preview">×</button>
+        <div id="code-zoom-content" class="code-zoom-content"></div>
+    </div>
+</div>
+</body>
+</html>
