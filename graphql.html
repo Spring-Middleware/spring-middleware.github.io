@@ -4,26 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>GraphQL Federation for Spring Boot Microservices | Spring Middleware</title>
+    <title>GraphQL Federation and Batching for Spring Boot Microservices | Spring Middleware</title>
 
     <meta name="description"
-          content="Distributed GraphQL federation for Spring Boot microservices. Schema registration, gateway composition, GraphQL Links, and unified error handling in a registry-driven architecture." />
+          content="Distributed GraphQL federation and declarative batching for Spring Boot microservices. Registry-driven schema composition, GraphQL Links, cross-service query resolution, and platform-level N+1 optimization." />
 
     <link rel="canonical" href="https://spring-middleware.com/graphql.html" />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="GraphQL Federation for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:title" content="GraphQL Federation and Batching for Spring Boot Microservices | Spring Middleware" />
     <meta property="og:description"
-          content="Registry-driven GraphQL federation for Spring Boot microservices with schema composition, gateway orchestration, and unified error handling." />
+          content="Registry-driven GraphQL federation for Spring Boot microservices with schema composition, GraphQL Links, and automatic batching of cross-service queries." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://spring-middleware.com/graphql.html" />
     <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="GraphQL Federation for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:title" content="GraphQL Federation and Batching for Spring Boot Microservices | Spring Middleware" />
     <meta name="twitter:description"
-          content="Distributed GraphQL architecture for Spring Boot microservices with schema federation and gateway composition." />
+          content="Distributed GraphQL architecture for Spring Boot microservices with schema federation, GraphQL Links, and automatic batching at gateway level." />
     <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
 
     <link rel="icon" href="SpringMiddleware.png" type="image/png" />
@@ -40,17 +40,25 @@
             <div class="hero-content narrow">
                 <span class="eyebrow">GraphQL Federation</span>
 
-                <h1>GraphQL federation for Spring Boot microservices</h1>
+                <h1>GraphQL federation and batching for Spring Boot microservices</h1>
 
                 <p class="hero-lead">
-                    Spring Middleware provides a distributed GraphQL architecture for Spring Boot microservices.
+                    Spring Middleware provides a registry-driven GraphQL platform for Spring Boot microservices.
                     Each service owns its schema, registers it in the Registry, and participates in a unified
                     GraphQL API composed at runtime through a gateway.
                 </p>
 
+                <p class="hero-lead">
+                    The platform also enables declarative service communication, distributed GraphQL federation,
+                    and automatic batching of cross-service queries—solving N+1 problems at the platform level
+                    instead of resolver level.
+                </p>
+
                 <div class="hero-actions">
-                    <a class="button button-primary" href="documentation.html">Read Documentation</a>
-                    <a class="button button-secondary" href="architecture.html">View Architecture</a>
+                    <a class="button button-primary" href="#batching">Explore batching</a>
+                    <a class="button button-secondary" href="https://github.com/Spring-Middleware/spring-base/blob/main/docs/graphql-query-batching.md" target="_blank" rel="noreferrer">
+                        Deep dive
+                    </a>
                 </div>
             </div>
         </div>
@@ -62,10 +70,10 @@
                 <span class="eyebrow">What it is</span>
                 <h2>Foundational infrastructure for federated GraphQL</h2>
                 <p>
-                    Spring Middleware does not position GraphQL as a local framework feature inside a single service.
+                    Spring Middleware does not treat GraphQL as a local framework feature inside a single service.
                     It provides the platform-level pieces required to support distributed GraphQL across multiple services:
-                    schema discovery, registry-backed metadata, gateway composition, centralized error handling, and
-                    cross-service field resolution.
+                    schema discovery, registry-backed metadata, gateway composition, centralized error handling,
+                    cross-service field resolution, and declarative batching of linked queries.
                 </p>
             </div>
 
@@ -86,10 +94,10 @@
                 </article>
 
                 <article class="card">
-                    <h3>Consistent runtime model</h3>
+                    <h3>Platform-level execution</h3>
                     <p>
-                        Error handling, scalar normalization, and query composition are handled with the same
-                        platform mindset used across the rest of Spring Middleware.
+                        Linked fields, downstream queries, scalar normalization, and batched execution are handled
+                        by the gateway through metadata rather than resolver-specific code.
                     </p>
                 </article>
             </div>
@@ -118,10 +126,10 @@
                 </article>
 
                 <article class="card">
-                    <h3>Standardize the infrastructure layer</h3>
+                    <h3>Standardize the execution layer</h3>
                     <p>
-                        Registry metadata, gateway behavior, error handling, and remote execution patterns are standardized
-                        so teams do not have to rebuild GraphQL plumbing for every service landscape.
+                        Registry metadata, gateway behavior, error handling, remote execution patterns, and batch dispatch
+                        are standardized so teams do not have to rebuild GraphQL plumbing for every service landscape.
                     </p>
                 </article>
             </div>
@@ -140,37 +148,38 @@
             </div>
 
             <div class="diagram-card">
-    <div class="diagram-svg-wrapper">
-        <svg class="diagram-svg" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GraphQL topology">
-            <defs>
-                <linearGradient id="g-gw" x1="0" x2="1"><stop offset="0%" stop-color="rgba(56,189,248,0.12)"/><stop offset="100%" stop-color="rgba(34,197,94,0.08)"/></linearGradient>
-            </defs>
-            <!-- Gateway -->
-            <rect x="220" y="12" rx="12" ry="12" width="240" height="56" fill="url(#g-gw)" stroke="rgba(255,255,255,0.04)" />
-            <text x="340" y="46" fill="white" font-size="14" font-family="Inter, Arial, sans-serif" text-anchor="middle">GraphQL Gateway</text>
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GraphQL topology">
+                        <defs>
+                            <linearGradient id="g-gw" x1="0" x2="1">
+                                <stop offset="0%" stop-color="rgba(56,189,248,0.12)"/>
+                                <stop offset="100%" stop-color="rgba(34,197,94,0.08)"/>
+                            </linearGradient>
+                            <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6 L2,3 z" fill="rgba(159,176,201,0.85)"/>
+                            </marker>
+                        </defs>
 
-            <!-- Arrows to services -->
-            <g stroke="rgba(159,176,201,0.8)" stroke-width="2" fill="none">
-                <path d="M340 68 L180 110" stroke-linecap="round" marker-end="url(#arrowG)" />
-                <path d="M340 68 L340 110" stroke-linecap="round" marker-end="url(#arrowG)" />
-                <path d="M340 68 L500 110" stroke-linecap="round" marker-end="url(#arrowG)" />
-            </g>
-            <defs>
-                <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 L2,3 z" fill="rgba(159,176,201,0.85)"/></marker>
-            </defs>
+                        <rect x="220" y="12" rx="12" ry="12" width="240" height="56" fill="url(#g-gw)" stroke="rgba(255,255,255,0.04)" />
+                        <text x="340" y="46" fill="white" font-size="14" font-family="Inter, Arial, sans-serif" text-anchor="middle">GraphQL Gateway</text>
 
-            <!-- Service boxes -->
-            <rect x="120" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
-            <text x="190" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">product-service</text>
+                        <g stroke="rgba(159,176,201,0.8)" stroke-width="2" fill="none">
+                            <path d="M340 68 L180 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+                            <path d="M340 68 L340 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+                            <path d="M340 68 L500 110" stroke-linecap="round" marker-end="url(#arrowG)" />
+                        </g>
 
-            <rect x="270" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
-            <text x="340" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">catalog-service</text>
+                        <rect x="120" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+                        <text x="190" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">product-service</text>
 
-            <rect x="420" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
-            <text x="490" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">inventory-service</text>
-        </svg>
-    </div>
-</div>
+                        <rect x="270" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+                        <text x="340" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">catalog-service</text>
+
+                        <rect x="420" y="110" rx="10" ry="10" width="140" height="64" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.02)" />
+                        <text x="490" y="146" fill="white" font-size="12" font-family="Inter, Arial, sans-serif" text-anchor="middle">inventory-service</text>
+                    </svg>
+                </div>
+            </div>
 
             <div class="grid grid-4">
                 <article class="card">
@@ -204,8 +213,8 @@
                 <p>
                     GraphQL federation starts with reliable metadata. Spring Middleware stores schema information in the Registry
                     so the gateway can discover where schemas live and which nodes expose them.
+                    <a href="registry.html">Read more about the Registry model</a>.
                 </p>
-                <a href="registry.html">Read more about the Registry model</a>.
             </div>
 
             <div class="grid grid-2">
@@ -233,8 +242,8 @@
 
             <div class="note">
                 <p>
-                    Spring Middleware focuses on schema metadata, discovery, and composition infrastructure. It does not currently
-                    aim to be a fully feature-complete federation engine with advanced query planning or per-field ownership rules.
+                    Spring Middleware focuses on schema metadata, discovery, composition, and execution infrastructure.
+                    It is designed to make distributed GraphQL explicit and platform-native rather than hide it behind local resolver conventions.
                 </p>
             </div>
         </div>
@@ -319,14 +328,183 @@
         </div>
     </section>
 
-    <section class="section section-alt">
+    <section id="batching" class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Declarative batching</span>
+                <h2>Solve distributed N+1 at platform level</h2>
+                <p>
+                    One of the most advanced parts of Spring Middleware is declarative GraphQL batching.
+                    Instead of solving N+1 through resolver-specific code or manual DataLoader wiring,
+                    the gateway detects batched links from metadata and executes one aggregated downstream query
+                    for multiple pending field resolutions.
+                </p>
+            </div>
+
+            <div class="card" style="margin-top: 24px; padding: 18px;">
+                <div class="eyebrow">Live demo</div>
+                <h3 style="margin-top: 8px;">Same query. 100 calls → 1 call.</h3>
+                <p style="margin-top: 8px; margin-bottom: 18px;">
+                    This demo shows the difference between immediate linked-field execution and declarative batching
+                    at gateway level, reducing latency from 814 ms to 165 ms.
+                </p>
+
+                <div style="position: relative; width: 100%; padding-top: 56.25%; border-radius: 18px; overflow: hidden; background: rgba(255,255,255,0.03);">
+                    <iframe
+                            src="https://www.youtube.com/embed/Hq8Q60PFd3Y"
+                            title="GraphQL batching demo"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                            loading="lazy"
+                            referrerpolicy="strict-origin-when-cross-origin"
+                            style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;">
+                    </iframe>
+                </div>
+
+                <p style="margin-top: 14px; color: #9fb0c9;">
+                    N+1 is solved at the platform level, not in resolvers.
+                </p>
+            </div>
+
+            <div class="grid grid-3 top-gap">
+                <article class="card">
+                    <h3>Metadata-driven</h3>
+                    <p>
+                        Batched execution is declared through <code>@GraphQLLink</code> and
+                        <code>@GraphQLLinkArgument</code>, not through imperative resolver code.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Request-scoped</h3>
+                    <p>
+                        Pending linked field resolutions are collected during execution and grouped within the same request.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Transparent for services</h3>
+                    <p>
+                        Services expose normal GraphQL queries such as <code>productsByIds</code>.
+                        The batching strategy lives in the gateway execution layer.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid grid-2 top-gap">
+                <article class="card">
+                    <h3>Enable batching</h3>
+                    <pre><code>graphql:
+  gateway:
+    batching:
+      enabled: ${GRAPHQL_GATEWAY_BATCHING_ENABLED:true}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Declare a batched link</h3>
+                    <pre><code>@GraphQLLink(
+    schema = "product",
+    type = "Product",
+    query = "productsByIds",
+    collection = true,
+    batched = true,
+    arguments = {
+        @GraphQLLinkArgument(
+            name = "ids",
+            targetFieldName = "id",
+            batch = true
+        )
+    }
+)</code></pre>
+                </article>
+            </div>
+
+            <div class="diagram-card top-gap">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 760 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Declarative GraphQL batching">
+                        <defs>
+                            <marker id="arrowBatch" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6 L2,3 z" fill="rgba(159,176,201,0.85)"/>
+                            </marker>
+                        </defs>
+
+                        <rect x="40" y="30" width="170" height="48" rx="14"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.16)"/>
+                        <text x="125" y="58" text-anchor="middle" fill="white" font-size="13">100 Catalog.products</text>
+
+                        <rect x="295" y="20" width="170" height="68" rx="16"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.30)"/>
+                        <text x="380" y="50" text-anchor="middle" fill="white" font-size="15">GraphQL Gateway</text>
+                        <text x="380" y="70" text-anchor="middle" fill="#9fb0c9" font-size="12">batch registry + dispatch</text>
+
+                        <rect x="550" y="30" width="170" height="48" rx="14"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.28)"/>
+                        <text x="635" y="58" text-anchor="middle" fill="white" font-size="13">productsByIds(ids)</text>
+
+                        <line x1="210" y1="54" x2="295" y2="54" stroke="rgba(148,163,184,0.65)" stroke-width="2" marker-end="url(#arrowBatch)"/>
+                        <line x1="465" y1="54" x2="550" y2="54" stroke="rgba(148,163,184,0.65)" stroke-width="2" marker-end="url(#arrowBatch)"/>
+
+                        <rect x="120" y="170" width="160" height="48" rx="14"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="200" y="198" text-anchor="middle" fill="white" font-size="13">without batching</text>
+
+                        <rect x="300" y="170" width="160" height="48" rx="14"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.14)"/>
+                        <text x="380" y="198" text-anchor="middle" fill="white" font-size="13">many remote calls</text>
+
+                        <rect x="480" y="170" width="160" height="48" rx="14"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.28)"/>
+                        <text x="560" y="198" text-anchor="middle" fill="white" font-size="13">one batched call</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="grid grid-4 top-gap">
+                <article class="card">
+                    <h3>1. Linked fields accumulate</h3>
+                    <p>Resolvers register pending batched requests while the query executes.</p>
+                </article>
+
+                <article class="card">
+                    <h3>2. IDs are aggregated</h3>
+                    <p>The gateway groups item identifiers across multiple parent objects.</p>
+                </article>
+
+                <article class="card">
+                    <h3>3. One remote query runs</h3>
+                    <p>A single downstream GraphQL request is sent to the owning service.</p>
+                </article>
+
+                <article class="card">
+                    <h3>4. Results are reconstructed</h3>
+                    <p>The gateway maps returned items back to the original parent fields transparently.</p>
+                </article>
+            </div>
+
+            <div class="note top-gap">
+                <p>
+                    In sample scenarios, this changes execution from many remote GraphQL requests to a single batched request,
+                    with observed latency reductions from roughly ~1 second to roughly ~100–200 ms.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
         <div class="container">
             <div class="section-heading">
                 <span class="eyebrow">Execution model</span>
-                <h2>How a linked field is resolved</h2>
+                <h2>How linked fields are resolved and dispatched</h2>
                 <p>
                     The gateway composes an executable schema and delegates linked fields to a remote execution path.
-                    This keeps cross-service resolution explicit and driven by metadata rather than hidden conventions.
+                    When batching is enabled, the execution model changes from immediate per-field calls to request-scoped
+                    registration, grouped dispatch, and batched reconstruction.
                 </p>
             </div>
 
@@ -339,20 +517,20 @@
 
                 <article class="process-step">
                     <span class="step-number">02</span>
-                    <h3>Linked field is detected</h3>
-                    <p>The gateway identifies that a field is backed by remote link metadata.</p>
+                    <h3>Linked field metadata is detected</h3>
+                    <p>The gateway identifies that a field is backed by remote link metadata and may participate in batching.</p>
                 </article>
 
                 <article class="process-step">
                     <span class="step-number">03</span>
-                    <h3>Remote query is built</h3>
-                    <p>Variables, argument mappings, selection sets, and fragments are rendered for the target service.</p>
+                    <h3>Dispatch strategy is selected</h3>
+                    <p>Links are either executed immediately or accumulated into the request-scoped batch registry.</p>
                 </article>
 
                 <article class="process-step">
                     <span class="step-number">04</span>
-                    <h3>Result is normalized</h3>
-                    <p>The remote response is normalized and returned as part of the original client response.</p>
+                    <h3>Remote results are normalized</h3>
+                    <p>The downstream response is normalized and merged into the original client response.</p>
                 </article>
             </div>
 
@@ -360,7 +538,8 @@
                 <h3 style="margin: 0; font-size: 1.35rem;">Execution view</h3>
                 <p style="margin-top: 10px;">
                     At runtime, the gateway sits between the client and the target services, building and executing
-                    the downstream query path from the link metadata.
+                    the downstream query path from link metadata. Batched links are coordinated through instrumentation
+                    and GraphQL context rather than custom resolver orchestration.
                 </p>
             </div>
 
@@ -368,53 +547,102 @@
                 <div class="diagram-svg-wrapper">
                     <svg class="diagram-svg diagram-svg-wide" viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
 
-                        <!-- Client -->
                         <rect x="300" y="10" width="160" height="44" rx="14"
                               fill="rgba(255,255,255,0.04)"
                               stroke="rgba(148,163,184,0.20)"/>
                         <text x="380" y="36" text-anchor="middle" fill="white" font-size="14">Client</text>
 
-                        <!-- Arrow -->
                         <line x1="380" y1="54" x2="380" y2="90" stroke="rgba(148,163,184,0.65)" stroke-width="2"/>
                         <polygon points="380,100 372,88 388,88" fill="rgba(148,163,184,0.85)"/>
 
-                        <!-- Gateway -->
-                        <rect x="240" y="110" width="280" height="64" rx="18"
+                        <rect x="220" y="110" width="320" height="72" rx="18"
                               fill="rgba(56,189,248,0.08)"
                               stroke="rgba(56,189,248,0.30)"/>
                         <text x="380" y="138" text-anchor="middle" fill="white" font-size="16">GraphQL Gateway</text>
                         <text x="380" y="158" text-anchor="middle" fill="#9fb0c9" font-size="13">
-                            analyze + resolve + execute
+                            analyze + batch + resolve + execute
                         </text>
 
-                        <!-- Branch lines -->
-                        <line x1="380" y1="174" x2="200" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
-                        <line x1="380" y1="174" x2="380" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
-                        <line x1="380" y1="174" x2="560" y2="220" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="380" y1="182" x2="200" y2="228" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="380" y1="182" x2="380" y2="228" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
+                        <line x1="380" y1="182" x2="560" y2="228" stroke="rgba(148,163,184,0.55)" stroke-width="2"/>
 
-                        <!-- Arrows -->
-                        <polygon points="200,230 192,218 208,218" fill="rgba(148,163,184,0.8)"/>
-                        <polygon points="380,230 372,218 388,218" fill="rgba(148,163,184,0.8)"/>
-                        <polygon points="560,230 552,218 568,218" fill="rgba(148,163,184,0.8)"/>
+                        <polygon points="200,238 192,226 208,226" fill="rgba(148,163,184,0.8)"/>
+                        <polygon points="380,238 372,226 388,226" fill="rgba(148,163,184,0.8)"/>
+                        <polygon points="560,238 552,226 568,226" fill="rgba(148,163,184,0.8)"/>
 
-                        <!-- Services -->
-                        <rect x="120" y="235" width="160" height="48" rx="14"
+                        <rect x="120" y="242" width="160" height="48" rx="14"
                               fill="rgba(255,255,255,0.03)"
                               stroke="rgba(148,163,184,0.14)"/>
-                        <text x="200" y="263" text-anchor="middle" fill="white" font-size="13.5">catalog-service</text>
+                        <text x="200" y="270" text-anchor="middle" fill="white" font-size="13.5">catalog-service</text>
 
-                        <rect x="300" y="235" width="160" height="48" rx="14"
+                        <rect x="300" y="242" width="160" height="48" rx="14"
                               fill="rgba(34,197,94,0.08)"
                               stroke="rgba(34,197,94,0.28)"/>
-                        <text x="380" y="263" text-anchor="middle" fill="white" font-size="13.5">product-service</text>
+                        <text x="380" y="270" text-anchor="middle" fill="white" font-size="13.5">product-service</text>
 
-                        <rect x="480" y="235" width="160" height="48" rx="14"
+                        <rect x="480" y="242" width="160" height="48" rx="14"
                               fill="rgba(255,255,255,0.03)"
                               stroke="rgba(148,163,184,0.14)"/>
-                        <text x="560" y="263" text-anchor="middle" fill="white" font-size="13.5">target schema</text>
+                        <text x="560" y="270" text-anchor="middle" fill="white" font-size="13.5">other schema</text>
 
                     </svg>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Batch dispatch internals</span>
+                <h2>Instrumentation coordinates the batching flow</h2>
+                <p>
+                    Declarative batching is implemented inside the gateway execution layer through dedicated instrumentation.
+                    This allows batching to remain aligned with the real query structure and selected fields instead of relying
+                    on static schema-wide assumptions.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>GraphQLBatchInstrumentation</h3>
+                    <p>
+                        The batching layer detects safe dispatch points, coordinates request-scoped execution through
+                        GraphQL context, and prevents duplicate dispatch for the same parent field while a batch is in flight.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Selected-field aware dispatch</h3>
+                    <p>
+                        The gateway uses execution metadata such as <code>ExecutionStepInfo</code> and
+                        <code>MergedField</code> to inspect the actual query being executed and dispatch only when linked
+                        fields are really needed.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid grid-4 top-gap">
+                <article class="card">
+                    <h3>Request-scoped registry</h3>
+                    <p>Pending batchable links are stored for the lifetime of the GraphQL request.</p>
+                </article>
+
+                <article class="card">
+                    <h3>BatchKey vs ItemKey</h3>
+                    <p>The gateway separates logical requests from individual returned items for correct reconstruction.</p>
+                </article>
+
+                <article class="card">
+                    <h3>List completion support</h3>
+                    <p>Dispatch can happen both for direct linked fields and for list children containing linked fields.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Runtime toggle</h3>
+                    <p>Batching can be enabled or disabled at runtime to compare execution paths or troubleshoot behavior.</p>
+                </article>
             </div>
         </div>
     </section>
@@ -460,7 +688,7 @@
                 <p>
                     Spring Middleware provides centralized error handling for GraphQL endpoints inside services.
                     The goal is to keep GraphQL responses aligned with the same domain error model already used
-                    across HTTP APIs. This ensures consistent error semantics across transport layers
+                    across HTTP APIs. This ensures consistent error semantics across transport layers.
                 </p>
                 <div class="section-actions">
                     <a class="button button-secondary" href="errors.html">
@@ -479,7 +707,6 @@
                         <li>ConstraintViolationException</li>
                         <li>Fallback unknown errors</li>
                     </ul>
-
                 </article>
 
                 <article class="card">
@@ -570,19 +797,20 @@
         </div>
     </section>
 
-    <section class="section section-cta">
+    <section id="next-step">
         <div class="container">
-            <div class="cta-box">
-                <span class="eyebrow">Next steps</span>
-                <h2>Explore the platform pieces behind GraphQL</h2>
-                <p>
-                    GraphQL in Spring Middleware is part of a broader platform model built around registry-driven discovery,
-                    explicit service topology, declarative communication, and consistent infrastructure behavior.
-                </p>
-
-                <div class="hero-actions">
-                    <a class="button button-primary" href="architecture.html">See Architecture</a>
-                    <a class="button button-secondary" href="modules.html">Browse Modules</a>
+            <div class="cta-box cta-box-final">
+                <div class="cta-copy">
+                    <div class="eyebrow">Next steps</div>
+                    <h2>Explore the platform pieces behind GraphQL</h2>
+                    <p>
+                        GraphQL in Spring Middleware is part of a broader platform model built around registry-driven discovery,
+                        explicit service topology, declarative communication, and consistent infrastructure behavior.
+                    </p>
+                </div>
+                <div class="cta-actions">
+                    <a class="button button-primary" href="architecture.html">View architecture</a>
+                    <a class="button button-secondary" href="modules.html">Browse modules</a>
                 </div>
             </div>
         </div>
