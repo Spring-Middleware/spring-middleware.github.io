@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Flow Orchestration for Spring Boot Microservices | Spring Middleware</title>
+
+    <meta name="description"
+          content="Lightweight, explicit flow orchestration for Spring Boot microservices. Pause and resume flows, dynamic routing, timeout redirection, Kafka-driven continuation, and execution traceability." />
+
+    <link rel="canonical" href="https://spring-middleware.com/orchestrator.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Flow Orchestration for Spring Boot Microservices | Spring Middleware" />
+    <meta property="og:description"
+          content="Explicit flow orchestration for Spring Boot microservices with pause/resume, dynamic resolvers, timeout handling, and execution traceability." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/orchestrator.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Flow Orchestration for Spring Boot Microservices | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Lightweight, explicit flow orchestration for Spring Boot microservices with pause/resume, timeout handling, and runtime traceability." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/components.css" />
+</head>
+<body data-page="orchestrator">
+<div id="site-header"></div>
+
+<main>
+    <section class="hero hero-page">
+        <div class="container">
+            <div class="hero-content narrow">
+                <span class="eyebrow">Flow Orchestration</span>
+
+                <h1>Explicit flow orchestration for Spring Boot microservices</h1>
+
+                <p class="hero-lead">
+                    <strong>Pause</strong>, <strong>resume</strong>, <strong>route</strong> and <strong>trace</strong> execution flows across services — without hidden orchestration logic.
+                </p>
+
+                <p class="hero-lead">
+                    Spring Middleware Orchestrator is a lightweight orchestration engine for Spring Boot microservices.
+
+                    It models execution flows explicitly, with support for dynamic routing, pause and resume, timeout handling, and external event continuation.
+                </p>
+
+                <p class="hero-lead">
+                    Instead of scattering orchestration logic across services and consumers, the orchestrator makes flows declarative, inspectable, and extensible.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary"
+                       href="https://github.com/Spring-Middleware/spring-middleware-orchestrator"
+                       target="_blank"
+                       rel="noreferrer">
+                        View on GitHub
+                    </a>
+                    <a class="button button-secondary" href="modules.html">
+                        Browse modules
+                    </a>
+                    <a class="button button-secondary" href="getting-started.html">
+                        Getting started
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Why it exists</span>
+                <h2>Make orchestration explicit instead of scattered</h2>
+                <p>
+                    In many microservice systems, orchestration emerges implicitly: conditional branches spread across services,
+                    ad-hoc Kafka consumers triggering follow-up logic, duplicated timeout handling, and no clear representation
+                    of the flow itself. That makes the system harder to evolve, reason about, and debug.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Implicit orchestration becomes fragile</h3>
+                    <p>
+                        Logic ends up distributed across application services, event consumers, schedulers, and custom retry code,
+                        with no single place that represents the overall execution model.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Flows should be visible and traceable</h3>
+                    <p>
+                        The orchestrator makes execution explicit so teams can reason about transitions, pauses, resumes,
+                        timeouts, and final outcomes as first-class platform concepts.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Mental model</span>
+                <h2>A deterministic state machine with optional dynamic transitions</h2>
+                <p>
+                    A flow starts at a declared entry action, executes each step, resolves the next action, and continues
+                    until the flow finishes, pauses, errors, or times out. The execution model is simple, explicit,
+                    and designed for backend developers rather than BPM tooling specialists.
+                </p>
+            </div>
+
+            <div class="process-grid">
+                <article class="process-step">
+                    <span class="step-number">01</span>
+                    <h3>Start at firstAction</h3>
+                    <p>The engine begins at the flow entry point defined in the flow metadata.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">02</span>
+                    <h3>Execute the action</h3>
+                    <p>Each action runs according to its action type and execution semantics.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">03</span>
+                    <h3>Resolve the next step</h3>
+                    <p>The engine determines where the flow should go next through a built-in or custom resolver.</p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">04</span>
+                    <h3>Stop, pause, or finish</h3>
+                    <p>The flow ends in a final state, pauses waiting for continuation, or redirects through timeout or error handling.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Core concepts</span>
+                <h2>Flows, actions, and resolvers</h2>
+                <p>
+                    The orchestrator revolves around three core concepts: the flow definition itself, the actions that compose it,
+                    and the resolver logic that determines transitions. This keeps the orchestration model explicit without making it heavyweight.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>Flow</h3>
+                    <p>
+                        A flow defines the entry point, the actions involved, and the transition model between steps.
+                        It is the top-level description of the orchestration path.
+                    </p>
+                    <pre><code>{
+  "flowId": { "value": "SIMPLE_FLOW" },
+  "firstAction": "FIRST_ACTION",
+  "actions": [ ... ]
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Action</h3>
+                    <p>
+                        Each action has a name, a type, optional next-step logic, and optional timeout behavior.
+                        Actions are the execution units that model the flow path.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Resolver</h3>
+                    <p>
+                        A resolver decides which action comes next. The engine provides a built-in fixed resolver,
+                        and developers can implement their own for dynamic branching.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Action model</span>
+                <h2>Action types reflect real backend execution patterns</h2>
+                <p>
+                    The orchestrator is built around backend-oriented action types rather than generic workflow abstractions.
+                    This makes it easier to model enrichment steps, side-effect execution, and resumed continuations explicitly.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>FUNCTION</h3>
+                    <p>
+                        FUNCTION actions transform input into output and represent pure computation or enrichment.
+                        They are typically used to prepare payloads, compute state, or derive context.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>CONSUMER</h3>
+                    <p>
+                        CONSUMER actions perform side effects and do not return output. They are useful for Kafka publishing,
+                        external API calls, notifications, or any step that interacts with external systems.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>RESUME</h3>
+                    <p>
+                        RESUME actions are entry points for continuation after a paused flow is resumed.
+                        They make asynchronous workflows explicit instead of hiding them in custom glue code.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Transition model</span>
+                <h2>Built-in and custom resolvers</h2>
+                <p>
+                    Every action execution must eventually resolve the next step in the flow. This transition model is one of the
+                    key extension points of the engine: teams can use fixed routing when the path is static, or implement custom resolvers
+                    when the flow depends on runtime conditions.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Fixed resolver</h3>
+                    <p>
+                        The built-in <code>FIXED_NEXT_ACTION</code> resolver transitions to a statically defined next action.
+                        It is the simplest and most direct orchestration model.
+                    </p>
+                    <pre><code>{
+  "resolver": "FIXED_NEXT_ACTION",
+  "parameters": {
+    "nextAction": "SECOND_ACTION"
+  }
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Custom resolvers</h3>
+                    <p>
+                        Custom resolvers can choose the next step dynamically based on execution context, runtime values,
+                        or external input. That enables conditional routing, approval paths, probabilistic routing,
+                        and other dynamic flow patterns.
+                    </p>
+                </article>
+            </div>
+
+            <div class="grid grid-3 top-gap">
+                <article class="card">
+                    <h3>Conditional branching</h3>
+                    <p>Route to different actions depending on context or calculated state.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Probability-based routing</h3>
+                    <p>Support A/B-style routing or weighted path selection through custom resolver logic.</p>
+                </article>
+
+                <article class="card">
+                    <h3>External decision model</h3>
+                    <p>Allow the next step to depend on information produced outside the immediate flow state.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Pause and resume</span>
+                <h2>One of the most important capabilities of the engine</h2>
+                <p>
+                    When a flow reaches a non-final CONSUMER action, the orchestrator can persist the execution state and stop execution,
+                    freeing threads and waiting for an external event to continue the flow later.
+                    This is especially useful for Kafka-driven continuation, callbacks, and long-lived asynchronous processes.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Pause behavior</h3>
+                    <p>
+                        If a non-final CONSUMER action is reached, the orchestrator persists the flow state,
+                        including payload and execution context, and moves the flow into a paused state.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Resume behavior</h3>
+                    <p>
+                        When an external system triggers continuation, the engine restores the persisted state
+                        from MongoDB and resumes execution from the configured RESUME action.
+                    </p>
+                </article>
+            </div>
+
+            <div class="diagram-card">
+                <div class="diagram-svg-wrapper">
+                    <svg class="diagram-svg" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pause and resume flow">
+                        <defs>
+                            <marker id="arrowO" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6 L2,3 z" fill="rgba(159,176,201,0.85)"/>
+                            </marker>
+                        </defs>
+
+                        <rect x="30" y="88" width="150" height="44" rx="12"
+                              fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.18)"/>
+                        <text x="105" y="115" text-anchor="middle" fill="white" font-size="13">CREATE_CONTEXT</text>
+
+                        <rect x="220" y="88" width="150" height="44" rx="12"
+                              fill="rgba(56,189,248,0.08)" stroke="rgba(56,189,248,0.28)"/>
+                        <text x="295" y="115" text-anchor="middle" fill="white" font-size="13">SEND_CONTEXT</text>
+
+                        <rect x="410" y="88" width="150" height="44" rx="12"
+                              fill="rgba(34,197,94,0.08)" stroke="rgba(34,197,94,0.28)"/>
+                        <text x="485" y="115" text-anchor="middle" fill="white" font-size="13">RESUME_CONTEXT</text>
+
+                        <rect x="600" y="88" width="130" height="44" rx="12"
+                              fill="rgba(255,255,255,0.04)" stroke="rgba(148,163,184,0.18)"/>
+                        <text x="665" y="115" text-anchor="middle" fill="white" font-size="13">LAST_ACTION</text>
+
+                        <line x1="180" y1="110" x2="220" y2="110" stroke="rgba(148,163,184,0.7)" stroke-width="2" marker-end="url(#arrowO)"/>
+                        <line x1="370" y1="110" x2="410" y2="110" stroke="rgba(148,163,184,0.7)" stroke-width="2" marker-end="url(#arrowO)"/>
+                        <line x1="560" y1="110" x2="600" y2="110" stroke="rgba(148,163,184,0.7)" stroke-width="2" marker-end="url(#arrowO)"/>
+
+                        <text x="295" y="72" text-anchor="middle" fill="#9fb0c9" font-size="12">pause + persist state</text>
+                        <text x="485" y="72" text-anchor="middle" fill="#9fb0c9" font-size="12">resume from persisted context</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="code-card top-gap">
+                <pre><code>flowExecutor.resumeFlow(flowExecutionId, "RESUME_CONTEXT_ACTION", null);</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Timeouts</span>
+                <h2>Timeout-based redirection is part of the flow model</h2>
+                <p>
+                    Flows can define timeout behavior explicitly on paused CONSUMER actions. If the flow is not resumed within
+                    the configured time, the engine redirects execution according to the timeout resolver. This makes expiration,
+                    fallback, and SLA-oriented behavior a first-class part of the orchestration model.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Timeout on paused steps</h3>
+                    <p>
+                        Timeout behavior applies naturally to paused CONSUMER steps, where the system is waiting for an external continuation.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Resolver-driven outcome</h3>
+                    <p>
+                        Timeout behavior is not hardcoded. It redirects through a resolver, so timeout can end the flow,
+                        move into an error branch, or continue through a fallback path.
+                    </p>
+                </article>
+            </div>
+
+            <div class="code-card">
+<pre><code>{
+  "actionName": "WAIT_FOR_PAYMENT",
+  "actionType": "CONSUMER",
+  "timeout": {
+    "seconds": 30,
+    "resolver": "FIXED_NEXT_ACTION",
+    "parameters": {
+      "nextAction": "PAYMENT_TIMEOUT_ERROR_ACTION"
+    }
+  }
+}</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Example flows</span>
+                <h2>Different patterns already validated</h2>
+                <p>
+                    The orchestrator already supports simple linear flows, chained execution, dynamic branching,
+                    pause/resume continuation, and timeout-based completion or failure handling.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>Simple flow</h3>
+                    <p><code>FIRST_ACTION → SECOND_ACTION</code></p>
+                </article>
+
+                <article class="card">
+                    <h3>Chained flow</h3>
+                    <p><code>FIRST → SECOND → THIRD</code></p>
+                </article>
+
+                <article class="card">
+                    <h3>Resolver flow</h3>
+                    <p><code>FIRST → resolver → FIRST_PROB / SECOND_PROB</code></p>
+                </article>
+
+                <article class="card">
+                    <h3>Context flow</h3>
+                    <p><code>CREATE → SEND (pause) → RESUME → LAST</code></p>
+                </article>
+
+                <article class="card">
+                    <h3>Timeout to END</h3>
+                    <p><code>CREATE → SEND (pause + timeout) → END</code></p>
+                </article>
+
+                <article class="card">
+                    <h3>Timeout to ERROR</h3>
+                    <p><code>CREATE → SEND (pause + timeout) → ERROR</code></p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Execution traceability</span>
+                <h2>Each flow produces an execution trail</h2>
+                <p>
+                    Every flow execution yields structured runtime information: execution identifiers, timestamps,
+                    execution status, ordered action executions, payload, and context. This makes orchestration behavior inspectable
+                    and testable without requiring a separate workflow platform.
+                </p>
+            </div>
+
+            <div class="grid grid-4">
+                <article class="card">
+                    <h3>flowExecutionId</h3>
+                    <p>Each run is tracked with its own execution identifier.</p>
+                </article>
+
+                <article class="card">
+                    <h3>requestId</h3>
+                    <p>A request correlation identifier can be carried across execution and continuation.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Ordered actions</h3>
+                    <p>Each action records order, status, error information, and execution timestamp.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Execution status</h3>
+                    <p>Flows expose states such as executed, suspended, or error depending on the runtime path.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Positioning</span>
+                <h2>What this is and what it is not</h2>
+                <p>
+                    Spring Middleware Orchestrator is deliberately opinionated. It is not trying to become a heavyweight BPM suite
+                    or a black-box workflow server. It is a developer-friendly orchestration engine meant to fit naturally into
+                    Spring Boot microservice systems.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>This is not</h3>
+                    <ul class="feature-list">
+                        <li>A BPM engine</li>
+                        <li>A heavy workflow platform</li>
+                        <li>A black-box orchestration runtime</li>
+                    </ul>
+                </article>
+
+                <article class="card">
+                    <h3>This is</h3>
+                    <ul class="feature-list">
+                        <li>Explicit</li>
+                        <li>Minimal</li>
+                        <li>Composable</li>
+                        <li>Developer-friendly</li>
+                    </ul>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Validated capabilities</span>
+                <h2>Already proving real orchestration behavior</h2>
+                <p>
+                    The current implementation already validates fixed transitions, multi-step chaining, custom resolver execution,
+                    pause and resume with persisted context, Kafka-driven continuation, timeout redirection, and error propagation.
+                    This is already a serious orchestration engine, not a toy example.
+                </p>
+            </div>
+
+            <div class="grid grid-3">
+                <article class="card">
+                    <h3>Fixed transitions</h3>
+                    <p>Simple deterministic flows are supported directly through built-in resolvers.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Pause and resume</h3>
+                    <p>Execution state can be persisted and restored for asynchronous continuation.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Timeout redirection</h3>
+                    <p>Paused flows can redirect automatically to END or ERROR style branches.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Custom resolver execution</h3>
+                    <p>Dynamic next-step routing already works as part of the execution engine.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Kafka-driven continuation</h3>
+                    <p>External messaging can drive resumed execution paths naturally.</p>
+                </article>
+
+                <article class="card">
+                    <h3>Error propagation</h3>
+                    <p>Execution failures are captured explicitly in the flow execution trail.</p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Modules</span>
+                <h2>Structured as engine, infrastructure, and demo</h2>
+                <p>
+                    The orchestrator is organized as modular components so the core engine stays separated from persistence,
+                    messaging integration, and example applications.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>orchestrator-core</h3>
+                    <p>
+                        Contains the engine itself, including the flow executor, resolvers, execution context model,
+                        and flow runtime abstractions.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>orchestrator-infra</h3>
+                    <p>
+                        Contains infrastructure bindings such as MongoDB persistence, Kafka integrations,
+                        scheduling support, and runtime infrastructure wiring.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>orchestrator-demo</h3>
+                    <p>
+                        A reference Spring Boot application that demonstrates orchestration patterns and runtime behavior.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>examples</h3>
+                    <p>
+                        JSON flow definitions illustrating simple flows, chained flows, resolvers, pause/resume,
+                        and timeout-driven execution paths.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-heading">
+                <span class="eyebrow">Getting started</span>
+                <h2>Add the orchestrator modules to your Spring Boot application</h2>
+                <p>
+                    The orchestrator is designed to fit naturally into Spring Boot applications.
+                    Add the required modules, implement your actions, define the flow, and trigger execution through the engine.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+                <article class="card">
+                    <h3>Dependencies</h3>
+                    <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.github.spring-middleware&lt;/groupId&gt;
+    &lt;artifactId&gt;orchestrator-core&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;io.github.spring-middleware&lt;/groupId&gt;
+    &lt;artifactId&gt;orchestrator-infra&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Action implementation</h3>
+                    <pre><code>@Component
+public class CreateOrderAction implements FunctionAction&lt;OrderRequest, OrderContext&gt; {
+
+    @Override
+    public OrderContext execute(OrderRequest input, ExecutionContext context) {
+        return new OrderContext(input.getId(), "CREATED");
+    }
+}</code></pre>
+                </article>
+            </div>
+
+            <div class="grid grid-2 top-gap">
+                <article class="card">
+                    <h3>Flow definition</h3>
+                    <pre><code>{
+  "flowId": { "value": "ORDER_CREATION_FLOW" },
+  "firstAction": "CREATE_ORDER",
+  "actions": [
+    {
+      "actionName": "CREATE_ORDER",
+      "actionType": "FUNCTION"
+    }
+  ]
+}</code></pre>
+                </article>
+
+                <article class="card">
+                    <h3>Flow trigger</h3>
+                    <pre><code>@Service
+public class OrderService {
+
+    private final FlowExecutor flowExecutor;
+
+    public OrderService(FlowExecutor flowExecutor) {
+        this.flowExecutor = flowExecutor;
+    }
+
+    public void startOrder(OrderRequest request) {
+        flowExecutor.startFlow("ORDER_CREATION_FLOW", request);
+    }
+}</code></pre>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <section id="next-step">
+        <div class="container">
+            <div class="cta-box cta-box-final">
+                <div class="cta-copy">
+                    <div class="eyebrow">Next steps</div>
+                    <h2>Explore how orchestration fits into the broader platform</h2>
+                    <p>
+                        The orchestrator complements Spring Middleware’s broader platform model around messaging,
+                        persistence, registry-driven architecture, and explicit microservice infrastructure.
+                    </p>
+                </div>
+                <div class="cta-actions">
+                    <a class="button button-primary" href="architecture.html">View architecture</a>
+                    <a class="button button-secondary" href="messaging.html">See messaging</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>Spring Middleware — Platform layer for Spring Boot microservices.</p>
+        <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="graphql.html">GraphQL Federation</a>
+            <a href="messaging.html">Kafka / Messaging</a>
+            <a href="orchestrator.html">Orchestrator</a>
+            <a href="modules.html">Modules</a>
+            <a href="documentation.html">Documentation</a>
+        </nav>
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+</body>
+</html>
