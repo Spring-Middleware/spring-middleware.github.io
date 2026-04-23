@@ -370,6 +370,30 @@
                 </p>
             </div>
 
+            <div class="card top-gap" style="padding: 18px;">
+                <div class="eyebrow">Benchmark</div>
+                <h3 style="margin-top: 8px;">20 VUs · 100 catalogs × 100 products × 10 reviews</h3>
+                <p style="margin-top: 8px; margin-bottom: 18px;">
+                    The graph below compares the same GraphQL hierarchy with batching disabled and enabled.
+                    It shows both the reduction in downstream calls and the impact on latency and throughput.
+                </p>
+
+                <figure style="margin: 0;">
+                    <img
+                            src="images/graphql_gateway_metrics.png"
+                            alt="GraphQL batching benchmark comparing no batching vs batching, including downstream calls, latency, and throughput"
+                            loading="lazy"
+                            style="width: 100%; height: auto; display: block; border-radius: 18px; border: 1px solid rgba(255,255,255,0.06);"
+                    />
+                    <figcaption style="margin-top: 12px; color: #9fb0c9; font-size: 0.95rem; line-height: 1.5;">
+                        In this scenario, downstream review calls were reduced from <strong>570,000</strong> to
+                        <strong>304</strong>, while average latency improved from <strong>18.35s</strong> to
+                        <strong>5.42s</strong> and throughput increased from <strong>0.27</strong> to
+                        <strong>~1.06 req/s</strong>.
+                    </figcaption>
+                </figure>
+            </div>
+
             <div class="grid grid-3 top-gap">
                 <article class="card">
                     <h3>Metadata-driven</h3>
@@ -421,12 +445,6 @@
     }
 )</code></pre>
                 </article>
-            </div>
-
-            <div class="note top-gap">
-                <p>
-                    There is also a written walkthrough of the batching model on Medium, already getting early positive feedback.
-                </p>
             </div>
 
             <div class="diagram-card top-gap">
