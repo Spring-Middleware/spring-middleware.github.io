@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>AI Infrastructure and RAG for Spring Boot | Spring Middleware</title>
+
+    <meta name="description"
+          content="Declarative AI infrastructure and Retrieval-Augmented Generation (RAG) for Spring Boot microservices. Reactive pipelines, structured retrieval, semantic chunking, metadata-aware filtering, and production-ready vector search." />
+
+    <link rel="canonical" href="https://spring-middleware.com/ai.html" />
+
+    <meta property="og:title" content="AI Infrastructure and RAG for Spring Boot | Spring Middleware" />
+    <meta property="og:description"
+          content="Production-ready RAG infrastructure for Spring Boot with declarative ETL, semantic chunking, structured retrieval, vector search, and query planning." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://spring-middleware.com/ai.html" />
+    <meta property="og:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI Infrastructure and RAG for Spring Boot | Spring Middleware" />
+    <meta name="twitter:description"
+          content="Reactive AI infrastructure and Retrieval-Augmented Generation for Spring Boot microservices." />
+    <meta name="twitter:image" content="https://spring-middleware.com/SpringMiddleware.png" />
+
+    <link rel="icon" href="SpringMiddleware.png" type="image/png" />
+
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/components.css" />
+</head>
+
+<body data-page="ai_rag">
+
+<div id="site-header"></div>
+
+<main>
+
+    <section class="hero hero-page">
+        <div class="container">
+            <div class="hero-content narrow">
+
+                <span class="eyebrow">AI Infrastructure</span>
+
+                <h1>Declarative RAG and AI infrastructure for Spring Boot</h1>
+
+                <p class="hero-lead">
+                    Spring Middleware AI provides a declarative infrastructure for integrating
+                    LLMs and Retrieval-Augmented Generation (RAG) into distributed systems.
+                </p>
+
+                <p class="hero-lead">
+                    The platform focuses on knowledge modeling, structured retrieval,
+                    semantic chunking, metadata-aware filtering, and production-grade
+                    reactive execution instead of prompt-only AI orchestration.
+                </p>
+
+                <div class="hero-actions">
+                    <a class="button button-primary" href="documentation.html">
+                        Documentation
+                    </a>
+
+                    <a class="button button-secondary" href="modules.html">
+                        Browse modules
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Core idea</span>
+
+                <h2>Model knowledge, not pipelines</h2>
+
+                <p>
+                    Spring Middleware AI separates infrastructure concerns,
+                    semantic modeling, retrieval strategy, and LLM interaction.
+                    The goal is to make RAG deterministic, explainable, and production-ready.
+                </p>
+            </div>
+
+            <div class="code-card">
+<pre><code>Raw Data (JSON, Markdown, APIs)
+→ Declarative ETL
+→ Semantic Chunks
+→ Embeddings
+→ Vector Store
+→ Query Planning
+→ Retrieval
+→ LLM Response</code></pre>
+            </div>
+
+            <div class="note top-gap">
+                <p>
+                    The platform is designed around a core principle:
+                    separate infrastructure, knowledge modeling, and query understanding.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Module structure</span>
+
+                <h2>Composable AI architecture</h2>
+
+                <p>
+                    The AI platform is divided into focused modules covering contracts,
+                    providers, infrastructure implementations, and Spring Boot orchestration.
+                </p>
+            </div>
+
+            <div class="code-card">
+<pre><code>ai
+ ├─ ai-core
+ ├─ ai-ollama
+ ├─ ai-infrastructure
+ └─ ai-boot</code></pre>
+            </div>
+
+            <div class="grid grid-4 top-gap">
+
+                <article class="card">
+                    <h3>ai-core</h3>
+                    <p>
+                        Provider-independent abstractions such as ChatClient,
+                        EmbeddingClient, VectorStore, DocumentChunker, and AIProvider.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>ai-infrastructure</h3>
+                    <p>
+                        Vector stores, chunkers, document sources, and retrieval implementations.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>ai-boot</h3>
+                    <p>
+                        Spring Boot auto-configuration, indexing lifecycle,
+                        orchestration, conversations, and chat APIs.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>ai-ollama</h3>
+                    <p>
+                        Local LLM and embedding integration through Ollama for local-first AI execution.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Reactive execution</span>
+
+                <h2>Fully reactive pipelines</h2>
+
+                <p>
+                    Spring Middleware AI is designed around non-blocking execution
+                    and reactive orchestration from indexing to retrieval.
+                </p>
+            </div>
+
+            <div class="code-card">
+<pre><code>Mono.fromCallable(() -> embeddingClient.generate(...))
+    .subscribeOn(Schedulers.boundedElastic());</code></pre>
+            </div>
+
+            <div class="grid grid-3 top-gap">
+
+                <article class="card">
+                    <h3>No blocking pipelines</h3>
+                    <p>
+                        Chunking, embedding generation, retrieval, and orchestration
+                        are designed to work inside reactive flows.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Parallel indexing</h3>
+                    <p>
+                        Chunks can be processed concurrently to improve indexing throughput
+                        without blocking the application runtime.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Distributed friendly</h3>
+                    <p>
+                        Reactive execution allows AI pipelines to scale naturally
+                        inside distributed systems and microservice platforms.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Declarative ETL</span>
+
+                <h2>Extract → Transform → Load</h2>
+
+                <p>
+                    Spring Middleware AI uses a declarative ETL model
+                    to transform raw system data into semantic knowledge.
+                </p>
+            </div>
+
+            <div class="process-grid">
+
+                <article class="process-step">
+                    <span class="step-number">01</span>
+                    <h3>Extract</h3>
+                    <p>
+                        Retrieve documents from APIs, databases, files,
+                        GraphQL endpoints, or custom providers.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">02</span>
+                    <h3>Transform</h3>
+                    <p>
+                        Convert raw data into semantic chunks with structured metadata.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">03</span>
+                    <h3>Load</h3>
+                    <p>
+                        Generate embeddings and store chunks inside vector databases.
+                    </p>
+                </article>
+
+                <article class="process-step">
+                    <span class="step-number">04</span>
+                    <h3>Retrieve</h3>
+                    <p>
+                        Query planners and filters retrieve contextual knowledge for LLMs.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">JSON chunking</span>
+
+                <h2>Semantic modeling instead of stringify-and-embed</h2>
+
+                <p>
+                    One of the key features of Spring Middleware AI is declarative JSON chunking.
+                    Raw JSON is transformed into semantic text and structured metadata
+                    before embeddings are generated.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+
+                <article class="card">
+
+                    <h3>Incorrect approach</h3>
+
+                    <div class="code-card">
+                        <pre><code>JSON → stringify → embeddings ❌</code></pre>
+                    </div>
+
+                    <p>
+                        Raw JSON serialization usually produces weak semantic retrieval
+                        and poor filtering capabilities.
+                    </p>
+
+                </article>
+
+                <article class="card">
+
+                    <h3>Spring Middleware approach</h3>
+
+                    <div class="code-card">
+                        <pre><code>JSON → semantic modeling → embeddings ✔</code></pre>
+                    </div>
+
+                    <p>
+                        The framework transforms structured data into natural semantic context
+                        while preserving metadata for deterministic retrieval.
+                    </p>
+
+                </article>
+
+            </div>
+
+            <div class="code-card top-gap">
+<pre><code>rules:
+  - name: product
+    extractor-path: "$.data.catalogs.content[*].products[*]"</code></pre>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Transformation rules</span>
+
+                <h2>Rule-based semantic modeling</h2>
+
+                <p>
+                    JSON chunking uses a declarative DSL to define extraction,
+                    metadata generation, templates, hierarchy, and semantic context.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+
+                <article class="card">
+
+                    <h3>Extractor rules</h3>
+
+                    <div class="code-card">
+<pre><code>- json-data-types: [FIELD, META_DATA]
+  name: productType
+  extractor-path: "$.type"</code></pre>
+                    </div>
+
+                </article>
+
+                <article class="card">
+
+                    <h3>Semantic templates</h3>
+
+                    <div class="code-card">
+<pre><code>- template: "Product {productName}
+  belongs to catalog {catalogName}"</code></pre>
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="grid grid-3 top-gap">
+
+                <article class="card">
+                    <h3>Hierarchical modeling</h3>
+                    <p>
+                        Relationships such as catalog → product → review
+                        can be modeled declaratively.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Structured metadata</h3>
+                    <p>
+                        Numeric fields, identifiers, and categories are preserved
+                        for executable filtering.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Natural semantic text</h3>
+                    <p>
+                        Generated chunks contain contextual text optimized
+                        for semantic retrieval.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Retrieval model</span>
+
+                <h2>Structured RAG execution</h2>
+
+                <p>
+                    Retrieval is not based only on embedding similarity.
+                    Queries are transformed into structured execution plans.
+                </p>
+            </div>
+
+            <div class="diagram-card">
+
+                <div class="diagram-svg-wrapper">
+
+                    <svg class="diagram-svg diagram-svg-wide"
+                         viewBox="0 0 760 260"
+                         xmlns="http://www.w3.org/2000/svg">
+
+                        <rect x="20" y="100" width="110" height="50" rx="12"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.18)"/>
+
+                        <text x="75" y="130"
+                              text-anchor="middle"
+                              fill="white"
+                              font-size="13">User Query</text>
+
+                        <rect x="170" y="100" width="120" height="50" rx="12"
+                              fill="rgba(56,189,248,0.08)"
+                              stroke="rgba(56,189,248,0.30)"/>
+
+                        <text x="230" y="130"
+                              text-anchor="middle"
+                              fill="white"
+                              font-size="13">Query Planner</text>
+
+                        <rect x="330" y="100" width="120" height="50" rx="12"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.18)"/>
+
+                        <text x="390" y="130"
+                              text-anchor="middle"
+                              fill="white"
+                              font-size="13">Vector Search</text>
+
+                        <rect x="490" y="100" width="120" height="50" rx="12"
+                              fill="rgba(34,197,94,0.08)"
+                              stroke="rgba(34,197,94,0.30)"/>
+
+                        <text x="550" y="130"
+                              text-anchor="middle"
+                              fill="white"
+                              font-size="13">Context</text>
+
+                        <rect x="650" y="100" width="90" height="50" rx="12"
+                              fill="rgba(255,255,255,0.03)"
+                              stroke="rgba(148,163,184,0.18)"/>
+
+                        <text x="695" y="130"
+                              text-anchor="middle"
+                              fill="white"
+                              font-size="13">LLM</text>
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+            <div class="grid grid-4 top-gap">
+
+                <article class="card">
+                    <h3>Query planning</h3>
+                    <p>
+                        Natural language becomes executable retrieval instructions.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Metadata filtering</h3>
+                    <p>
+                        Numeric and structured filters are applied directly in vector stores.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Semantic retrieval</h3>
+                    <p>
+                        Embeddings retrieve semantically relevant chunks.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Controlled context</h3>
+                    <p>
+                        Retrieved chunks become deterministic context for the LLM.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Query planner</span>
+
+                <h2>Natural language becomes executable retrieval</h2>
+
+                <p>
+                    The planner transforms user questions into optimized retrieval plans
+                    containing semantic queries, filters, and retrieval strategy.
+                </p>
+            </div>
+
+            <div class="code-card">
+<pre><code>{
+  "optimizedQuery": "digital products reviewCount > 5",
+  "filters": [
+    {
+      "field": "productType",
+      "values": ["DIGITAL"],
+      "operator": "EQUAL"
+    }
+  ],
+  "useSemanticSearch": true
+}</code></pre>
+            </div>
+
+            <div class="grid grid-3 top-gap">
+
+                <article class="card">
+                    <h3>Numeric filtering</h3>
+                    <p>
+                        Support for ranges and comparisons such as
+                        greater-than or less-than queries.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Structured execution</h3>
+                    <p>
+                        Filters are executable retrieval instructions,
+                        not prompt suggestions.
+                    </p>
+                </article>
+
+                <article class="card">
+                    <h3>Deterministic retrieval</h3>
+                    <p>
+                        Retrieval behavior becomes predictable and explainable.
+                    </p>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Vector stores</span>
+
+                <h2>Structured filtering at execution time</h2>
+
+                <p>
+                    Metadata filters are executed directly in vector stores
+                    such as Qdrant or MongoDB.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+
+                <article class="card">
+
+                    <h3>Qdrant</h3>
+
+                    <div class="code-card">
+<pre><code>{
+  "must": [
+    {
+      "key": "metadata.productType",
+      "match": {
+        "value": "PHYSICAL"
+      }
+    }
+  ]
+}</code></pre>
+                    </div>
+
+                </article>
+
+                <article class="card">
+
+                    <h3>MongoDB</h3>
+
+                    <div class="code-card">
+<pre><code>Criteria.where("metadata.reviewCount")
+    .gte(3);</code></pre>
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="note top-gap">
+                <p>
+                    Numeric metadata is stored as real numeric types,
+                    not strings, allowing native range filtering
+                    inside vector databases.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section section-alt">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Configuration</span>
+
+                <h2>Spring Boot integration</h2>
+
+                <p>
+                    AI infrastructure integrates directly into Spring Boot
+                    applications through auto-configuration and declarative setup.
+                </p>
+            </div>
+
+            <div class="code-card">
+<pre><code>middleware:
+  ai:
+    document:
+      sources:
+        catalogs-full:
+          type: CUSTOM
+          provider-name: catalogs-graphql-provider
+          chunker: catalogs-chunker
+
+      indexing:
+        enabled: true
+        index-on-startup: true
+
+    vector-store:
+      qdrant:
+        enabled: true
+
+    provider:
+      openai:
+        enabled: true
+        models:
+          - gpt-5</code></pre>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+
+            <div class="section-heading">
+                <span class="eyebrow">Final insight</span>
+
+                <h2>RAG quality depends more on transformation than embeddings</h2>
+
+                <p>
+                    Most RAG systems rely almost entirely on embeddings and similarity search.
+                    Spring Middleware AI focuses on semantic modeling, structured metadata,
+                    retrieval planning, and deterministic filtering.
+                </p>
+            </div>
+
+            <div class="grid grid-2">
+
+                <article class="card">
+
+                    <h3>Typical RAG</h3>
+
+                    <div class="code-card">
+                        <pre><code>query → embedding → similarity → hope</code></pre>
+                    </div>
+
+                </article>
+
+                <article class="card">
+
+                    <h3>Spring Middleware AI</h3>
+
+                    <div class="code-card">
+<pre><code>query → plan → filters + semantic
+→ controlled retrieval → answer</code></pre>
+                    </div>
+
+                </article>
+
+            </div>
+
+            <div class="note top-gap">
+                <p>
+                    The real value of RAG comes from how data is extracted,
+                    transformed, modeled, and retrieved — not only from embeddings.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-inner">
+
+        <p>
+            Spring Middleware — Platform layer for Spring Boot microservices.
+        </p>
+
+        <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="index.html">Home</a>
+            <a href="architecture.html">Architecture</a>
+            <a href="graphql.html">GraphQL Federation</a>
+            <a href="ai.html">AI Infrastructure</a>
+            <a href="modules.html">Modules</a>
+            <a href="documentation.html">Documentation</a>
+        </nav>
+
+    </div>
+</footer>
+
+<script src="js/header.js"></script>
+
+</body>
+</html>

@@ -261,6 +261,13 @@
                     The platform collects metadata from annotations, and the gateway uses that metadata to build and execute
                     remote GraphQL queries while preserving the selection set requested by the client.
                 </p>
+
+                <p>
+                    Links can also combine batched and non-batched arguments. For example, a linked field can batch
+                    product identifiers through <code>ids</code> while still forwarding regular query parameters such as
+                    <code>sort</code>, <code>page</code>, or filters to the downstream service. This allows batched
+                    cross-service resolution without losing client-provided query semantics.
+                </p>
             </div>
 
             <div class="grid grid-2">
@@ -288,13 +295,33 @@
                     </p>
                     <pre><code>@GraphQLLink(
     schema = "product",
-    type = "Page_Product",
-    query = "products",
+    type = "Product",
+    query = "productsByIds",
+    collection = true,
+    batched = true,
     arguments = {
-        @GraphQLLinkArgument(name = "catalogId"),
-        @GraphQLLinkArgument(name = "q")
+        @GraphQLLinkArgument(
+            name = "ids",
+            targetFieldName = "id",
+            batch = true
+        ),
+        @GraphQLLinkArgument(name = "sort")
     }
-)</code></pre>
+)
+
+@GraphQLQuery(name = "products")
+public GraphQLLinkArguments getProductIds(
+        @GraphQLArgument(name = "sort") String sort
+) {
+    Map&lt;String, Object&gt; args = new HashMap&lt;&gt;();
+    args.put("ids", productIds);
+
+    if (sort != null) {
+        args.put("sort", sort);
+    }
+
+    return new GraphQLLinkArguments(args);
+}</code></pre>
                 </article>
             </div>
 
@@ -342,6 +369,7 @@
                     for multiple pending field resolutions.
                 </p>
             </div>
+
 
             <div class="card" style="margin-top: 24px; padding: 18px;">
                 <div class="eyebrow">Live demo</div>
@@ -533,6 +561,10 @@
                     The gateway composes an executable schema and delegates linked fields to a remote execution path.
                     When batching is enabled, the execution model changes from immediate per-field calls to request-scoped
                     registration, grouped dispatch, and batched reconstruction.
+                </p>
+                <p>
+                    The gateway also preserves GraphQL variables and client-provided arguments when rendering
+                    downstream federated queries, including batched links with mixed batched and non-batched parameters.
                 </p>
             </div>
 
